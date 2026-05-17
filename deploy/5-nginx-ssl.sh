@@ -37,14 +37,15 @@ nginx -t
 systemctl reload nginx
 ok "Nginx config in place"
 
-log "Requesting Let's Encrypt certificate for $DOMAIN..."
+log "Requesting Let's Encrypt certificate for $DOMAIN, www.$DOMAIN, dashboard.$DOMAIN..."
 certbot --nginx \
   --non-interactive \
   --agree-tos \
   --email "$EMAIL" \
   --redirect \
   -d "$DOMAIN" \
-  -d "www.$DOMAIN"
+  -d "www.$DOMAIN" \
+  -d "dashboard.$DOMAIN"
 
 systemctl reload nginx
 ok "SSL active. Auto-renew is handled by the certbot snap timer."
@@ -54,5 +55,7 @@ systemctl list-timers | grep -i certbot || true
 
 echo
 echo "════════════════════════════════════════════════════════════════════════"
-echo "  https://$DOMAIN should now serve your site."
+echo "  ✓ https://$DOMAIN              → public website"
+echo "  ✓ https://www.$DOMAIN          → public website"
+echo "  ✓ https://dashboard.$DOMAIN    → admin dashboard"
 echo "════════════════════════════════════════════════════════════════════════"
