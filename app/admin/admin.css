@@ -1,0 +1,111 @@
+:root {
+  --admin-bg: #0b0b10;
+  --admin-surface: #14141c;
+  --admin-surface-2: #1c1c26;
+  --admin-border: #262633;
+  --admin-border-strong: #34344a;
+  --admin-text: #e8e6df;
+  --admin-text-muted: #9b9aa6;
+  --admin-text-subtle: #6e6d7a;
+  --admin-accent: #d97757;
+  --admin-accent-soft: rgba(217, 119, 87, 0.12);
+  --admin-success: #22c55e;
+  --admin-danger: #ef4444;
+  --admin-warning: #eab308;
+}
+
+.bg-admin-bg { background-color: var(--admin-bg); }
+.bg-admin-surface { background-color: var(--admin-surface); }
+.bg-admin-surface-2 { background-color: var(--admin-surface-2); }
+.text-admin-text { color: var(--admin-text); }
+.text-admin-muted { color: var(--admin-text-muted); }
+.text-admin-subtle { color: var(--admin-text-subtle); }
+.text-admin-accent { color: var(--admin-accent); }
+.border-admin-border { border-color: var(--admin-border); }
+.border-admin-border-strong { border-color: var(--admin-border-strong); }
+.bg-admin-accent { background-color: var(--admin-accent); }
+.bg-admin-accent-soft { background-color: var(--admin-accent-soft); }
+
+.admin-input {
+  @apply w-full rounded-lg px-4 py-2.5 transition-colors;
+  background-color: var(--admin-surface);
+  color: var(--admin-text);
+  border: 1px solid var(--admin-border);
+  outline: none;
+}
+.admin-input::placeholder {
+  color: var(--admin-text-subtle);
+}
+.admin-input:focus {
+  border-color: var(--admin-accent);
+}
+.admin-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+textarea.admin-input {
+  @apply min-h-[100px] resize-y;
+}
+
+.admin-btn,
+.admin-btn-primary,
+.admin-btn-secondary,
+.admin-btn-ghost,
+.admin-btn-danger {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-all;
+}
+.admin-btn:disabled,
+.admin-btn-primary:disabled,
+.admin-btn-secondary:disabled,
+.admin-btn-ghost:disabled,
+.admin-btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn-primary {
+  background-color: var(--admin-accent);
+  color: #fff;
+}
+.admin-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.admin-btn-secondary {
+  background-color: var(--admin-surface);
+  color: var(--admin-text);
+  border: 1px solid var(--admin-border);
+}
+.admin-btn-secondary:hover:not(:disabled) {
+  border-color: var(--admin-border-strong);
+}
+
+.admin-btn-ghost {
+  background: transparent;
+  color: var(--admin-text-muted);
+}
+.admin-btn-ghost:hover:not(:disabled) {
+  background-color: var(--admin-surface);
+  color: var(--admin-text);
+}
+
+.admin-btn-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.admin-btn-danger:hover:not(:disabled) {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+.admin-card {
+  background-color: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 0.75rem;
+}
+
+.admin-label {
+  @apply block text-sm font-medium mb-1.5;
+  color: var(--admin-text-muted);
+}

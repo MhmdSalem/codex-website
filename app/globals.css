@@ -1,0 +1,235 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  }
+
+  html[dir="rtl"] body {
+    font-family: var(--font-arabic), var(--font-inter), system-ui, sans-serif;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-foreground;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border-strong rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gold/40;
+  }
+}
+
+@layer components {
+  .container-section {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-10;
+  }
+
+  .container-wide {
+    @apply mx-auto w-full max-w-[1440px] px-5 sm:px-6 lg:px-10;
+  }
+
+  /* === Brand gradient text (coral) === */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #F0B8A0 0%, #D97757 50%, #A04B32 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 200% 200%;
+    animation: gradient-x 6s ease infinite;
+  }
+
+  .text-gradient-gold-static,
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #F0B8A0 0%, #D97757 50%, #A04B32 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-fade {
+    background: linear-gradient(180deg, #F0EBE0 0%, #F0EBE0 60%, #6E6E78 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* === Shimmer text === */
+  .shimmer-text {
+    background: linear-gradient(
+      90deg,
+      rgba(217, 119, 87, 0.5),
+      rgba(240, 184, 160, 1),
+      rgba(217, 119, 87, 0.5)
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* === Glass panels === */
+  .glass {
+    @apply bg-background-surface/60 backdrop-blur-xl border border-border;
+  }
+
+  .glass-gold {
+    @apply backdrop-blur-xl border;
+    background: linear-gradient(135deg, rgba(217, 119, 87, 0.1) 0%, rgba(217, 119, 87, 0.03) 100%);
+    border-color: rgba(217, 119, 87, 0.25);
+  }
+
+  /* === Dividers === */
+  .divider-gold {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(217, 119, 87, 0.55) 50%,
+      transparent 100%
+    );
+    height: 1px;
+  }
+
+  /* === Background patterns === */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .bg-aurora {
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(217, 119, 87, 0.25), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 30%, rgba(217, 119, 87, 0.17), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 100%, rgba(217, 119, 87, 0.12), transparent 60%);
+  }
+
+  /* === Card hover effect === */
+  .card-premium {
+    @apply relative overflow-hidden rounded-3xl border border-border bg-background-surface/50 backdrop-blur-sm transition-all duration-500;
+  }
+
+  .card-premium::before {
+    content: "";
+    @apply absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none;
+    background: radial-gradient(
+      400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(217, 119, 87, 0.18),
+      transparent 40%
+    );
+  }
+
+  .card-premium:hover::before {
+    @apply opacity-100;
+  }
+
+  .card-premium:hover {
+    @apply border-gold/30;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(217, 119, 87, 0.25);
+  }
+
+  /* === Animated border === */
+  .border-animated-gold {
+    position: relative;
+    background: linear-gradient(#0F0F16, #0F0F16) padding-box,
+                linear-gradient(135deg, rgba(217,119,87,0.45), rgba(217,119,87,0.1), rgba(217,119,87,0.45)) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* === Section labels (01, 02, etc) === */
+  .section-number {
+    @apply text-[200px] sm:text-[300px] font-display font-bold leading-none text-gold/[0.05] absolute pointer-events-none select-none;
+  }
+
+  /* === Spotlight cursor effect === */
+  .spotlight {
+    pointer-events: none;
+    background: radial-gradient(
+      circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(217, 119, 87, 0.18),
+      transparent 25%
+    );
+  }
+
+  /* === Marquee === */
+  .marquee-container {
+    @apply relative overflow-hidden;
+    mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+
+  /* === Button shine effect === */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shine::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%
+    );
+    transform: skewX(-25deg);
+    transition: left 0.7s ease;
+  }
+  .btn-shine:hover::after {
+    left: 125%;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .mask-fade-bottom {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  .mask-fade-edges {
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+
+  /* === Hide scrollbar but allow scroll === */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
