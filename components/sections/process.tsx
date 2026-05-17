@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/effects/reveal";
+import { cp } from "@/lib/content/cp";
+import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
 export function Process({ dict }: { dict: Dictionary }) {
@@ -14,9 +16,9 @@ export function Process({ dict }: { dict: Dictionary }) {
 
       <div className="container-wide relative">
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <SectionLabel>{t.sectionLabel}</SectionLabel>
+          <SectionLabel className={cp("process.sectionLabel")}>{t.sectionLabel}</SectionLabel>
           <Reveal>
-            <h2 className="mt-4 font-display text-display-lg text-balance leading-[1.05]">
+            <h2 className={cn("mt-4 font-display text-display-lg text-balance leading-[1.05]", cp("process.title"))}>
               <span className="text-foreground">{t.title.split(" ").slice(0, -2).join(" ")} </span>
               <span className="text-gradient-gold italic">
                 {t.title.split(" ").slice(-2).join(" ")}
@@ -24,7 +26,7 @@ export function Process({ dict }: { dict: Dictionary }) {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-4 text-base sm:text-lg text-foreground-muted leading-relaxed">
+            <p className={cn("mt-4 text-base sm:text-lg text-foreground-muted leading-relaxed", cp("process.subtitle"))}>
               {t.subtitle}
             </p>
           </Reveal>
@@ -54,10 +56,10 @@ export function Process({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="card-premium p-6 text-center">
-                <h3 className="font-display text-xl sm:text-2xl font-bold mb-3 text-foreground">
+                <h3 className={cn("font-display text-xl sm:text-2xl font-bold mb-3 text-foreground", cp(`process.steps.${i}.title`))}>
                   {step.title}
                 </h3>
-                <p className="text-sm text-foreground-muted leading-relaxed">
+                <p className={cn("text-sm text-foreground-muted leading-relaxed", cp(`process.steps.${i}.description`))}>
                   {step.description}
                 </p>
               </div>

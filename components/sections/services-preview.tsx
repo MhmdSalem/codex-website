@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/effects/reveal";
 import { cn } from "@/lib/utils";
+import { cp } from "@/lib/content/cp";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -36,9 +37,9 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
       <div className="container-wide relative">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
           <div className="max-w-2xl">
-            <SectionLabel>{t.sectionLabel}</SectionLabel>
+            <SectionLabel className={cp("servicesPreview.sectionLabel")}>{t.sectionLabel}</SectionLabel>
             <Reveal>
-              <h2 className="mt-4 font-display text-display-lg text-balance leading-[1.05]">
+              <h2 className={cn("mt-4 font-display text-display-lg text-balance leading-[1.05]", cp("servicesPreview.title"))}>
                 <span className="text-foreground">{t.title.split(" ").slice(0, -2).join(" ")} </span>
                 <span className="text-gradient-gold italic">
                   {t.title.split(" ").slice(-2).join(" ")}
@@ -46,7 +47,7 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-5 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-xl">
+              <p className={cn("mt-5 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-xl", cp("servicesPreview.subtitle"))}>
                 {t.subtitle}
               </p>
             </Reveal>
@@ -61,6 +62,7 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 auto-rows-fr">
           <BentoCard
+            index={0}
             className="md:col-span-3 lg:col-span-4 md:row-span-2 min-h-[420px]"
             featured
             item={items[0]}
@@ -71,6 +73,7 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
             isSoon={false}
           />
           <BentoCard
+            index={1}
             className="md:col-span-3 lg:col-span-2"
             item={items[1]}
             icon={ICONS[1]}
@@ -80,6 +83,7 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
             isSoon={false}
           />
           <BentoCard
+            index={2}
             className="md:col-span-3 lg:col-span-2"
             item={items[2]}
             icon={ICONS[2]}
@@ -89,6 +93,7 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
             isSoon={false}
           />
           <BentoCard
+            index={3}
             className="md:col-span-3 lg:col-span-6"
             item={items[3]}
             icon={ICONS[3]}
@@ -105,6 +110,7 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
 }
 
 function BentoCard({
+  index,
   item,
   icon: Icon,
   locale,
@@ -115,6 +121,7 @@ function BentoCard({
   wide,
   className,
 }: {
+  index: number;
   item: Dictionary["servicesPreview"]["items"][number];
   icon: typeof QrCode;
   locale: Locale;
@@ -188,12 +195,14 @@ function BentoCard({
             <h3 className={cn(
               "font-display font-bold leading-tight mb-3 text-foreground group-hover:text-gradient-gold transition-all duration-300",
               featured ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl",
+              cp(`servicesPreview.items.${index}.title`),
             )}>
               {item.title}
             </h3>
             <p className={cn(
               "text-foreground-muted leading-relaxed",
               featured ? "text-base max-w-md" : "text-sm",
+              cp(`servicesPreview.items.${index}.description`),
             )}>
               {item.description}
             </p>

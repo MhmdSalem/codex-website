@@ -5,6 +5,8 @@ import { useRef } from "react";
 import { ArrowRight, Sparkles, ArrowDown, Code2, QrCode, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Marquee } from "@/components/effects/marquee";
+import { cp } from "@/lib/content/cp";
+import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -57,7 +59,7 @@ export function Hero({ locale, dict }: HeroProps) {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-gold" />
           </span>
-          <span className="text-xs font-medium text-gold uppercase tracking-wider">
+          <span className={cn("text-xs font-medium text-gold uppercase tracking-wider", cp("hero.eyebrow"))}>
             {t.eyebrow}
           </span>
         </motion.div>
@@ -72,7 +74,7 @@ export function Hero({ locale, dict }: HeroProps) {
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="block text-gradient-fade"
+            className={cn("block text-gradient-fade", cp("hero.titleStart"))}
           >
             {t.titleStart}
           </motion.span>
@@ -80,7 +82,7 @@ export function Hero({ locale, dict }: HeroProps) {
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="block text-gradient-gold italic py-2"
+            className={cn("block text-gradient-gold italic py-2", cp("hero.titleHighlight"))}
           >
             {t.titleHighlight}
           </motion.span>
@@ -88,7 +90,7 @@ export function Hero({ locale, dict }: HeroProps) {
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="block text-gradient-fade"
+            className={cn("block text-gradient-fade", cp("hero.titleEnd"))}
           >
             {t.titleEnd}
           </motion.span>
@@ -98,7 +100,7 @@ export function Hero({ locale, dict }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-10 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-2xl text-balance"
+          className={cn("mt-10 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-2xl text-balance", cp("hero.subtitle"))}
         >
           {t.subtitle}
         </motion.p>
@@ -127,7 +129,7 @@ export function Hero({ locale, dict }: HeroProps) {
           transition={{ duration: 1, delay: 1.4 }}
           className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-foreground-subtle"
         >
-          <span className="text-[10px] uppercase tracking-[0.3em]">
+          <span className={cn("text-[10px] uppercase tracking-[0.3em]", cp("hero.scrollHint"))}>
             {t.scrollHint}
           </span>
           <motion.div

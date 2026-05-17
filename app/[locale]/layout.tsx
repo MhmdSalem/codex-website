@@ -6,6 +6,8 @@ import { Footer } from "@/components/layout/footer";
 import { CursorGlow } from "@/components/effects/cursor-glow";
 import { isValidLocale, locales, localeDirections, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { getContentStyles } from "@/lib/content/service";
+import { StylesInjector } from "@/components/content/styles-injector";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -70,6 +72,7 @@ export default async function LocaleLayout({
   const locale = params.locale as Locale;
   const direction = localeDirections[locale];
   const dict = await getDictionary(locale);
+  const styles = await getContentStyles(locale);
 
   return (
     <html
@@ -79,6 +82,7 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col bg-background relative">
+        <StylesInjector styles={styles} />
         <CursorGlow />
         <Navbar locale={locale} dict={dict} />
         <main className="flex-1 relative z-10">{children}</main>
