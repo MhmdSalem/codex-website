@@ -3,6 +3,7 @@ import { Inter, IBM_Plex_Sans_Arabic, Playfair_Display } from "next/font/google"
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { CursorGlow } from "@/components/effects/cursor-glow";
 import { isValidLocale, locales, localeDirections, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -87,6 +88,7 @@ export default async function LocaleLayout({
         <Navbar locale={locale} dict={dict} />
         <main className="flex-1 relative z-10">{children}</main>
         <Footer locale={locale} dict={dict} />
+        <MobileBottomNav locale={locale} dict={dict} />
       </body>
     </html>
   );
