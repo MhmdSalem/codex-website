@@ -6,14 +6,13 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "**" },
     ],
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
+    // mongoose ships its own files and doesn't need to be bundled
+    serverComponentsExternalPackages: ["mongoose", "bcryptjs"],
   },
 };
 
