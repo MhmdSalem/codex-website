@@ -60,14 +60,29 @@ else
   ok "Certbot already installed"
 fi
 
-# ── MongoDB 7 ────────────────────────────────────────────────────────────────
+# ── MongoDB 8.0 (works on Ubuntu 22.04 jammy & 24.04 noble) ──────────────────
 if ! command -v mongod &>/dev/null; then
-  log "Installing MongoDB 7.0..."
-  curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
-    gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+  # MongoDB 8.0 is the first major version that supports noble (Ubuntu 24.04)
+  # officially, so we install it for both 22.04 and 24.04.
+  MONGO_VERSION="8.0"
 
-  echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu ${UBUNTU_CODENAME}/mongodb-org/7.0 multiverse" \
-    > /etc/apt/sources.list.d/mongodb-org-7.0.list
+  case "$UBUNTU_CODENAME" in
+    jammy|noble)
+      MONGO_REPO_CODENAME="$UBUNTU_CODENAME"
+      ;;
+    *)
+      # Fall back to jammy for unknown codenames (best-effort compat).
+      MONGO_REPO_CODENAME="jammy"
+      ;;
+  esac
+
+  log "Installing MongoDB ${MONGO_VERSION} for Ubuntu ${UBUNTU_CODENAME} (repo: ${MONGO_REPO_CODENAME})..."
+
+  curl -fsSL "https://www.mongodb.org/static/pgp/server-${MONGO_VERSION}.asc" \
+    | gpg -o "/usr/share/keyrings/mongodb-server-${MONGO_VERSION}.gpg" --dearmor
+
+  echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-${MONGO_VERSION}.gpg ] https://repo.mongodb.org/apt/ubuntu ${MONGO_REPO_CODENAME}/mongodb-org/${MONGO_VERSION} multiverse" \
+    > "/etc/apt/sources.list.d/mongodb-org-${MONGO_VERSION}.list"
 
   apt-get update -y
   apt-get install -y mongodb-org
@@ -88,7 +103,7 @@ EOF
 
   systemctl enable --now mongod
   sleep 4
-  ok "MongoDB installed and running on 127.0.0.1:27017"
+  ok "MongoDB ${MONGO_VERSION} installed and running on 127.0.0.1:27017"
 else
   ok "MongoDB already installed"
 fi
