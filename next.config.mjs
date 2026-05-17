@@ -9,10 +9,10 @@ const nextConfig = {
       { protocol: "https", hostname: "**" },
     ],
   },
+  // Next.js 15+ moved these to the top level (was experimental.serverComponentsExternalPackages)
+  serverExternalPackages: ["mongoose", "bcryptjs"],
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
-    // mongoose ships its own files and doesn't need to be bundled
-    serverComponentsExternalPackages: ["mongoose", "bcryptjs"],
   },
 };
 
