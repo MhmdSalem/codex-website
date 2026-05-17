@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   title: "Codex Admin",
   description: "Codex content management dashboard",
   robots: { index: false, follow: false },
+  icons: {
+    icon: "/codex-icon.png",
+    shortcut: "/codex-icon.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {

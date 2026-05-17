@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -73,9 +74,14 @@ export function Sidebar({ role }: { role: "admin" | "super_admin" }) {
     <aside className="hidden lg:flex fixed inset-y-0 right-0 w-64 bg-admin-surface border-l border-admin-border flex-col">
       <div className="p-4 border-b border-admin-border">
         <Link href="/admin" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-admin-accent to-orange-600 grid place-items-center shrink-0 shadow-lg">
-            <span className="text-base font-bold text-white">C</span>
-          </div>
+          <Image
+            src="/codex-icon.png"
+            alt="Codex"
+            width={40}
+            height={40}
+            priority
+            className="w-10 h-10 rounded-xl shadow-lg shrink-0"
+          />
           <div className="min-w-0">
             <div className="font-bold text-admin-text truncate">Codex</div>
             <div className="text-[10px] text-admin-muted">لوحة التحكم</div>
