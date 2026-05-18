@@ -105,17 +105,14 @@ export function UnderConstruction({ message }: Props) {
             </div>
           </motion.div>
 
-          {/* Arabic headline — generous leading + padding so nothing clips */}
+          {/* Arabic headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display font-bold text-balance text-[clamp(2.5rem,7vw,5.5rem)] leading-[1.25] pb-2"
+            className="font-display font-bold text-gradient-gold italic text-balance text-[clamp(2rem,5vw,3.75rem)] leading-[1.3] pb-2 px-1"
           >
-            <span className="text-gradient-fade">الموقع تحت </span>
-            <span className="text-gradient-gold italic inline-block px-1">
-              الصيانة
-            </span>
+            تحت الصيانة
           </motion.h1>
 
           {/* English subtitle */}
@@ -124,9 +121,9 @@ export function UnderConstruction({ message }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="mt-3 font-display italic text-foreground-muted text-base sm:text-lg md:text-xl tracking-wide"
+            className="mt-2 font-display italic text-foreground-muted text-base sm:text-lg md:text-xl tracking-wide"
           >
-            Under construction · We&apos;ll be back soon
+            Under construction
           </motion.p>
 
           {/* Message card */}
