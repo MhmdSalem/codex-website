@@ -4,10 +4,11 @@ import { useState, useTransition, useMemo, useCallback } from "react";
 import { Info, Heart } from "lucide-react";
 import { PageToolbar } from "../../_components/page-toolbar";
 import { SectionCard } from "../../_components/section-card";
+import { TextField } from "../../_components/field-editor";
 import {
-  TextField,
-  StringListField,
-} from "../../_components/field-editor";
+  RichTextField,
+  RichTextListField,
+} from "../../_components/rich-text-field";
 import { saveContentAndStyles } from "../../_actions/content-actions";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -91,14 +92,15 @@ export function AboutEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("about.title")}
             onStyleChange={(s) => setStyle("about.title", s)}
           />
-          <StringListField
+          <RichTextListField
             label="فقرات القصة"
-            description="كل فقرة تمثل سطر منفصل في صفحة من نحن"
+            description="كل فقرة محرّر مستقل ينفع تنسيقها بالكامل (Bold, قوائم، روابط...)"
             path="about.paragraphs"
             value={data.about.paragraphs}
             onChange={(v) =>
               setData((d) => ({ ...d, about: { ...d.about, paragraphs: v } }))
             }
+            toolbar="rich"
             styles={styleFor("about.paragraphs")}
             onStyleChange={(s) => setStyle("about.paragraphs", s)}
           />
@@ -152,9 +154,8 @@ export function AboutEditor({ locale, initialData, initialStyles }: Props) {
                     setStyle(`about.values.items.${i}.title`, s)
                   }
                 />
-                <TextField
+                <RichTextField
                   label="الوصف"
-                  multiline
                   path={`about.values.items.${i}.description`}
                   value={item.description}
                   onChange={(v) =>
@@ -170,6 +171,7 @@ export function AboutEditor({ locale, initialData, initialStyles }: Props) {
                       };
                     })
                   }
+                  toolbar="simple"
                   styles={styleFor(`about.values.items.${i}.description`)}
                   onStyleChange={(s) =>
                     setStyle(`about.values.items.${i}.description`, s)

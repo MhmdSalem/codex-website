@@ -9,6 +9,7 @@ import {
   StringListField,
   BoolField,
 } from "../../_components/field-editor";
+import { RichTextField } from "../../_components/rich-text-field";
 import { saveContentAndStyles } from "../../_actions/content-actions";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -102,9 +103,8 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("services.title")}
             onStyleChange={(s) => setStyle("services.title", s)}
           />
-          <TextField
+          <RichTextField
             label="الوصف"
-            multiline
             path="services.subtitle"
             value={data.services.subtitle}
             onChange={(v) =>
@@ -113,6 +113,7 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
                 services: { ...d.services, subtitle: v },
               }))
             }
+            toolbar="simple"
             styles={styleFor("services.subtitle")}
             onStyleChange={(s) => setStyle("services.subtitle", s)}
           />
@@ -164,9 +165,8 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
                     setStyle(`services.detailed.${i}.tagline`, s)
                   }
                 />
-                <TextField
+                <RichTextField
                   label="الوصف"
-                  multiline
                   path={`services.detailed.${i}.description`}
                   value={svc.description}
                   onChange={(v) =>
@@ -176,6 +176,7 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
                       return { ...d, services: { ...d.services, detailed: next } };
                     })
                   }
+                  toolbar="rich"
                   styles={styleFor(`services.detailed.${i}.description`)}
                   onStyleChange={(s) =>
                     setStyle(`services.detailed.${i}.description`, s)
@@ -236,9 +237,8 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("services.pricing.title")}
             onStyleChange={(s) => setStyle("services.pricing.title", s)}
           />
-          <TextField
+          <RichTextField
             label="وصف قسم الأسعار"
-            multiline
             path="services.pricing.subtitle"
             value={data.services.pricing.subtitle}
             onChange={(v) =>
@@ -250,6 +250,7 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
                 },
               }))
             }
+            toolbar="simple"
             styles={styleFor("services.pricing.subtitle")}
             onStyleChange={(s) => setStyle("services.pricing.subtitle", s)}
           />
@@ -342,9 +343,8 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
                   />
                 </div>
 
-                <TextField
+                <RichTextField
                   label="الوصف"
-                  multiline
                   path={`services.pricing.${key}.description`}
                   value={plan.description}
                   onChange={(v) =>
@@ -359,6 +359,7 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
                       },
                     }))
                   }
+                  toolbar="simple"
                 />
 
                 <StringListField

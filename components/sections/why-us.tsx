@@ -13,6 +13,7 @@ import {
 import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/effects/reveal";
 import { cp } from "@/lib/content/cp";
+import { htmlProps } from "@/components/content/rich-text";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -40,9 +41,10 @@ export function WhyUs({ dict }: { dict: Dictionary }) {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className={cn("mt-5 text-base sm:text-lg text-foreground-muted leading-relaxed", cp("whyUs.subtitle"))}>
-                {t.subtitle}
-              </p>
+              <p
+                className={cn("rich-text mt-5 text-base sm:text-lg text-foreground-muted leading-relaxed", cp("whyUs.subtitle"))}
+                {...htmlProps(t.subtitle)}
+              />
             </Reveal>
           </div>
 
@@ -64,9 +66,10 @@ export function WhyUs({ dict }: { dict: Dictionary }) {
                   <h3 className={cn("font-display text-lg sm:text-xl font-bold text-foreground mb-2", cp(`whyUs.items.${i}.title`))}>
                     {item.title}
                   </h3>
-                  <p className={cn("text-sm text-foreground-muted leading-relaxed", cp(`whyUs.items.${i}.description`))}>
-                    {item.description}
-                  </p>
+                  <p
+                    className={cn("rich-text text-sm text-foreground-muted leading-relaxed", cp(`whyUs.items.${i}.description`))}
+                    {...htmlProps(item.description)}
+                  />
                 </motion.div>
               );
             })}

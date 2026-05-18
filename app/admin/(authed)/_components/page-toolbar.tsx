@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { Save, ExternalLink, Languages, Loader2, Check, AlertTriangle } from "lucide-react";
+import {
+  Save,
+  ExternalLink,
+  Languages,
+  Loader2,
+  Check,
+  AlertTriangle,
+  RotateCcw,
+} from "lucide-react";
 import clsx from "clsx";
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect } from "react";
 
 type Props = {
   title: string;
@@ -39,11 +47,40 @@ export function PageToolbar({
   }, [isSaving, savedFlash]);
 
   return (
-    <div className="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 bg-admin-bg/90 backdrop-blur-xl border-b border-admin-border mb-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="min-w-0">
-          <h1 className="text-xl sm:text-2xl font-bold text-admin-text truncate">{title}</h1>
-          {subtitle && <p className="text-xs sm:text-sm text-admin-muted mt-0.5">{subtitle}</p>}
+    <div className="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 bg-admin-bg/90 backdrop-blur-xl border-b border-admin-border/60 mb-6 shadow-sm">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="min-w-0 flex items-center gap-3">
+          {/* Live status pill */}
+          <div
+            className={clsx(
+              "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors",
+              isSaving
+                ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                : isDirty
+                  ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
+                  : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+            )}
+          >
+            <span
+              className={clsx(
+                "w-1.5 h-1.5 rounded-full",
+                isSaving
+                  ? "bg-blue-400 animate-pulse"
+                  : isDirty
+                    ? "bg-yellow-400 animate-pulse"
+                    : "bg-emerald-400",
+              )}
+            />
+            {isSaving ? "جارٍ الحفظ" : isDirty ? "غير محفوظ" : "محفوظ"}
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-admin-text truncate leading-tight">
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="text-xs text-admin-muted mt-0.5">{subtitle}</p>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -73,8 +110,10 @@ export function PageToolbar({
               type="button"
               onClick={onReset}
               className="admin-btn-ghost text-xs"
+              title="إلغاء التعديلات والعودة للنسخة المحفوظة"
             >
-              تراجع
+              <RotateCcw className="w-4 h-4" />
+              <span className="hidden sm:inline">تراجع</span>
             </button>
           )}
 
@@ -86,8 +125,8 @@ export function PageToolbar({
             }}
             disabled={!isDirty || isSaving}
             className={clsx(
-              "admin-btn-primary text-xs disabled:opacity-50 disabled:cursor-not-allowed",
-              isDirty && !isSaving && "animate-pulse",
+              "admin-btn-primary text-xs disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-admin-accent/20",
+              isDirty && !isSaving && "ring-2 ring-admin-accent/40",
             )}
           >
             {isSaving ? (
@@ -113,7 +152,7 @@ export function PageToolbar({
       {isDirty && (
         <div className="mt-3 flex items-center gap-2 text-xs text-yellow-400">
           <AlertTriangle className="w-3.5 h-3.5" />
-          <span>عندك تعديلات لم تُحفظ بعد</span>
+          <span>عندك تعديلات لم تُحفظ بعد — اضغط حفظ التغييرات</span>
         </div>
       )}
     </div>

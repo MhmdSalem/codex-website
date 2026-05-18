@@ -9,10 +9,11 @@ const nextConfig = {
       { protocol: "https", hostname: "**" },
     ],
   },
-  // Next.js 15+ moved these to the top level (was experimental.serverComponentsExternalPackages)
-  serverExternalPackages: ["mongoose", "bcryptjs"],
+  // We are on Next.js 14.x which still uses the experimental key.
+  // (Next.js 15+ moved this to top-level `serverExternalPackages`.)
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
+    serverComponentsExternalPackages: ["mongoose", "bcryptjs"],
   },
 };
 

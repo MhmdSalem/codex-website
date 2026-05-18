@@ -3,6 +3,7 @@ import { Zap, Minimize2, Award, Eye } from "lucide-react";
 import { SectionLabel } from "@/components/ui/section-label";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { Reveal } from "@/components/effects/reveal";
+import { RichText } from "@/components/content/rich-text";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 
@@ -49,9 +50,11 @@ export default async function AboutPage({ params }: { params: { locale: string }
             <div className="lg:col-span-7 space-y-6">
               {t.paragraphs.map((p, i) => (
                 <Reveal key={i} delay={i * 0.1}>
-                  <p className="text-base sm:text-lg text-foreground-muted leading-relaxed">
-                    {p}
-                  </p>
+                  <RichText
+                    html={p}
+                    as="div"
+                    className="text-base sm:text-lg text-foreground-muted leading-relaxed"
+                  />
                 </Reveal>
               ))}
             </div>
@@ -88,9 +91,11 @@ export default async function AboutPage({ params }: { params: { locale: string }
                     <h3 className="font-display text-xl font-bold text-foreground mb-2">
                       {value.title}
                     </h3>
-                    <p className="text-sm text-foreground-muted leading-relaxed">
-                      {value.description}
-                    </p>
+                    <RichText
+                      html={value.description}
+                      as="div"
+                      className="text-sm text-foreground-muted leading-relaxed"
+                    />
                   </div>
                 </Reveal>
               );

@@ -5,6 +5,7 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { Counter } from "@/components/effects/counter";
 import { Reveal } from "@/components/effects/reveal";
 import { cp } from "@/lib/content/cp";
+import { htmlProps } from "@/components/content/rich-text";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -34,9 +35,10 @@ export function BigStats({ dict }: { dict: Dictionary }) {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className={cn("mt-4 text-base sm:text-lg text-foreground-muted leading-relaxed", cp("bigStats.subtitle"))}>
-              {t.subtitle}
-            </p>
+            <p
+              className={cn("rich-text mt-4 text-base sm:text-lg text-foreground-muted leading-relaxed", cp("bigStats.subtitle"))}
+              {...htmlProps(t.subtitle)}
+            />
           </Reveal>
         </div>
 

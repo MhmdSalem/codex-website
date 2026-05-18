@@ -15,6 +15,7 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/effects/reveal";
 import { cn } from "@/lib/utils";
 import { cp } from "@/lib/content/cp";
+import { htmlProps } from "@/components/content/rich-text";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -47,9 +48,10 @@ export function ServicesPreview({ locale, dict }: ServicesPreviewProps) {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className={cn("mt-5 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-xl", cp("servicesPreview.subtitle"))}>
-                {t.subtitle}
-              </p>
+              <p
+                className={cn("rich-text mt-5 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-xl", cp("servicesPreview.subtitle"))}
+                {...htmlProps(t.subtitle)}
+              />
             </Reveal>
           </div>
           <Reveal delay={0.2}>
@@ -199,13 +201,14 @@ function BentoCard({
             )}>
               {item.title}
             </h3>
-            <p className={cn(
-              "text-foreground-muted leading-relaxed",
-              featured ? "text-base max-w-md" : "text-sm",
-              cp(`servicesPreview.items.${index}.description`),
-            )}>
-              {item.description}
-            </p>
+            <p
+              className={cn(
+                "rich-text text-foreground-muted leading-relaxed",
+                featured ? "text-base max-w-md" : "text-sm",
+                cp(`servicesPreview.items.${index}.description`),
+              )}
+              {...htmlProps(item.description)}
+            />
           </div>
 
           {featured && (

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cp } from "@/lib/content/cp";
+import { htmlProps } from "@/components/content/rich-text";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -49,9 +50,10 @@ export function CtaBanner({ locale, dict }: CtaBannerProps) {
             <h2 className={cn("font-display text-display-xl text-balance leading-[0.95] max-w-4xl", cp("cta.title"))}>
               <span className="text-gradient-fade">{t.title}</span>
             </h2>
-            <p className={cn("mt-6 text-base sm:text-xl text-foreground-muted leading-relaxed max-w-2xl text-balance", cp("cta.subtitle"))}>
-              {t.subtitle}
-            </p>
+            <p
+              className={cn("rich-text mt-6 text-base sm:text-xl text-foreground-muted leading-relaxed max-w-2xl text-balance", cp("cta.subtitle"))}
+              {...htmlProps(t.subtitle)}
+            />
             <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
               <Button href={`/${locale}/contact`} size="lg" className="btn-shine">
                 {t.primary}

@@ -6,6 +6,7 @@ import { ArrowRight, Sparkles, ArrowDown, Code2, QrCode, BarChart3 } from "lucid
 import { Button } from "@/components/ui/button";
 import { Marquee } from "@/components/effects/marquee";
 import { cp } from "@/lib/content/cp";
+import { htmlProps } from "@/components/content/rich-text";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -100,10 +101,9 @@ export function Hero({ locale, dict }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className={cn("mt-10 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-2xl text-balance", cp("hero.subtitle"))}
-        >
-          {t.subtitle}
-        </motion.p>
+          className={cn("rich-text mt-10 text-base sm:text-lg text-foreground-muted leading-relaxed max-w-2xl text-balance", cp("hero.subtitle"))}
+          {...htmlProps(t.subtitle)}
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

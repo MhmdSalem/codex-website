@@ -16,6 +16,8 @@ import {
   StringListField,
   NumberField,
 } from "../../_components/field-editor";
+import { RichTextField } from "../../_components/rich-text-field";
+import { TitleComposer } from "../../_components/title-composer";
 import { saveContentAndStyles } from "../../_actions/content-actions";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -38,7 +40,7 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
   );
   const isDirty = JSON.stringify({ data, styles }) !== initialJSON;
 
-  const setField = useCallback(<T,>(updater: (prev: Dictionary) => Dictionary) => {
+  const setField = useCallback((updater: (prev: Dictionary) => Dictionary) => {
     setData(updater);
   }, []);
 
@@ -60,8 +62,6 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
     startTransition(async () => {
       try {
         await saveContentAndStyles({ locale, data, styles });
-        // Refresh the snapshot on success
-        // (we keep state, but the dirty check now compares against new state)
         location.reload();
       } catch (err) {
         console.error(err);
@@ -79,9 +79,7 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
     <div>
       <PageToolbar
         title="الصفحة الرئيسية"
-        subtitle={
-          locale === "ar" ? "النسخة العربية" : "English version"
-        }
+        subtitle={locale === "ar" ? "النسخة العربية" : "English version"}
         locale={locale}
         basePath="/admin/pages/home"
         previewHref={`/${locale}`}
@@ -111,51 +109,42 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
             onStyleChange={(s) => setStyle("hero.eyebrow", s)}
           />
 
-          <TextField
-            label="بداية العنوان"
-            description="السطر الأول من العنوان الرئيسي"
-            path="hero.titleStart"
-            value={data.hero.titleStart}
-            onChange={(v) =>
-              setField((d) => ({ ...d, hero: { ...d.hero, titleStart: v } }))
+          <TitleComposer
+            label="العنوان الرئيسي"
+            description="اكتب العنوان كاملاً مع الجزء المميز بين [[ ]]"
+            basePath="hero"
+            start={data.hero.titleStart}
+            highlight={data.hero.titleHighlight}
+            end={data.hero.titleEnd}
+            onChange={({ start, highlight, end }) =>
+              setField((d) => ({
+                ...d,
+                hero: {
+                  ...d.hero,
+                  titleStart: start,
+                  titleHighlight: highlight,
+                  titleEnd: end,
+                },
+              }))
             }
-            styles={styleFor("hero.titleStart")}
-            onStyleChange={(s) => setStyle("hero.titleStart", s)}
+            startStyles={styleFor("hero.titleStart")}
+            highlightStyles={styleFor("hero.titleHighlight")}
+            endStyles={styleFor("hero.titleEnd")}
+            onStartStyleChange={(s) => setStyle("hero.titleStart", s)}
+            onHighlightStyleChange={(s) => setStyle("hero.titleHighlight", s)}
+            onEndStyleChange={(s) => setStyle("hero.titleEnd", s)}
           />
 
-          <TextField
-            label="الكلمة المميزة (Highlight)"
-            description="الكلمة بلون ذهبي وتأثير مميز"
-            path="hero.titleHighlight"
-            value={data.hero.titleHighlight}
-            onChange={(v) =>
-              setField((d) => ({ ...d, hero: { ...d.hero, titleHighlight: v } }))
-            }
-            styles={styleFor("hero.titleHighlight")}
-            onStyleChange={(s) => setStyle("hero.titleHighlight", s)}
-          />
-
-          <TextField
-            label="نهاية العنوان"
-            description="السطر الأخير من العنوان"
-            path="hero.titleEnd"
-            value={data.hero.titleEnd}
-            onChange={(v) =>
-              setField((d) => ({ ...d, hero: { ...d.hero, titleEnd: v } }))
-            }
-            styles={styleFor("hero.titleEnd")}
-            onStyleChange={(s) => setStyle("hero.titleEnd", s)}
-          />
-
-          <TextField
+          <RichTextField
             label="الوصف (Subtitle)"
-            multiline
-            description="فقرة تحت العنوان الرئيسي"
+            description="فقرة كاملة تحت العنوان — تقدر تنسّقها بـ Bold/Italic/قوائم"
             path="hero.subtitle"
             value={data.hero.subtitle}
             onChange={(v) =>
               setField((d) => ({ ...d, hero: { ...d.hero, subtitle: v } }))
             }
+            placeholder="اكتب وصف قصير عن الشركة أو الخدمة..."
+            toolbar="simple"
             styles={styleFor("hero.subtitle")}
             onStyleChange={(s) => setStyle("hero.subtitle", s)}
           />
@@ -236,9 +225,8 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
             onStyleChange={(s) => setStyle("servicesPreview.title", s)}
           />
 
-          <TextField
+          <RichTextField
             label="الوصف"
-            multiline
             path="servicesPreview.subtitle"
             value={data.servicesPreview.subtitle}
             onChange={(v) =>
@@ -247,6 +235,7 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
                 servicesPreview: { ...d.servicesPreview, subtitle: v },
               }))
             }
+            toolbar="simple"
             styles={styleFor("servicesPreview.subtitle")}
             onStyleChange={(s) => setStyle("servicesPreview.subtitle", s)}
           />
@@ -294,9 +283,8 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
                     setStyle(`servicesPreview.items.${i}.title`, s)
                   }
                 />
-                <TextField
+                <RichTextField
                   label="الوصف"
-                  multiline
                   path={`servicesPreview.items.${i}.description`}
                   value={item.description}
                   onChange={(v) =>
@@ -309,6 +297,7 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
                       };
                     })
                   }
+                  toolbar="simple"
                   styles={styleFor(`servicesPreview.items.${i}.description`)}
                   onStyleChange={(s) =>
                     setStyle(`servicesPreview.items.${i}.description`, s)
@@ -363,14 +352,14 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("bigStats.title")}
             onStyleChange={(s) => setStyle("bigStats.title", s)}
           />
-          <TextField
+          <RichTextField
             label="الوصف"
-            multiline
             path="bigStats.subtitle"
             value={data.bigStats.subtitle}
             onChange={(v) =>
               setField((d) => ({ ...d, bigStats: { ...d.bigStats, subtitle: v } }))
             }
+            toolbar="simple"
             styles={styleFor("bigStats.subtitle")}
             onStyleChange={(s) => setStyle("bigStats.subtitle", s)}
           />
@@ -458,14 +447,14 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("process.title")}
             onStyleChange={(s) => setStyle("process.title", s)}
           />
-          <TextField
+          <RichTextField
             label="الوصف"
-            multiline
             path="process.subtitle"
             value={data.process.subtitle}
             onChange={(v) =>
               setField((d) => ({ ...d, process: { ...d.process, subtitle: v } }))
             }
+            toolbar="simple"
             styles={styleFor("process.subtitle")}
             onStyleChange={(s) => setStyle("process.subtitle", s)}
           />
@@ -512,9 +501,8 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
                     />
                   </div>
                 </div>
-                <TextField
+                <RichTextField
                   label="الوصف"
-                  multiline
                   path={`process.steps.${i}.description`}
                   value={step.description}
                   onChange={(v) =>
@@ -524,6 +512,7 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
                       return { ...d, process: { ...d.process, steps: next } };
                     })
                   }
+                  toolbar="simple"
                   styles={styleFor(`process.steps.${i}.description`)}
                   onStyleChange={(s) =>
                     setStyle(`process.steps.${i}.description`, s)
@@ -560,14 +549,14 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("whyUs.title")}
             onStyleChange={(s) => setStyle("whyUs.title", s)}
           />
-          <TextField
+          <RichTextField
             label="الوصف"
-            multiline
             path="whyUs.subtitle"
             value={data.whyUs.subtitle}
             onChange={(v) =>
               setField((d) => ({ ...d, whyUs: { ...d.whyUs, subtitle: v } }))
             }
+            toolbar="simple"
             styles={styleFor("whyUs.subtitle")}
             onStyleChange={(s) => setStyle("whyUs.subtitle", s)}
           />
@@ -596,9 +585,8 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
                   styles={styleFor(`whyUs.items.${i}.title`)}
                   onStyleChange={(s) => setStyle(`whyUs.items.${i}.title`, s)}
                 />
-                <TextField
+                <RichTextField
                   label="الوصف"
-                  multiline
                   path={`whyUs.items.${i}.description`}
                   value={item.description}
                   onChange={(v) =>
@@ -608,6 +596,7 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
                       return { ...d, whyUs: { ...d.whyUs, items: next } };
                     })
                   }
+                  toolbar="simple"
                   styles={styleFor(`whyUs.items.${i}.description`)}
                   onStyleChange={(s) =>
                     setStyle(`whyUs.items.${i}.description`, s)
@@ -634,14 +623,14 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("cta.title")}
             onStyleChange={(s) => setStyle("cta.title", s)}
           />
-          <TextField
+          <RichTextField
             label="الوصف"
-            multiline
             path="cta.subtitle"
             value={data.cta.subtitle}
             onChange={(v) =>
               setField((d) => ({ ...d, cta: { ...d.cta, subtitle: v } }))
             }
+            toolbar="simple"
             styles={styleFor("cta.subtitle")}
             onStyleChange={(s) => setStyle("cta.subtitle", s)}
           />

@@ -3,6 +3,7 @@ import { Mail, Phone, MessageCircle, MapPin } from "lucide-react";
 import { SectionLabel } from "@/components/ui/section-label";
 import { ContactForm } from "@/components/sections/contact-form";
 import { Reveal } from "@/components/effects/reveal";
+import { RichText } from "@/components/content/rich-text";
 import { SITE_CONFIG } from "@/lib/utils";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -61,9 +62,11 @@ export default async function ContactPage({ params }: { params: { locale: string
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-6 text-base sm:text-lg text-foreground-muted max-w-2xl mx-auto leading-relaxed text-balance">
-              {t.subtitle}
-            </p>
+            <RichText
+              html={t.subtitle}
+              as="div"
+              className="mt-6 text-base sm:text-lg text-foreground-muted max-w-2xl mx-auto leading-relaxed text-balance"
+            />
           </Reveal>
         </div>
       </section>

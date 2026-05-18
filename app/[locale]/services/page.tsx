@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { Reveal } from "@/components/effects/reveal";
+import { RichText } from "@/components/content/rich-text";
 import { cn } from "@/lib/utils";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -43,9 +44,11 @@ export default async function ServicesPage({ params }: { params: { locale: strin
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-6 text-lg text-foreground-muted max-w-2xl mx-auto leading-relaxed text-balance">
-              {t.subtitle}
-            </p>
+            <RichText
+              html={t.subtitle}
+              as="div"
+              className="mt-6 text-lg text-foreground-muted max-w-2xl mx-auto leading-relaxed text-balance"
+            />
           </Reveal>
         </div>
       </section>
@@ -89,9 +92,11 @@ export default async function ServicesPage({ params }: { params: { locale: strin
                         <h3 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-3 leading-tight">
                           {service.title}
                         </h3>
-                        <p className="text-base text-foreground-muted leading-relaxed">
-                          {service.description}
-                        </p>
+                        <RichText
+                          html={service.description}
+                          as="div"
+                          className="text-base text-foreground-muted leading-relaxed"
+                        />
                         {!isSoon && (
                           <div className="mt-6">
                             <Button href={`/${locale}/contact`} variant="outline" size="sm">
@@ -146,9 +151,11 @@ export default async function ServicesPage({ params }: { params: { locale: strin
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-4 text-base sm:text-lg text-foreground-muted">
-                {t.pricing.subtitle}
-              </p>
+              <RichText
+                html={t.pricing.subtitle}
+                as="div"
+                className="mt-4 text-base sm:text-lg text-foreground-muted"
+              />
             </Reveal>
           </div>
 
@@ -173,9 +180,11 @@ export default async function ServicesPage({ params }: { params: { locale: strin
                     )}
 
                     <h3 className="font-display text-2xl font-bold mb-2">{plan.name}</h3>
-                    <p className="text-sm text-foreground-muted leading-relaxed mb-6">
-                      {plan.description}
-                    </p>
+                    <RichText
+                      html={plan.description}
+                      as="div"
+                      className="text-sm text-foreground-muted leading-relaxed mb-6"
+                    />
 
                     <div className="mb-6">
                       <div className="text-xs text-foreground-subtle uppercase tracking-wider mb-1">

@@ -5,6 +5,7 @@ import { Footprints, Link2, Layers } from "lucide-react";
 import { PageToolbar } from "../../_components/page-toolbar";
 import { SectionCard } from "../../_components/section-card";
 import { TextField } from "../../_components/field-editor";
+import { RichTextField } from "../../_components/rich-text-field";
 import { saveContentAndStyles } from "../../_actions/content-actions";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -67,14 +68,15 @@ export function FooterEditor({ locale, initialData, initialStyles }: Props) {
 
       <div className="space-y-4 max-w-3xl">
         <SectionCard title="نص الترويسة" icon={Footprints}>
-          <TextField
+          <RichTextField
             label="الشعار/الوصف القصير (Tagline)"
-            multiline
+            description="الجملة التعريفية اللي بتظهر تحت اللوجو في الفوتر"
             path="footer.tagline"
             value={data.footer.tagline}
             onChange={(v) =>
               setData((d) => ({ ...d, footer: { ...d.footer, tagline: v } }))
             }
+            toolbar="simple"
             styles={styleFor("footer.tagline")}
             onStyleChange={(s) => setStyle("footer.tagline", s)}
           />

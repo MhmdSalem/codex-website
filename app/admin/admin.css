@@ -105,7 +105,182 @@ textarea.admin-input {
   border-radius: 0.75rem;
 }
 
+.admin-sidebar {
+  background-color: var(--admin-surface);
+  border-left: 1px solid var(--admin-border);
+  background-image:
+    radial-gradient(
+      at 90% 0%,
+      rgba(217, 119, 87, 0.05) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(217, 119, 87, 0.02) 0%,
+      transparent 30%
+    );
+}
+
+.admin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.admin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--admin-border);
+  border-radius: 3px;
+}
+.admin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--admin-border-strong);
+}
+
 .admin-label {
   @apply block text-sm font-medium mb-1.5;
   color: var(--admin-text-muted);
 }
+
+/* ========================================
+   Rich Text Editor (Quill) — Dark Theme
+   ======================================== */
+.rich-editor-shell {
+  border-radius: 0.625rem;
+  border: 1px solid var(--admin-border);
+  background-color: var(--admin-surface);
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.rich-editor-shell:focus-within {
+  border-color: var(--admin-accent);
+}
+
+.rich-editor-shell .ql-toolbar.ql-snow {
+  border: 0;
+  border-bottom: 1px solid var(--admin-border);
+  background-color: var(--admin-surface-2);
+  padding: 8px 10px;
+}
+.rich-editor-shell .ql-container.ql-snow {
+  border: 0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--admin-text);
+  background-color: var(--admin-surface);
+}
+.rich-editor-shell .ql-editor {
+  min-height: 140px;
+  color: var(--admin-text);
+  line-height: 1.8;
+  padding: 14px 16px;
+  direction: rtl;
+  text-align: right;
+}
+.rich-editor-shell .ql-editor p {
+  margin: 0 0 0.5em 0;
+}
+.rich-editor-shell .ql-editor.ql-blank::before {
+  color: var(--admin-text-subtle);
+  font-style: normal;
+  right: 16px;
+  left: auto;
+}
+.rich-editor-shell[data-toolbar="none"] .ql-toolbar.ql-snow {
+  display: none;
+}
+
+/* Quill toolbar buttons — invert icons for dark theme */
+.rich-editor-shell .ql-snow .ql-stroke {
+  stroke: var(--admin-text-muted);
+}
+.rich-editor-shell .ql-snow .ql-fill,
+.rich-editor-shell .ql-snow .ql-stroke.ql-fill {
+  fill: var(--admin-text-muted);
+}
+.rich-editor-shell .ql-snow .ql-picker {
+  color: var(--admin-text-muted);
+}
+.rich-editor-shell .ql-snow .ql-picker-options {
+  background-color: var(--admin-surface);
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+}
+.rich-editor-shell .ql-snow button:hover .ql-stroke,
+.rich-editor-shell .ql-snow button.ql-active .ql-stroke,
+.rich-editor-shell .ql-snow .ql-picker-label:hover .ql-stroke,
+.rich-editor-shell .ql-snow .ql-picker-label.ql-active .ql-stroke {
+  stroke: var(--admin-accent);
+}
+.rich-editor-shell .ql-snow button:hover .ql-fill,
+.rich-editor-shell .ql-snow button.ql-active .ql-fill {
+  fill: var(--admin-accent);
+}
+.rich-editor-shell .ql-snow button:hover,
+.rich-editor-shell .ql-snow button.ql-active,
+.rich-editor-shell .ql-snow .ql-picker-label:hover,
+.rich-editor-shell .ql-snow .ql-picker-label.ql-active {
+  color: var(--admin-accent);
+}
+.rich-editor-shell .ql-snow .ql-tooltip {
+  background-color: var(--admin-surface-2);
+  border-color: var(--admin-border);
+  color: var(--admin-text);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+}
+.rich-editor-shell .ql-snow .ql-tooltip input[type="text"] {
+  background-color: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+.rich-editor-shell .ql-snow .ql-tooltip a.ql-action::after,
+.rich-editor-shell .ql-snow .ql-tooltip a.ql-remove::before {
+  color: var(--admin-accent);
+}
+.rich-editor-shell .ql-snow a {
+  color: var(--admin-accent);
+}
+
+/* ========================================
+   Public-side rich-text rendering helpers
+   ======================================== */
+.rich-text p {
+  margin: 0 0 0.75em 0;
+}
+.rich-text p:last-child {
+  margin-bottom: 0;
+}
+.rich-text strong,
+.rich-text b {
+  font-weight: 700;
+}
+.rich-text em,
+.rich-text i {
+  font-style: italic;
+}
+.rich-text ul,
+.rich-text ol {
+  margin: 0 1.5em 0.75em 0;
+  padding-inline-start: 1.5em;
+}
+.rich-text ul {
+  list-style: disc;
+}
+.rich-text ol {
+  list-style: decimal;
+}
+.rich-text li {
+  margin-bottom: 0.25em;
+}
+.rich-text blockquote {
+  border-inline-start: 3px solid currentColor;
+  padding-inline-start: 1em;
+  opacity: 0.85;
+  margin: 0.5em 0;
+}
+.rich-text a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+

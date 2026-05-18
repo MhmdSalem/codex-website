@@ -27,7 +27,15 @@ async function isValidSession(token: string | undefined): Promise<boolean> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const host = (request.headers.get("host") ?? "").toLowerCase();
-  const isDashboardHost = host.startsWith(DASHBOARD_HOST_PREFIX);
+  const hostname = host.split(":")[0];
+  const isDevelopment = process.env.NODE_ENV !== "production";
+  // In development we also treat plain `localhost` / `127.0.0.1` as the
+  // dashboard host so devs can hit `http://localhost:3000/admin` directly
+  // without configuring `dashboard.localhost` in their hosts file.
+  const isDevLoopback =
+    isDevelopment && (hostname === "localhost" || hostname === "127.0.0.1");
+  const isDashboardHost =
+    host.startsWith(DASHBOARD_HOST_PREFIX) || isDevLoopback;
 
   // ── 1. Block admin pages from being served on the public domain ──────────
   // /admin and any of its subpaths must only ever appear on the dashboard
@@ -38,7 +46,13 @@ export async function middleware(request: NextRequest) {
   }
 
   // ── 2. On dashboard host, "/" should land directly on the admin app ──────
-  if (isDashboardHost && (pathname === "/" || pathname === "")) {
+  // Skipped on dev loopback so that `http://localhost:3000/` still serves the
+  // public site locally.
+  if (
+    isDashboardHost &&
+    !isDevLoopback &&
+    (pathname === "/" || pathname === "")
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";
     return NextResponse.redirect(url);
@@ -67,7 +81,8 @@ export async function middleware(request: NextRequest) {
   // ── 4. On the dashboard host, redirect any non-admin URL to the main site ─
   // This prevents the public locale-prefixed pages from being reachable via
   // the dashboard subdomain (cleaner SEO and fewer canonical conflicts).
-  if (isDashboardHost) {
+  // Skipped on dev loopback so the public site stays reachable on localhost.
+  if (isDashboardHost && !isDevLoopback) {
     const mainHost = host.replace(DASHBOARD_HOST_PREFIX, "");
     const url = request.nextUrl.clone();
     url.host = mainHost;

@@ -5,6 +5,7 @@ import { Mail, FileText, Phone } from "lucide-react";
 import { PageToolbar } from "../../_components/page-toolbar";
 import { SectionCard } from "../../_components/section-card";
 import { TextField } from "../../_components/field-editor";
+import { RichTextField } from "../../_components/rich-text-field";
 import { saveContentAndStyles } from "../../_actions/content-actions";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -114,14 +115,14 @@ export function ContactEditor({ locale, initialData, initialStyles }: Props) {
             styles={styleFor("contact.title")}
             onStyleChange={(s) => setStyle("contact.title", s)}
           />
-          <TextField
+          <RichTextField
             label="الوصف"
-            multiline
             path="contact.subtitle"
             value={data.contact.subtitle}
             onChange={(v) =>
               setData((d) => ({ ...d, contact: { ...d.contact, subtitle: v } }))
             }
+            toolbar="simple"
             styles={styleFor("contact.subtitle")}
             onStyleChange={(s) => setStyle("contact.subtitle", s)}
           />

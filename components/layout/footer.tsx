@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { SITE_CONFIG } from "@/lib/utils";
+import { htmlProps } from "@/components/content/rich-text";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -55,9 +56,10 @@ export function Footer({ locale, dict }: FooterProps) {
             <div className="inline-block mb-6">
               <Logo locale={locale} variant="large" />
             </div>
-            <p className="font-display text-display-md text-balance leading-[1.05]">
-              <span className="text-gradient-fade">{dict.footer.tagline}</span>
-            </p>
+            <p
+              className="rich-text font-display text-display-md text-balance leading-[1.05] text-gradient-fade"
+              {...htmlProps(dict.footer.tagline)}
+            />
             <div className="mt-8 flex justify-center">
               <Link
                 href={`/${locale}/contact`}
@@ -75,9 +77,10 @@ export function Footer({ locale, dict }: FooterProps) {
         <div className="py-14 grid grid-cols-1 md:grid-cols-12 gap-10">
           <div className="md:col-span-4 flex flex-col gap-5">
             <h4 className="text-label uppercase text-gold">Codex</h4>
-            <p className="text-sm text-foreground-muted leading-relaxed max-w-md">
-              {dict.about.paragraphs[0]}
-            </p>
+            <p
+              className="rich-text text-sm text-foreground-muted leading-relaxed max-w-md"
+              {...htmlProps(dict.about.paragraphs[0])}
+            />
             <div className="flex items-center gap-2 pt-2">
               {social.map(({ href, icon: Icon, label }) => (
                 <a

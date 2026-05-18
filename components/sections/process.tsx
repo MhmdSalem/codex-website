@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/section-label";
 import { Reveal } from "@/components/effects/reveal";
 import { cp } from "@/lib/content/cp";
+import { htmlProps } from "@/components/content/rich-text";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -26,9 +27,10 @@ export function Process({ dict }: { dict: Dictionary }) {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className={cn("mt-4 text-base sm:text-lg text-foreground-muted leading-relaxed", cp("process.subtitle"))}>
-              {t.subtitle}
-            </p>
+            <p
+              className={cn("rich-text mt-4 text-base sm:text-lg text-foreground-muted leading-relaxed", cp("process.subtitle"))}
+              {...htmlProps(t.subtitle)}
+            />
           </Reveal>
         </div>
 
@@ -59,9 +61,10 @@ export function Process({ dict }: { dict: Dictionary }) {
                 <h3 className={cn("font-display text-xl sm:text-2xl font-bold mb-3 text-foreground", cp(`process.steps.${i}.title`))}>
                   {step.title}
                 </h3>
-                <p className={cn("text-sm text-foreground-muted leading-relaxed", cp(`process.steps.${i}.description`))}>
-                  {step.description}
-                </p>
+                <p
+                  className={cn("rich-text text-sm text-foreground-muted leading-relaxed", cp(`process.steps.${i}.description`))}
+                  {...htmlProps(step.description)}
+                />
               </div>
             </motion.div>
           ))}
