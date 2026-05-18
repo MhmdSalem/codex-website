@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans_Arabic, Playfair_Display } from "next/font/google";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { CursorGlow } from "@/components/effects/cursor-glow";
+import { UnderConstruction } from "@/components/maintenance/under-construction";
 import { isValidLocale, locales, localeDirections, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { getContentStyles } from "@/lib/content/service";
+import { getSiteSettings } from "@/lib/settings/service";
 import { StylesInjector } from "@/components/content/styles-injector";
+
+const SESSION_COOKIE = "codex_session";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -74,6 +79,12 @@ export default async function LocaleLayout({
   const direction = localeDirections[locale];
   const dict = await getDictionary(locale);
   const styles = await getContentStyles(locale);
+  const settings = await getSiteSettings();
+
+  // Admins (anyone holding the session cookie) bypass maintenance so they
+  // can still preview the live site while it's hidden from the public.
+  const hasAdminSession = cookies().get(SESSION_COOKIE)?.value;
+  const showMaintenance = settings.maintenanceMode && !hasAdminSession;
 
   return (
     <html
@@ -84,11 +95,17 @@ export default async function LocaleLayout({
     >
       <body className="min-h-screen flex flex-col bg-background relative">
         <StylesInjector styles={styles} />
-        <CursorGlow />
-        <Navbar locale={locale} dict={dict} />
-        <main className="flex-1 relative z-10">{children}</main>
-        <Footer locale={locale} dict={dict} />
-        <MobileBottomNav locale={locale} dict={dict} />
+        {showMaintenance ? (
+          <UnderConstruction message={settings.maintenanceMessage} />
+        ) : (
+          <>
+            <CursorGlow />
+            <Navbar locale={locale} dict={dict} />
+            <main className="flex-1 relative z-10">{children}</main>
+            <Footer locale={locale} dict={dict} />
+            <MobileBottomNav locale={locale} dict={dict} />
+          </>
+        )}
       </body>
     </html>
   );

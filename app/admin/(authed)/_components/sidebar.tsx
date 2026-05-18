@@ -18,6 +18,7 @@ import {
   Palette,
   Globe,
   ChevronLeft,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -70,6 +71,7 @@ const groups: NavGroup[] = [
         icon: Users,
         superAdminOnly: true,
       },
+      { href: "/admin/settings", label: "الإعدادات", icon: SettingsIcon },
     ],
   },
 ];

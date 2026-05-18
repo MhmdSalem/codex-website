@@ -34,6 +34,7 @@ const PATH_LABELS: Record<string, string> = {
   messages: "الرسائل الواردة",
   users: "المستخدمون",
   content: "المحتوى",
+  settings: "الإعدادات",
 };
 
 export function Topbar({ user }: TopbarProps) {
@@ -172,6 +173,14 @@ export function Topbar({ user }: TopbarProps) {
                   >
                     <Settings className="w-4 h-4" />
                     <span>إعدادات التصميم</span>
+                  </Link>
+                  <Link
+                    href="/admin/settings"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-admin-muted hover:bg-admin-surface-2 hover:text-admin-text transition-colors"
+                  >
+                    <Settings className="w-4 h-4" />
+                    <span>إعدادات الموقع</span>
                   </Link>
                   <div className="my-1 mx-2 h-px bg-admin-border/60" />
                   <form action={logoutAction}>
