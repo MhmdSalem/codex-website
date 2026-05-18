@@ -181,3 +181,24 @@ export async function setContentField(
     { upsert: true, new: true },
   );
 }
+
+/**
+ * Wipes any DB customizations for a locale so the static dictionary
+ * (lib/i18n/dictionaries/<locale>.ts) becomes the source of truth again.
+ * Useful when the EN doc ends up with Arabic data (or vice-versa) and
+ * the operator just wants a clean slate.
+ */
+export async function resetLocaleContent(locale: Locale, updatedBy?: string) {
+  await connectToDatabase();
+  await ContentModel.findOneAndUpdate(
+    { locale },
+    {
+      $set: {
+        data: fallback[locale],
+        styles: {},
+        updatedBy: updatedBy ?? null,
+      },
+    },
+    { upsert: true, new: true },
+  );
+}

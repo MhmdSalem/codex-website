@@ -69,7 +69,7 @@ export function NavbarEditor({ locale, initialData, initialStyles }: Props) {
         }}
       />
 
-      <div className="space-y-4 max-w-3xl">
+      <div className="space-y-4 max-w-3xl mx-auto">
         <SectionCard title="روابط القائمة" icon={Navigation}>
           <TextField
             label="الرئيسية"

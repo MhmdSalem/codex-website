@@ -48,7 +48,7 @@ export function MetaEditor({ locale, initialData, initialStyles }: Props) {
         onReset={() => setData(initialData)}
       />
 
-      <div className="space-y-4 max-w-3xl">
+      <div className="space-y-4 max-w-3xl mx-auto">
         <SectionCard
           title="Meta Tags"
           subtitle="بيانات الـ SEO اللي بتظهر في محركات البحث ومنصات السوشيال"

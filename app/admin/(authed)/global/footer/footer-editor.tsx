@@ -66,7 +66,7 @@ export function FooterEditor({ locale, initialData, initialStyles }: Props) {
         }}
       />
 
-      <div className="space-y-4 max-w-3xl">
+      <div className="space-y-4 max-w-3xl mx-auto">
         <SectionCard title="نص الترويسة" icon={Footprints}>
           <RichTextField
             label="الشعار/الوصف القصير (Tagline)"

@@ -1,22 +1,24 @@
 :root {
-  /* Brighter, higher-contrast dark theme.
-     Each surface step is visibly lighter than the previous so cards
-     stand out clearly, and text colors hit at least WCAG AA on dark. */
-  --admin-bg: #14171f;          /* page background */
-  --admin-surface: #1f2330;     /* cards, sidebar, topbar */
-  --admin-surface-2: #2a2f3f;   /* nested elements, inputs */
-  --admin-surface-3: #353b4e;   /* hover states, focused inputs */
-  --admin-border: #3a4055;      /* visible borders */
-  --admin-border-strong: #4d5470;
-  --admin-text: #f5f6fa;        /* primary text — near white */
-  --admin-text-muted: #c2c8d8;  /* secondary text — clearly readable */
-  --admin-text-subtle: #9098ad; /* hints, captions — still readable */
-  --admin-accent: #ec8b6c;      /* slightly brighter orange */
-  --admin-accent-hover: #f0a385;
-  --admin-accent-soft: rgba(236, 139, 108, 0.16);
-  --admin-success: #4ade80;
+  /* Warm-tinted slate palette — significantly higher contrast than before
+     so labels, inputs and helper text are all easy to read.
+     Backgrounds are dark but not pitch-black; surfaces step up cleanly. */
+  --admin-bg: #1a1a24;
+  --admin-surface: #232331;
+  --admin-surface-2: #2d2d3e;
+  --admin-surface-3: #3a3a4f;
+  --admin-border: #3a3a4f;
+  --admin-border-strong: #525269;
+  --admin-text: #ffffff;
+  --admin-text-muted: #d4d2cc;
+  --admin-text-subtle: #a09ea8;
+  --admin-accent: #e8895f;
+  --admin-accent-hover: #f09a73;
+  --admin-accent-soft: rgba(232, 137, 95, 0.14);
+  --admin-accent-ring: rgba(232, 137, 95, 0.35);
+  --admin-success: #34d399;
   --admin-danger: #f87171;
   --admin-warning: #fbbf24;
+  --admin-info: #60a5fa;
 }
 
 .bg-admin-bg { background-color: var(--admin-bg); }
@@ -32,23 +34,32 @@
 .bg-admin-accent { background-color: var(--admin-accent); }
 .bg-admin-accent-soft { background-color: var(--admin-accent-soft); }
 
+/* Selection color matches the accent for a tactile editing feel */
+.bg-admin-bg ::selection,
+.bg-admin-surface ::selection {
+  background: var(--admin-accent-soft);
+  color: var(--admin-text);
+}
+
 .admin-input {
-  @apply w-full rounded-lg px-4 py-2.5 transition-colors;
+  @apply w-full rounded-lg px-4 py-2.5 transition-all;
   background-color: var(--admin-surface-2);
   color: var(--admin-text);
   border: 1px solid var(--admin-border);
   outline: none;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset;
 }
 .admin-input::placeholder {
   color: var(--admin-text-subtle);
 }
-.admin-input:hover {
+.admin-input:hover:not(:disabled) {
   border-color: var(--admin-border-strong);
 }
 .admin-input:focus {
   border-color: var(--admin-accent);
-  background-color: var(--admin-surface-3);
-  box-shadow: 0 0 0 3px var(--admin-accent-soft);
+  box-shadow:
+    0 0 0 3px var(--admin-accent-ring),
+    0 1px 0 rgba(255, 255, 255, 0.02) inset;
 }
 .admin-input:disabled {
   opacity: 0.5;
@@ -76,24 +87,25 @@ textarea.admin-input {
 }
 
 .admin-btn-primary {
-  background: linear-gradient(135deg, var(--admin-accent) 0%, #d97757 100%);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(236, 139, 108, 0.25);
+  background-color: var(--admin-accent);
+  color: #1a1a24;
+  font-weight: 600;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 2px 8px rgba(232, 137, 95, 0.2);
 }
 .admin-btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--admin-accent-hover) 0%, var(--admin-accent) 100%);
-  box-shadow: 0 6px 16px rgba(236, 139, 108, 0.35);
-  transform: translateY(-1px);
+  background-color: var(--admin-accent-hover);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 4px 12px rgba(232, 137, 95, 0.3);
 }
 
 .admin-btn-secondary {
   background-color: var(--admin-surface-2);
   color: var(--admin-text);
-  border: 1px solid var(--admin-border);
+  border: 1px solid var(--admin-border-strong);
 }
 .admin-btn-secondary:hover:not(:disabled) {
   background-color: var(--admin-surface-3);
-  border-color: var(--admin-border-strong);
+  border-color: var(--admin-accent);
+  color: var(--admin-accent);
 }
 
 .admin-btn-ghost {
@@ -118,8 +130,9 @@ textarea.admin-input {
   background-color: var(--admin-surface);
   border: 1px solid var(--admin-border);
   border-radius: 0.875rem;
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
-    0 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.02) inset,
+    0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .admin-sidebar {
@@ -128,14 +141,21 @@ textarea.admin-input {
   background-image:
     radial-gradient(
       at 90% 0%,
-      rgba(236, 139, 108, 0.08) 0%,
+      rgba(232, 137, 95, 0.08) 0%,
       transparent 50%
     ),
     linear-gradient(
       180deg,
-      rgba(236, 139, 108, 0.04) 0%,
+      rgba(232, 137, 95, 0.03) 0%,
       transparent 30%
     );
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.02) inset;
+}
+
+.admin-label {
+  @apply block text-sm font-semibold mb-2;
+  color: var(--admin-text);
+  letter-spacing: 0.01em;
 }
 
 .admin-scrollbar::-webkit-scrollbar {
@@ -152,10 +172,6 @@ textarea.admin-input {
   background-color: var(--admin-border-strong);
 }
 
-.admin-label {
-  @apply block text-sm font-medium mb-1.5;
-  color: var(--admin-text-muted);
-}
 
 /* ========================================
    Rich Text Editor (Quill) — Dark Theme
@@ -163,18 +179,19 @@ textarea.admin-input {
 .rich-editor-shell {
   border-radius: 0.625rem;
   border: 1px solid var(--admin-border);
-  background-color: var(--admin-surface);
+  background-color: var(--admin-surface-2);
   overflow: hidden;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .rich-editor-shell:focus-within {
   border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px var(--admin-accent-ring);
 }
 
 .rich-editor-shell .ql-toolbar.ql-snow {
   border: 0;
   border-bottom: 1px solid var(--admin-border);
-  background-color: var(--admin-surface-2);
+  background-color: var(--admin-surface-3);
   padding: 8px 10px;
 }
 .rich-editor-shell .ql-container.ql-snow {
@@ -182,7 +199,7 @@ textarea.admin-input {
   font-family: inherit;
   font-size: 0.95rem;
   color: var(--admin-text);
-  background-color: var(--admin-surface);
+  background-color: var(--admin-surface-2);
 }
 .rich-editor-shell .ql-editor {
   min-height: 140px;
@@ -207,14 +224,14 @@ textarea.admin-input {
 
 /* Quill toolbar buttons — invert icons for dark theme */
 .rich-editor-shell .ql-snow .ql-stroke {
-  stroke: var(--admin-text-muted);
+  stroke: var(--admin-text);
 }
 .rich-editor-shell .ql-snow .ql-fill,
 .rich-editor-shell .ql-snow .ql-stroke.ql-fill {
-  fill: var(--admin-text-muted);
+  fill: var(--admin-text);
 }
 .rich-editor-shell .ql-snow .ql-picker {
-  color: var(--admin-text-muted);
+  color: var(--admin-text);
 }
 .rich-editor-shell .ql-snow .ql-picker-options {
   background-color: var(--admin-surface);

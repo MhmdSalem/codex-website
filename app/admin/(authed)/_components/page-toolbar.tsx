@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { useState, useEffect, useTransition } from "react";
-import { resetLocaleToDefaults } from "../_actions/content-actions";
+import { resetLocaleToDefaultsAction } from "../_actions/content-actions";
 
 type Props = {
   title: string;
@@ -40,7 +40,7 @@ export function PageToolbar({
 }: Props) {
   const otherLocale = locale === "ar" ? "en" : "ar";
   const [savedFlash, setSavedFlash] = useState(false);
-  const [restoring, startRestoreTransition] = useTransition();
+  const [resetting, startResetTransition] = useTransition();
 
   useEffect(() => {
     if (!isSaving && savedFlash) {
@@ -49,22 +49,21 @@ export function PageToolbar({
     }
   }, [isSaving, savedFlash]);
 
-  function handleRestoreDefaults() {
-    const langLabel = locale === "ar" ? "العربي" : "الإنجليزي";
-    const confirmed = window.confirm(
-      `هل أنت متأكد من استعادة المحتوى ${langLabel} الافتراضي؟\n\n` +
-        `هذا سيستبدل كل المحتوى الحالي بالنسخة المضمنة في الكود ` +
-        `(lib/i18n/dictionaries/${locale}.ts) ويمسح كل تعديلات الستايلات ` +
-        `لهذه اللغة.\n\nالمحتوى باللغة الأخرى لن يتأثر.`,
+  function handleResetLocale() {
+    const langName = locale === "ar" ? "العربية" : "الإنجليزية";
+    const ok = window.confirm(
+      `هل تريد إعادة تعيين كل محتوى اللغة ${langName} للقيم الافتراضية؟\n\n` +
+        "هذا سيمسح كل التعديلات المحفوظة في هذه اللغة ويعيد النصوص الأصلية.\n" +
+        "هذا الإجراء لا يمكن التراجع عنه.",
     );
-    if (!confirmed) return;
-    startRestoreTransition(async () => {
+    if (!ok) return;
+    startResetTransition(async () => {
       try {
-        await resetLocaleToDefaults(locale);
+        await resetLocaleToDefaultsAction(locale);
         location.reload();
       } catch (e) {
         console.error(e);
-        alert("فشلت العملية. حاول مرة أخرى.");
+        alert("فشل إعادة التعيين.");
       }
     });
   }
@@ -128,23 +127,6 @@ export function PageToolbar({
             </a>
           )}
 
-          <button
-            type="button"
-            onClick={handleRestoreDefaults}
-            disabled={restoring || isSaving}
-            className="admin-btn-ghost text-xs disabled:opacity-50"
-            title={`استعادة المحتوى الافتراضي لهذه اللغة (${locale === "ar" ? "العربية" : "الإنجليزية"})`}
-          >
-            {restoring ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <RefreshCw className="w-4 h-4" />
-            )}
-            <span className="hidden sm:inline">
-              {restoring ? "جارٍ الاستعادة..." : "استعادة الافتراضي"}
-            </span>
-          </button>
-
           {isDirty && !isSaving && (
             <button
               type="button"
@@ -156,6 +138,23 @@ export function PageToolbar({
               <span className="hidden sm:inline">تراجع</span>
             </button>
           )}
+
+          <button
+            type="button"
+            onClick={handleResetLocale}
+            disabled={resetting}
+            className="admin-btn-ghost text-xs text-yellow-400 hover:text-yellow-300"
+            title={`إعادة تعيين كل محتوى ${locale === "ar" ? "العربي" : "الإنجليزي"} للقيم الافتراضية`}
+          >
+            {resetting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <RefreshCw className="w-4 h-4" />
+            )}
+            <span className="hidden sm:inline">
+              {resetting ? "جارٍ التصفير..." : "تصفير اللغة"}
+            </span>
+          </button>
 
           <button
             type="button"
