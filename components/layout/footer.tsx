@@ -23,6 +23,7 @@ type FooterProps = {
 
 export function Footer({ locale, dict }: FooterProps) {
   const year = new Date().getFullYear();
+  const info = dict.contact.info;
 
   const navLinks = [
     { href: `/${locale}`, label: dict.footer.nav.home },
@@ -134,26 +135,26 @@ export function Footer({ locale, dict }: FooterProps) {
             <ul className="flex flex-col gap-3 text-sm">
               <li>
                 <a
-                  href={`mailto:${SITE_CONFIG.email}`}
+                  href={`mailto:${info.email}`}
                   className="inline-flex items-center gap-2 text-foreground-muted hover:text-gold transition-colors"
                 >
                   <Mail className="w-4 h-4" aria-hidden="true" />
-                  {SITE_CONFIG.email}
+                  {info.email}
                 </a>
               </li>
               <li>
                 <a
-                  href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
+                  href={`tel:${info.phone.replace(/\s/g, "")}`}
                   className="inline-flex items-center gap-2 text-foreground-muted hover:text-gold transition-colors"
                   dir="ltr"
                 >
                   <Phone className="w-4 h-4" aria-hidden="true" />
-                  {SITE_CONFIG.phone}
+                  {info.phone}
                 </a>
               </li>
               <li>
                 <a
-                  href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
+                  href={`https://wa.me/${info.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-foreground-muted hover:text-gold transition-colors"
@@ -164,7 +165,7 @@ export function Footer({ locale, dict }: FooterProps) {
               </li>
               <li className="inline-flex items-center gap-2 text-foreground-muted">
                 <MapPin className="w-4 h-4" aria-hidden="true" />
-                {SITE_CONFIG.location[locale]}
+                {dict.contact.direct.locationValue}
               </li>
             </ul>
           </div>

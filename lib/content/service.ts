@@ -9,15 +9,49 @@ import type { ContentStyles, StyleOverride } from "@/lib/content/style-types";
 const fallback: Record<Locale, Dictionary> = { ar, en };
 
 /**
+ * Deep-merges the static fallback with the value stored in the DB.
+ * DB values always win for keys they define; missing keys (e.g. newly added
+ * fields in the dictionary) are filled in from the static fallback so the
+ * site never breaks when we add new content paths.
+ */
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value) &&
+    Object.getPrototypeOf(value) === Object.prototype
+  );
+}
+
+function deepMerge<T>(base: T, override: unknown): T {
+  if (!isPlainObject(base) || !isPlainObject(override)) {
+    return (override === undefined ? base : (override as T));
+  }
+  const result: Record<string, unknown> = { ...base };
+  for (const key of Object.keys(override)) {
+    const baseVal = (base as Record<string, unknown>)[key];
+    const overrideVal = (override as Record<string, unknown>)[key];
+    if (isPlainObject(baseVal) && isPlainObject(overrideVal)) {
+      result[key] = deepMerge(baseVal, overrideVal);
+    } else {
+      result[key] = overrideVal;
+    }
+  }
+  return result as T;
+}
+
+/**
  * Fetches the (live) dictionary for a locale from MongoDB.
  * Falls back to the static dictionary if the DB has no document yet.
+ * New keys added to the static dictionary always appear, even when the DB
+ * document was saved before those keys existed.
  */
 export async function getContent(locale: Locale): Promise<Dictionary> {
   try {
     await connectToDatabase();
     const doc = await ContentModel.findOne({ locale }).lean();
     if (doc?.data) {
-      return doc.data as Dictionary;
+      return deepMerge(fallback[locale], doc.data);
     }
   } catch (err) {
     console.error("[content] failed to fetch from DB, using fallback:", err);
@@ -36,7 +70,7 @@ export async function getContentBundle(
     const doc = await ContentModel.findOne({ locale }).lean();
     if (doc?.data) {
       return {
-        data: doc.data as Dictionary,
+        data: deepMerge(fallback[locale], doc.data),
         styles: (doc.styles as ContentStyles) ?? {},
       };
     }

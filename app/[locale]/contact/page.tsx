@@ -4,7 +4,6 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { ContactForm } from "@/components/sections/contact-form";
 import { Reveal } from "@/components/effects/reveal";
 import { RichText } from "@/components/content/rich-text";
-import { SITE_CONFIG } from "@/lib/utils";
 import { isValidLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 
@@ -13,27 +12,28 @@ export default async function ContactPage({ params }: { params: { locale: string
   const locale = params.locale as Locale;
   const dict = await getDictionary(locale);
   const t = dict.contact;
+  const info = t.info;
 
   const directLinks = [
     {
       icon: Mail,
       label: t.direct.email,
-      value: SITE_CONFIG.email,
-      href: `mailto:${SITE_CONFIG.email}`,
+      value: info.email,
+      href: `mailto:${info.email}`,
       dir: "ltr" as const,
     },
     {
       icon: Phone,
       label: t.direct.phone,
-      value: SITE_CONFIG.phone,
-      href: `tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`,
+      value: info.phone,
+      href: `tel:${info.phone.replace(/\s/g, "")}`,
       dir: "ltr" as const,
     },
     {
       icon: MessageCircle,
       label: t.direct.whatsapp,
-      value: SITE_CONFIG.phone,
-      href: `https://wa.me/${SITE_CONFIG.whatsapp}`,
+      value: info.phone,
+      href: `https://wa.me/${info.whatsapp}`,
       dir: "ltr" as const,
     },
     {

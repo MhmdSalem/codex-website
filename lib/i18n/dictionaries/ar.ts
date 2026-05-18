@@ -332,6 +332,11 @@ export const ar = {
       location: "الموقع",
       locationValue: "القاهرة، مصر",
     },
+    info: {
+      email: "hello@codex-tech.com",
+      phone: "+20 100 000 0000",
+      whatsapp: "201000000000",
+    },
   },
   footer: {
     tagline: "حلول برمجية ذكية بالاشتراك الشهري — مصممة لتوفّر وقتك وتنمّي أعمالك.",

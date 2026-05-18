@@ -334,6 +334,11 @@ export const en: Dictionary = {
       location: "Location",
       locationValue: "Cairo, Egypt",
     },
+    info: {
+      email: "hello@codex-tech.com",
+      phone: "+20 100 000 0000",
+      whatsapp: "201000000000",
+    },
   },
   footer: {
     tagline: "Smart software solutions on monthly subscription — built to save your time and grow your business.",

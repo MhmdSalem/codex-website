@@ -171,6 +171,11 @@ export const FIELD_LABELS: Record<string, string> = {
   "contact.direct.location": "تسمية: الموقع",
   "contact.direct.locationValue": "نص الموقع",
 
+  "contact.info": "بيانات التواصل الفعلية",
+  "contact.info.email": "البريد الإلكتروني",
+  "contact.info.phone": "رقم التليفون",
+  "contact.info.whatsapp": "رقم واتساب",
+
   // Footer
   "footer": "الفوتر",
   "footer.tagline": "العبارة التعريفية",

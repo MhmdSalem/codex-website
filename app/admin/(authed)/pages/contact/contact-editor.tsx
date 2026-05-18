@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition, useMemo, useCallback } from "react";
-import { Mail, FileText, Phone } from "lucide-react";
+import { Mail, FileText, Phone, AtSign } from "lucide-react";
 import { PageToolbar } from "../../_components/page-toolbar";
 import { SectionCard } from "../../_components/section-card";
 import { TextField } from "../../_components/field-editor";
@@ -261,6 +261,63 @@ export function ContactEditor({ locale, initialData, initialStyles }: Props) {
               />
             </div>
           </div>
+        </SectionCard>
+
+        <SectionCard
+          title="بيانات التواصل الفعلية"
+          subtitle="القيم اللي بتظهر للزائر في الفوتر وصفحة تواصل معنا (إيميل، تليفون، واتساب)"
+          icon={AtSign}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <TextField
+              label="البريد الإلكتروني"
+              path="contact.info.email"
+              value={data.contact.info.email}
+              onChange={(v) =>
+                setData((d) => ({
+                  ...d,
+                  contact: {
+                    ...d.contact,
+                    info: { ...d.contact.info, email: v },
+                  },
+                }))
+              }
+            />
+            <TextField
+              label="رقم التليفون (مع كود الدولة)"
+              path="contact.info.phone"
+              value={data.contact.info.phone}
+              onChange={(v) =>
+                setData((d) => ({
+                  ...d,
+                  contact: {
+                    ...d.contact,
+                    info: { ...d.contact.info, phone: v },
+                  },
+                }))
+              }
+            />
+            <TextField
+              label="رقم واتساب (أرقام فقط، بدون + أو مسافات)"
+              path="contact.info.whatsapp"
+              value={data.contact.info.whatsapp}
+              onChange={(v) =>
+                setData((d) => ({
+                  ...d,
+                  contact: {
+                    ...d.contact,
+                    info: { ...d.contact.info, whatsapp: v },
+                  },
+                }))
+              }
+            />
+          </div>
+          <p className="text-xs text-admin-muted mt-3 leading-relaxed">
+            ملاحظات:
+            <br />• <strong>الإيميل</strong>: اللي هيتفتح في تطبيق البريد لما الزائر يدوس عليه.
+            <br />• <strong>التليفون</strong>: زي <code dir="ltr">+20 100 000 0000</code>؛ بنشيل المسافات تلقائياً قبل ما نعمل tel: link.
+            <br />• <strong>واتساب</strong>: مثلاً <code dir="ltr">201000000000</code> (مصر = 20 + الرقم بدون الصفر).
+          </p>
         </SectionCard>
 
         <SectionCard title="التواصل المباشر" icon={Phone}>
