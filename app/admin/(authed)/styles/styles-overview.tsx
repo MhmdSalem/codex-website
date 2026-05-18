@@ -107,7 +107,7 @@ export function StylesOverview({ locale, initialStyles }: Props) {
         onReset={() => setStyles(initialStyles)}
       />
 
-      <div className="space-y-4 max-w-4xl">
+      <div className="space-y-4 max-w-4xl mx-auto">
         <div className="admin-card p-5 flex items-start gap-3">
           <div className="w-10 h-10 rounded-lg bg-admin-accent-soft text-admin-accent grid place-items-center shrink-0">
             <Palette className="w-5 h-5" />

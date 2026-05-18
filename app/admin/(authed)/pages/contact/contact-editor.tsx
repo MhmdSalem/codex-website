@@ -90,7 +90,7 @@ export function ContactEditor({ locale, initialData, initialStyles }: Props) {
         }}
       />
 
-      <div className="space-y-4 max-w-4xl">
+      <div className="space-y-4 max-w-4xl mx-auto">
         <SectionCard title="رأس الصفحة" icon={Mail}>
           <TextField
             label="عنوان القسم"

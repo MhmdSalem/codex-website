@@ -24,7 +24,7 @@ export default async function UsersPage() {
   }));
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-4xl mx-auto">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-admin-text">
           المستخدمون

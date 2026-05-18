@@ -89,7 +89,7 @@ export function HomeEditor({ locale, initialData, initialStyles }: Props) {
         onReset={handleReset}
       />
 
-      <div className="space-y-4 max-w-4xl">
+      <div className="space-y-4 max-w-4xl mx-auto">
         {/* Hero Section */}
         <SectionCard
           title="القسم الأول — Hero"

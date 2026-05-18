@@ -78,7 +78,7 @@ export function ServicesEditor({ locale, initialData, initialStyles }: Props) {
         }}
       />
 
-      <div className="space-y-4 max-w-4xl">
+      <div className="space-y-4 max-w-4xl mx-auto">
         <SectionCard title="رأس الصفحة" icon={Briefcase}>
           <TextField
             label="عنوان القسم"

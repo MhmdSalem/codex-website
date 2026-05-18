@@ -1,22 +1,28 @@
 :root {
-  --admin-bg: #0b0b10;
-  --admin-surface: #14141c;
-  --admin-surface-2: #1c1c26;
-  --admin-border: #262633;
-  --admin-border-strong: #34344a;
-  --admin-text: #e8e6df;
-  --admin-text-muted: #9b9aa6;
-  --admin-text-subtle: #6e6d7a;
-  --admin-accent: #d97757;
-  --admin-accent-soft: rgba(217, 119, 87, 0.12);
-  --admin-success: #22c55e;
-  --admin-danger: #ef4444;
-  --admin-warning: #eab308;
+  /* Brighter, higher-contrast dark theme.
+     Each surface step is visibly lighter than the previous so cards
+     stand out clearly, and text colors hit at least WCAG AA on dark. */
+  --admin-bg: #14171f;          /* page background */
+  --admin-surface: #1f2330;     /* cards, sidebar, topbar */
+  --admin-surface-2: #2a2f3f;   /* nested elements, inputs */
+  --admin-surface-3: #353b4e;   /* hover states, focused inputs */
+  --admin-border: #3a4055;      /* visible borders */
+  --admin-border-strong: #4d5470;
+  --admin-text: #f5f6fa;        /* primary text — near white */
+  --admin-text-muted: #c2c8d8;  /* secondary text — clearly readable */
+  --admin-text-subtle: #9098ad; /* hints, captions — still readable */
+  --admin-accent: #ec8b6c;      /* slightly brighter orange */
+  --admin-accent-hover: #f0a385;
+  --admin-accent-soft: rgba(236, 139, 108, 0.16);
+  --admin-success: #4ade80;
+  --admin-danger: #f87171;
+  --admin-warning: #fbbf24;
 }
 
 .bg-admin-bg { background-color: var(--admin-bg); }
 .bg-admin-surface { background-color: var(--admin-surface); }
 .bg-admin-surface-2 { background-color: var(--admin-surface-2); }
+.bg-admin-surface-3 { background-color: var(--admin-surface-3); }
 .text-admin-text { color: var(--admin-text); }
 .text-admin-muted { color: var(--admin-text-muted); }
 .text-admin-subtle { color: var(--admin-text-subtle); }
@@ -28,7 +34,7 @@
 
 .admin-input {
   @apply w-full rounded-lg px-4 py-2.5 transition-colors;
-  background-color: var(--admin-surface);
+  background-color: var(--admin-surface-2);
   color: var(--admin-text);
   border: 1px solid var(--admin-border);
   outline: none;
@@ -36,8 +42,13 @@
 .admin-input::placeholder {
   color: var(--admin-text-subtle);
 }
+.admin-input:hover {
+  border-color: var(--admin-border-strong);
+}
 .admin-input:focus {
   border-color: var(--admin-accent);
+  background-color: var(--admin-surface-3);
+  box-shadow: 0 0 0 3px var(--admin-accent-soft);
 }
 .admin-input:disabled {
   opacity: 0.5;
@@ -65,19 +76,23 @@ textarea.admin-input {
 }
 
 .admin-btn-primary {
-  background-color: var(--admin-accent);
+  background: linear-gradient(135deg, var(--admin-accent) 0%, #d97757 100%);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(236, 139, 108, 0.25);
 }
 .admin-btn-primary:hover:not(:disabled) {
-  opacity: 0.9;
+  background: linear-gradient(135deg, var(--admin-accent-hover) 0%, var(--admin-accent) 100%);
+  box-shadow: 0 6px 16px rgba(236, 139, 108, 0.35);
+  transform: translateY(-1px);
 }
 
 .admin-btn-secondary {
-  background-color: var(--admin-surface);
+  background-color: var(--admin-surface-2);
   color: var(--admin-text);
   border: 1px solid var(--admin-border);
 }
 .admin-btn-secondary:hover:not(:disabled) {
+  background-color: var(--admin-surface-3);
   border-color: var(--admin-border-strong);
 }
 
@@ -86,7 +101,7 @@ textarea.admin-input {
   color: var(--admin-text-muted);
 }
 .admin-btn-ghost:hover:not(:disabled) {
-  background-color: var(--admin-surface);
+  background-color: var(--admin-surface-2);
   color: var(--admin-text);
 }
 
@@ -102,7 +117,9 @@ textarea.admin-input {
 .admin-card {
   background-color: var(--admin-surface);
   border: 1px solid var(--admin-border);
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .admin-sidebar {
@@ -111,12 +128,12 @@ textarea.admin-input {
   background-image:
     radial-gradient(
       at 90% 0%,
-      rgba(217, 119, 87, 0.05) 0%,
+      rgba(236, 139, 108, 0.08) 0%,
       transparent 50%
     ),
     linear-gradient(
       180deg,
-      rgba(217, 119, 87, 0.02) 0%,
+      rgba(236, 139, 108, 0.04) 0%,
       transparent 30%
     );
 }

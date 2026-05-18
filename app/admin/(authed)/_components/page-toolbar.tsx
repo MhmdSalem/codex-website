@@ -9,9 +9,11 @@ import {
   Check,
   AlertTriangle,
   RotateCcw,
+  RefreshCw,
 } from "lucide-react";
 import clsx from "clsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
+import { resetLocaleToDefaults } from "../_actions/content-actions";
 
 type Props = {
   title: string;
@@ -38,6 +40,7 @@ export function PageToolbar({
 }: Props) {
   const otherLocale = locale === "ar" ? "en" : "ar";
   const [savedFlash, setSavedFlash] = useState(false);
+  const [restoring, startRestoreTransition] = useTransition();
 
   useEffect(() => {
     if (!isSaving && savedFlash) {
@@ -46,9 +49,29 @@ export function PageToolbar({
     }
   }, [isSaving, savedFlash]);
 
+  function handleRestoreDefaults() {
+    const langLabel = locale === "ar" ? "العربي" : "الإنجليزي";
+    const confirmed = window.confirm(
+      `هل أنت متأكد من استعادة المحتوى ${langLabel} الافتراضي؟\n\n` +
+        `هذا سيستبدل كل المحتوى الحالي بالنسخة المضمنة في الكود ` +
+        `(lib/i18n/dictionaries/${locale}.ts) ويمسح كل تعديلات الستايلات ` +
+        `لهذه اللغة.\n\nالمحتوى باللغة الأخرى لن يتأثر.`,
+    );
+    if (!confirmed) return;
+    startRestoreTransition(async () => {
+      try {
+        await resetLocaleToDefaults(locale);
+        location.reload();
+      } catch (e) {
+        console.error(e);
+        alert("فشلت العملية. حاول مرة أخرى.");
+      }
+    });
+  }
+
   return (
     <div className="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 bg-admin-bg/90 backdrop-blur-xl border-b border-admin-border/60 mb-6 shadow-sm">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div className="max-w-4xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div className="min-w-0 flex items-center gap-3">
           {/* Live status pill */}
           <div
@@ -105,6 +128,23 @@ export function PageToolbar({
             </a>
           )}
 
+          <button
+            type="button"
+            onClick={handleRestoreDefaults}
+            disabled={restoring || isSaving}
+            className="admin-btn-ghost text-xs disabled:opacity-50"
+            title={`استعادة المحتوى الافتراضي لهذه اللغة (${locale === "ar" ? "العربية" : "الإنجليزية"})`}
+          >
+            {restoring ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <RefreshCw className="w-4 h-4" />
+            )}
+            <span className="hidden sm:inline">
+              {restoring ? "جارٍ الاستعادة..." : "استعادة الافتراضي"}
+            </span>
+          </button>
+
           {isDirty && !isSaving && (
             <button
               type="button"
@@ -150,7 +190,7 @@ export function PageToolbar({
       </div>
 
       {isDirty && (
-        <div className="mt-3 flex items-center gap-2 text-xs text-yellow-400">
+        <div className="max-w-4xl mx-auto mt-3 flex items-center gap-2 text-xs text-yellow-400">
           <AlertTriangle className="w-3.5 h-3.5" />
           <span>عندك تعديلات لم تُحفظ بعد — اضغط حفظ التغييرات</span>
         </div>
