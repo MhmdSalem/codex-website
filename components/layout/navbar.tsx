@@ -94,7 +94,7 @@ export function Navbar({ locale, dict }: NavbarProps) {
           </nav>
 
           <div className="flex items-center gap-2">
-            <LanguageSwitcher currentLocale={locale} className="hidden sm:inline-flex" />
+            <LanguageSwitcher currentLocale={locale} />
             <Button
               href={`/${locale}/contact`}
               size="sm"
