@@ -43,3 +43,5 @@ jobs:
           script: |
             cd ~/codex-website
             bash deploy/deploy.sh
+            sed -i 's/^SEED_ADMIN_PASSWORD=.*/SEED_ADMIN_PASSWORD=Salem@@123/' .env.local
+            npm run reset-admin-password
