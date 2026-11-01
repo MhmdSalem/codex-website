@@ -34,7 +34,6 @@ export const primaryNavigation: readonly RouteKey[] = [
   "about",
   "services",
   "products",
-  "pricing",
   "contact",
 ] as const;
 
@@ -46,16 +45,15 @@ export const primaryNavigation: readonly RouteKey[] = [
   than a missing entry does. It is excluded from the sitemap too, which is built
   from the list above. Add it back the day it has something to show.
 
-  Pricing used to sit here for the same reason and no longer does: the page now
-  names a starting figure for every service, which makes it a destination rather
-  than a conversation.
+  Pricing is gone from the site: prices are quoted in a conversation, and
+  /pricing redirects to Contact.
 
   Checkout is reached from "اطلب الآن" on a product, not from the menu. A payment
   step in the header reads as a shop, and this one does not take payment yet.
 */
 
 /** Paths that must not appear in chrome even if the CMS still lists them. */
-export const retiredPaths = new Set<string>([routes.work]);
+export const retiredPaths = new Set<string>([routes.work, routes.pricing]);
 
 export function isRetiredPath(href: string): boolean {
   const path = href.split("#")[0] ?? href;

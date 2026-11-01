@@ -50,7 +50,12 @@ export async function Footer({ locale }: { locale: Locale }) {
     <footer
       data-site-chrome
       data-prologue-inert
-      className={cn(styles.footer, "relative z-[var(--z-raised)] pb-16 lg:pb-0")}
+      // Below lg the tab bar (3.75rem plus the phone's home-indicator inset)
+      // covers the bottom of the screen, so the footer ends above it.
+      className={cn(
+        styles.footer,
+        "relative z-[var(--z-raised)] pb-[calc(4.75rem+env(safe-area-inset-bottom,0px))] lg:pb-0",
+      )}
     >
       <Container className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-5">
         <Link href={routes.home} aria-label={siteName} className="inline-flex shrink-0">

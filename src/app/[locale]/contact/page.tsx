@@ -68,7 +68,7 @@ export default async function ContactPage({ params }: PageProps) {
       <Reveal>
         <Section spacing="flush" label={t("form.label")}>
           <Container>
-            <div className={styles.module} style={{ gridTemplateColumns: "1.3fr 0.7fr" }}>
+            <div className={cn(styles.module, styles.contactGrid)}>
               <div data-reveal>
                 <Window title={t("replTitle")} status="● ready">
                   <div className={styles.repl}>

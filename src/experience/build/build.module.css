@@ -1084,6 +1084,13 @@
   min-width: 0;
 }
 
+/* Contact: the form wider than the channels beside it, from laptops up. */
+@media (min-width: 64rem) {
+  .contactGrid {
+    grid-template-columns: 1.3fr 0.7fr;
+  }
+}
+
 .moduleGlyph {
   width: 56px;
   height: 56px;
