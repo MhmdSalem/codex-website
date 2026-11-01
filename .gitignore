@@ -47,3 +47,6 @@ next-env.d.ts
 
 # intermediate masks from scripts/trace-logo.mjs, only present mid-run
 /scripts/.mask-*.png
+
+# deploy archives
+/*.zip
