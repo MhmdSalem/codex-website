@@ -4,6 +4,7 @@ import { aboutPage } from "./documents/aboutPage";
 import { contactPage } from "./documents/contactPage";
 import { homepage } from "./documents/homepage";
 import { legalPage } from "./documents/legalPage";
+import { pricingPage } from "./documents/pricingPage";
 import { product } from "./documents/product";
 import { project } from "./documents/project";
 import { service } from "./documents/service";
@@ -26,6 +27,7 @@ export const singletonDocumentTypes = [
   "homepage",
   "aboutPage",
   "contactPage",
+  "pricingPage",
 ] as const;
 
 export type SingletonDocumentType = (typeof singletonDocumentTypes)[number];
@@ -38,6 +40,7 @@ export const documentTypes: SchemaTypeDefinition[] = [
   service,
   aboutPage,
   contactPage,
+  pricingPage,
   legalPage,
 ];
 

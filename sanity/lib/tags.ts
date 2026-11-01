@@ -9,6 +9,7 @@ export const cacheTags = {
   homepage: "homepage",
   aboutPage: "aboutPage",
   contactPage: "contactPage",
+  pricingPage: "pricingPage",
   products: "products",
   projects: "projects",
   services: "services",
@@ -32,6 +33,7 @@ export function tagsForDocumentType(type: string, slug?: string): string[] {
         cacheTags.services,
         cacheTags.aboutPage,
         cacheTags.contactPage,
+        cacheTags.pricingPage,
         cacheTags.legalPages,
       ];
     case "homepage":
@@ -40,6 +42,8 @@ export function tagsForDocumentType(type: string, slug?: string): string[] {
       return [cacheTags.aboutPage];
     case "contactPage":
       return [cacheTags.contactPage];
+    case "pricingPage":
+      return [cacheTags.pricingPage];
     case "product":
       return slug
         ? [cacheTags.products, cacheTags.homepage, cacheTags.product(slug)]

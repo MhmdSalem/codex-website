@@ -4,6 +4,7 @@ import {
   imageFragment,
   linkFragment,
   loc,
+  locSelf,
   mediaFragment,
   navItemFragment,
   productSummaryFragment,
@@ -34,6 +35,10 @@ export const siteSettingsQuery = defineQuery(/* groq */ `
     email,
     phone,
     whatsapp,
+    legalName,
+    commercialRegister,
+    unifiedCommercialRegister,
+    taxRegister,
     ${loc("address")},
     socialLinks[] ${socialLinkFragment},
     primaryNavigation[] ${navItemFragment},
@@ -51,19 +56,13 @@ export const homepageQuery = defineQuery(/* groq */ `
     ${loc("heroEyebrow")},
     ${loc("heroHeadline")},
     ${loc("heroSubheading")},
-    ${loc("heroSupportingText")},
-    heroMedia ${mediaFragment},
     heroCta ${ctaFragment},
-    ${loc("introStatement")},
+    "introLines": introLines[] { ${locSelf("value")} }.value,
+    ${loc("introSupport")},
     productsHeader ${sectionHeaderFragment},
     "products": select(
       count(products) > 0 => products[]-> ${productSummaryFragment},
       *[_type == "product" && featured == true] | order(sortOrder asc)[0...6] ${productSummaryFragment}
-    ),
-    featuredProjectsHeader ${sectionHeaderFragment},
-    "featuredProjects": select(
-      count(featuredProjects) > 0 => featuredProjects[]-> ${projectSummaryFragment},
-      *[_type == "project" && featured == true] | order(sortOrder asc, publishedAt desc)[0...6] ${projectSummaryFragment}
     ),
     capabilities{
       header ${sectionHeaderFragment},
@@ -80,8 +79,6 @@ export const homepageQuery = defineQuery(/* groq */ `
         ${loc("description")}
       }
     },
-    statisticsHeader ${sectionHeaderFragment},
-    statistics[] ${statisticFragment},
     aboutPreview{
       header ${sectionHeaderFragment},
       ${loc("body")},
@@ -94,7 +91,19 @@ export const homepageQuery = defineQuery(/* groq */ `
       ${loc("body")},
       cta ${ctaFragment}
     },
-    sections[]{ key, enabled },
+    seo ${seoFragment}
+  }
+`);
+
+export const pricingPageQuery = defineQuery(/* groq */ `
+  *[_type == "pricingPage"][0]{
+    ${loc("eyebrow")},
+    ${loc("headline")},
+    ${loc("lead")},
+    ${loc("servicesNote")},
+    ${loc("note")},
+    serviceFloors[]{ key, amount },
+    engagements[]{ key, amount, monthly },
     seo ${seoFragment}
   }
 `);
@@ -176,6 +185,10 @@ export const aboutPageQuery = defineQuery(/* groq */ `
   *[_type == "aboutPage"][0]{
     ${loc("eyebrow")},
     ${loc("headline")},
+    ${loc("lead")},
+    "storyParagraphs": storyParagraphs[] { ${locSelf("value")} }.value,
+    "milestones": milestones[] { ${locSelf("value")} }.value,
+    ${loc("principlesLabel")},
     ${loc("intro")},
     ${loc("story")},
     ${loc("philosophy")},

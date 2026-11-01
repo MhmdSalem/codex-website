@@ -9,6 +9,7 @@ import styles from "@/experience/build/build.module.css";
 import { Link } from "@/i18n/navigation";
 import { isRetiredPath, legalNavigation, primaryNavigation, routes } from "@/i18n/routes";
 import type { Locale } from "@/i18n/routing";
+import { pick } from "@/lib/cms";
 import { getSiteSettings } from "@/lib/content";
 import { navigationFromRoutes, resolveNavItem } from "@/lib/links";
 import { cn } from "@/lib/utils";
@@ -21,8 +22,9 @@ import { cn } from "@/lib/utils";
  * columns: the company and its registry, the destinations, the legal pages,
  * and the ways to reach us with a direct line to the next project.
  *
- * Reads Site Settings for contact details, social links and the footer menu,
- * and falls back to the route map plus translated labels when the CMS is empty.
+ * Reads Site Settings for contact details, the registry, social links and the
+ * footer menu, and falls back to the code and the message catalogue when the
+ * dashboard has nothing — so the footer is never blank, connected or not.
  */
 export async function Footer({ locale }: { locale: Locale }) {
   const [settings, tNav, tFooter, tMeta, tContact] = await Promise.all([
@@ -47,15 +49,29 @@ export async function Footer({ locale }: { locale: Locale }) {
   const year = new Date().getFullYear();
   const copyright = settings?.copyright?.replace("{year}", String(year));
 
+  const registry = [
+    [tFooter("entity"), pick(settings?.legalName, LEGAL_ENTITY.name), false],
+    [
+      tFooter("commercialRegister"),
+      pick(settings?.commercialRegister, LEGAL_ENTITY.commercialRegister),
+      true,
+    ],
+    [
+      tFooter("unifiedCommercialRegister"),
+      pick(settings?.unifiedCommercialRegister, LEGAL_ENTITY.unifiedCommercialRegister),
+      true,
+    ],
+    [tFooter("taxRegister"), pick(settings?.taxRegister, LEGAL_ENTITY.taxRegister), true],
+    [tFooter("address"), pick(settings?.address, COMPANY_ADDRESS[locale]), false],
+  ] as const;
+
   return (
     <footer
       data-site-chrome
       data-prologue-inert
-      // Above the fixed backdrop, which sits at z 0 behind positioned content.
       className={cn(styles.footer, "relative z-[var(--z-raised)] pb-20 lg:pb-0")}
     >
       <Container className="pt-12 pb-10 lg:pt-16">
-        {/* The status line. */}
         <div className="flex flex-wrap items-center justify-between gap-6 border-b border-hairline pb-6">
           <Link href={routes.home} aria-label={siteName} className="inline-block">
             <Logo className="h-7" />
@@ -69,40 +85,22 @@ export async function Footer({ locale }: { locale: Locale }) {
         <div className={cn(styles.footerCols, "pt-12")}>
           <div>
             <p className={cn(styles.lead, "mt-0 max-w-[36ch]")}>
-              {settings?.tagline ?? tFooter("tagline")}
+              {pick(settings?.tagline, tFooter("tagline"))}
             </p>
             <dl className="mt-8 grid gap-1 text-caption text-subtle">
-              <div>
-                <dt className="inline">{tFooter("entity")}: </dt>
-                <dd className="inline text-muted">{LEGAL_ENTITY.name}</dd>
-              </div>
-              <div>
-                <dt className="inline">{tFooter("commercialRegister")}: </dt>
-                <dd className="inline text-muted" dir="ltr">
-                  {LEGAL_ENTITY.commercialRegister}
-                </dd>
-              </div>
-              <div>
-                <dt className="inline">{tFooter("unifiedCommercialRegister")}: </dt>
-                <dd className="inline break-all text-muted" dir="ltr">
-                  {LEGAL_ENTITY.unifiedCommercialRegister}
-                </dd>
-              </div>
-              <div>
-                <dt className="inline">{tFooter("taxRegister")}: </dt>
-                <dd className="inline text-muted" dir="ltr">
-                  {LEGAL_ENTITY.taxRegister}
-                </dd>
-              </div>
-              <div>
-                <dt className="inline">{tFooter("address")}: </dt>
-                <dd className="inline text-muted">{COMPANY_ADDRESS[locale]}</dd>
-              </div>
+              {registry.map(([label, value, latin]) => (
+                <div key={label}>
+                  <dt className="inline">{label}: </dt>
+                  <dd className="inline break-all text-muted" dir={latin ? "ltr" : undefined}>
+                    {value}
+                  </dd>
+                </div>
+              ))}
             </dl>
           </div>
 
           <nav aria-label={tFooter("navigate")}>
-            <h2 className={cn(styles.footerHead, "mb-4")}>{tFooter("navigate").toLowerCase()}</h2>
+            <h2 className={cn(styles.footerHead, "mb-4")}>{tFooter("navigate")}</h2>
             <ul className={styles.footerLinks}>
               {navigation.map((item) => (
                 <li key={item.href}>
@@ -113,7 +111,7 @@ export async function Footer({ locale }: { locale: Locale }) {
           </nav>
 
           <nav aria-label={tFooter("legal")}>
-            <h2 className={cn(styles.footerHead, "mb-4")}>{tFooter("legal").toLowerCase()}</h2>
+            <h2 className={cn(styles.footerHead, "mb-4")}>{tFooter("legal")}</h2>
             <ul className={styles.footerLinks}>
               {legal.map((item) => (
                 <li key={item.href}>
@@ -124,7 +122,7 @@ export async function Footer({ locale }: { locale: Locale }) {
           </nav>
 
           <div>
-            <h2 className={cn(styles.footerHead, "mb-4")}>{tFooter("reach").toLowerCase()}</h2>
+            <h2 className={cn(styles.footerHead, "mb-4")}>{tFooter("reach")}</h2>
             {channels.length > 0 ? (
               <ul className={styles.channels}>
                 {channels.map((channel) => (

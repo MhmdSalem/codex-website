@@ -11,7 +11,8 @@ import { CURRENCY, ENGAGEMENTS, SERVICE_FROM } from "@/content/pricing";
 import styles from "@/experience/build/build.module.css";
 import { Window } from "@/experience/build/Window";
 import type { Locale } from "@/i18n/routing";
-import { getSiteSettings } from "@/lib/content";
+import { byKey, pick } from "@/lib/cms";
+import { getPricingPage, getServices, getSiteSettings } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/motion/Reveal";
@@ -24,13 +25,17 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "pricing" });
+  const [t, pricing] = await Promise.all([
+    getTranslations({ locale, namespace: "pricing" }),
+    getPricingPage(locale),
+  ]);
 
   return buildPageMetadata({
     locale,
     path: "/pricing",
     title: t("title"),
     description: t("description"),
+    seo: pricing?.seo,
   });
 }
 
@@ -38,19 +43,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  * Pricing — a quote, printed.
  *
  * The starting points as the lines of a draft quote in a window, every figure
- * a floor; the three ways of working as the plans beside it; and what moves
- * the number as the additions a real scope would make. Nothing presented as
- * final, because the number that is true for one visitor is wrong for the next.
+ * a floor; the three ways of working as the options beside it; and what moves
+ * the number as the additions a real scope would make. Figures and text come
+ * from the dashboard's Pricing page when set, and from the code otherwise.
  */
 export default async function PricingPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tCatalog, format, settings] = await Promise.all([
+  const [t, tCatalog, format, settings, pricing, services] = await Promise.all([
     getTranslations("pricing"),
     getTranslations("catalog"),
     getFormatter(),
     getSiteSettings(locale),
+    getPricingPage(locale),
+    getServices(locale),
   ]);
 
   /** Whole pounds. Piastres on a six-figure floor would be a false precision. */
@@ -61,9 +68,16 @@ export default async function PricingPage({ params }: PageProps) {
       maximumFractionDigits: 0,
     });
 
+  const floorFor = (id: (typeof SERVICE_IDS)[number]) =>
+    byKey(pricing?.serviceFloors, id)?.amount ?? SERVICE_FROM[id];
+
   return (
     <>
-      <PageHeader eyebrow={t("eyebrow")} headline={t("headline")} description={t("lead")} />
+      <PageHeader
+        eyebrow={pick(pricing?.eyebrow, t("eyebrow"))}
+        headline={pick(pricing?.headline, t("headline"))}
+        description={pick(pricing?.lead, t("lead"))}
+      />
 
       <Reveal>
         <Section spacing="flush" label={t("servicesLabel")}>
@@ -77,7 +91,7 @@ export default async function PricingPage({ params }: PageProps) {
                   {t("servicesLabel")}
                 </h2>
                 <p data-reveal className={styles.lead}>
-                  {t("servicesNote")}
+                  {pick(pricing?.servicesNote, t("servicesNote"))}
                 </p>
               </div>
 
@@ -93,9 +107,9 @@ export default async function PricingPage({ params }: PageProps) {
                     <div className={styles.priceTable}>
                       {SERVICE_IDS.map((id) => (
                         <div key={id} data-reveal className={styles.priceRow}>
-                          <b>{tCatalog(`services.${id}.name`)}</b>
+                          <b>{pick(byKey(services, id)?.name, tCatalog(`services.${id}.name`))}</b>
                           <span className={styles.priceVal}>
-                            {t("from", { price: money(SERVICE_FROM[id]) })}
+                            {t("from", { price: money(floorFor(id)) })}
                           </span>
                         </div>
                       ))}
@@ -120,23 +134,28 @@ export default async function PricingPage({ params }: PageProps) {
               {t("modelsLabel")}
             </h2>
             <ul className={styles.cards}>
-              {ENGAGEMENTS.map((engagement, index) => (
-                <li key={engagement.id} data-reveal className={cn(styles.glass, styles.cardTile)}>
-                  <span className={styles.meta} style={{ direction: "inherit" }}>
-                    {t("planLabel")} {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className={styles.h3}>{t(`models.${engagement.id}.name`)}</h3>
-                  <p className={styles.big}>
-                    {engagement.from === undefined
-                      ? t("byAgreement")
-                      : engagement.monthly
-                        ? t("fromMonthly", { price: money(engagement.from) })
-                        : t("from", { price: money(engagement.from) })}
-                  </p>
-                  <p className="text-body">{t(`models.${engagement.id}.suits`)}</p>
-                  <p className="text-caption text-muted">{t(`models.${engagement.id}.note`)}</p>
-                </li>
-              ))}
+              {ENGAGEMENTS.map((engagement, index) => {
+                const override = byKey(pricing?.engagements, engagement.id);
+                const from = override ? (override.amount ?? undefined) : engagement.from;
+                const monthly = override ? Boolean(override.monthly) : Boolean(engagement.monthly);
+                return (
+                  <li key={engagement.id} data-reveal className={cn(styles.glass, styles.cardTile)}>
+                    <span className={styles.meta} style={{ direction: "inherit" }}>
+                      {t("planLabel")} {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className={styles.h3}>{t(`models.${engagement.id}.name`)}</h3>
+                    <p className={styles.big}>
+                      {from === undefined
+                        ? t("byAgreement")
+                        : monthly
+                          ? t("fromMonthly", { price: money(from) })
+                          : t("from", { price: money(from) })}
+                    </p>
+                    <p className="text-body">{t(`models.${engagement.id}.suits`)}</p>
+                    <p className="text-caption text-muted">{t(`models.${engagement.id}.note`)}</p>
+                  </li>
+                );
+              })}
             </ul>
           </Container>
         </Section>
@@ -157,7 +176,7 @@ export default async function PricingPage({ params }: PageProps) {
               ))}
             </ul>
             <p data-reveal className={styles.body}>
-              {t("note")}
+              {pick(pricing?.note, t("note"))}
             </p>
           </Container>
         </Section>

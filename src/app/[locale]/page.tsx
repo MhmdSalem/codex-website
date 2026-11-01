@@ -12,7 +12,8 @@ import { StartScene } from "@/experience/build/StartScene";
 import { WriteScene } from "@/experience/build/WriteScene";
 import { routes } from "@/i18n/routes";
 import type { Locale } from "@/i18n/routing";
-import { getHomepage, getSiteSettings } from "@/lib/content";
+import { at, byKey, pick } from "@/lib/cms";
+import { getHomepage, getProducts, getServices, getSiteSettings } from "@/lib/content";
 import { resolveCta, type ResolvedLink } from "@/lib/links";
 import { buildPageMetadata } from "@/lib/seo";
 import { Reveal } from "@/motion/Reveal";
@@ -42,26 +43,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  *
  * Six scenes, each a step of the same program: write the code, state the idea,
  * build the product from it, connect the capabilities, ship through the
- * pipeline, start the next one. Copy comes from the message catalogue (and the
- * CMS where a document exists); the scenes are client components that receive
- * plain strings, so everything they show is real content rather than props
- * invented for the animation.
+ * pipeline, start the next one. Every line of copy comes from the dashboard
+ * when an editor has written it there and from the message catalogue when not.
  */
 export default async function HomePage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tBuild, tCatalog, homepage, settings] = await Promise.all([
+  const [t, tBuild, tCatalog, homepage, settings, products, services] = await Promise.all([
     getTranslations("home"),
     getTranslations("build"),
     getTranslations("catalog"),
     getHomepage(locale),
     getSiteSettings(locale),
+    getProducts(locale),
+    getServices(locale),
   ]);
 
-  const headline = homepage?.heroHeadline ?? t("headline");
-  const eyebrow = homepage?.heroEyebrow ?? t("eyebrow");
-  const subheading = homepage?.heroSubheading ?? t("subheading");
+  const headline = pick(homepage?.heroHeadline, t("headline"));
+  const eyebrow = pick(homepage?.heroEyebrow, t("eyebrow"));
+  const subheading = pick(homepage?.heroSubheading, t("subheading"));
 
   const primaryAction: ResolvedLink = resolveCta(homepage?.heroCta) ?? {
     label: t("primaryCta"),
@@ -77,6 +78,12 @@ export default async function HomePage({ params }: PageProps) {
   };
 
   const email = resolveEmail(settings);
+  const accreditation = byKey(products, "accreditation");
+  const daawa = byKey(products, "daawa");
+  const productsHeader = homepage?.productsHeader;
+  const capabilities = homepage?.capabilities;
+  const process = homepage?.process;
+  const closing = homepage?.closingCta;
 
   return (
     <>
@@ -98,15 +105,20 @@ export default async function HomePage({ params }: PageProps) {
       <IntroScene
         command={tBuild("commands.intro")}
         eyebrow={t("intro.eyebrow")}
-        lines={[t("intro.lineOne"), t("intro.lineTwo"), t("intro.lineThree"), t("intro.lineFour")]}
-        support={t("intro.support")}
+        lines={pick(homepage?.introLines, [
+          t("intro.lineOne"),
+          t("intro.lineTwo"),
+          t("intro.lineThree"),
+          t("intro.lineFour"),
+        ])}
+        support={pick(homepage?.introSupport, t("intro.support"))}
       />
 
       <BuildScene
         command={tBuild("commands.build")}
-        eyebrow={t("productsSection.eyebrow")}
-        headline={t("productsSection.headline")}
-        lead={t("productsSection.lead")}
+        eyebrow={pick(productsHeader?.eyebrow, t("productsSection.eyebrow"))}
+        headline={pick(productsHeader?.headline, t("productsSection.headline"))}
+        lead={pick(productsHeader?.intro, t("productsSection.lead"))}
         cta={{ label: t("productsSection.cta"), href: routes.products }}
         editor={{
           file: tBuild("editor.file"),
@@ -115,8 +127,8 @@ export default async function HomePage({ params }: PageProps) {
           built: tBuild("editor.built"),
         }}
         product={{
-          name: tCatalog("products.accreditation.name"),
-          tag: tCatalog("products.accreditation.tag"),
+          name: pick(accreditation?.name, tCatalog("products.accreditation.name")),
+          tag: pick(accreditation?.category, tCatalog("products.accreditation.tag")),
         }}
         stage={{
           live: tBuild("stage.live"),
@@ -139,47 +151,54 @@ export default async function HomePage({ params }: PageProps) {
           daawa: tBuild("terminal.daawa"),
         }}
         daawa={{
-          name: tCatalog("products.daawa.name"),
-          tag: tCatalog("products.daawa.tag"),
-          features: FEATURE_KEYS.slice(0, 3).map((key) =>
-            tCatalog(`products.daawa.features.${key}`),
-          ),
+          name: pick(daawa?.name, tCatalog("products.daawa.name")),
+          tag: pick(daawa?.category, tCatalog("products.daawa.tag")),
+          features: pick(
+            daawa?.capabilities,
+            FEATURE_KEYS.map((key) => tCatalog(`products.daawa.features.${key}`)),
+          ).slice(0, 3),
         }}
       />
 
       <ConnectScene
         command={tBuild("commands.connect")}
-        eyebrow={t("servicesSection.eyebrow")}
-        headline={t("servicesSection.headline")}
-        lead={t("servicesSection.lead")}
-        services={SERVICE_IDS.map((id) => ({ id, name: tCatalog(`services.${id}.name`) }))}
+        eyebrow={pick(capabilities?.header?.eyebrow, t("servicesSection.eyebrow"))}
+        headline={pick(capabilities?.header?.headline, t("servicesSection.headline"))}
+        lead={pick(capabilities?.header?.intro, t("servicesSection.lead"))}
+        services={SERVICE_IDS.map((id) => ({
+          id,
+          name: pick(byKey(services, id)?.name, tCatalog(`services.${id}.name`)),
+        }))}
         cta={{ label: t("servicesSection.cta"), href: routes.services }}
       />
 
       <ShipScene
         command={tBuild("commands.ship")}
-        eyebrow={t("processSection.eyebrow")}
-        headline={t("processSection.headline")}
-        lead={t("processSection.lead")}
-        steps={PROCESS_IDS.map((id) => ({
+        eyebrow={pick(process?.header?.eyebrow, t("processSection.eyebrow"))}
+        headline={pick(process?.header?.headline, t("processSection.headline"))}
+        lead={pick(process?.header?.intro, t("processSection.lead"))}
+        steps={PROCESS_IDS.map((id, index) => ({
           id,
           label: id.toUpperCase(),
-          title: tCatalog(`process.${id}.title`),
-          body: tCatalog(`process.${id}.body`),
+          title: pick(at(process?.steps, index)?.title, tCatalog(`process.${id}.title`)),
+          body: pick(at(process?.steps, index)?.description, tCatalog(`process.${id}.body`)),
           logs: tBuild.raw(`pipeline.logs.${id}`) as string[],
         }))}
       />
 
       <Reveal>
-        <AboutPreview />
+        <AboutPreview header={homepage?.aboutPreview?.header ?? null} />
       </Reveal>
 
       <StartScene
         command={tBuild("commands.start")}
-        eyebrow={t("closing.eyebrow")}
-        headline={t("closing.headline")}
-        body={t("closing.body")}
-        cta={{ label: t("closing.cta"), href: routes.contact }}
+        eyebrow={pick(closing?.eyebrow, t("closing.eyebrow"))}
+        headline={pick(closing?.headline, t("closing.headline"))}
+        body={pick(closing?.body, t("closing.body"))}
+        cta={{
+          label: pick(closing?.cta?.label, t("closing.cta")),
+          href: resolveCta(closing?.cta)?.href ?? routes.contact,
+        }}
         or={t("closing.or")}
         email={email}
         prompt={tBuild("prompt")}

@@ -3,7 +3,7 @@ import { localizedSlugSource, slugify } from "../utils/slug";
 
 /**
  * A software product CODEX TECH owns and operates — Codex Accreditation,
- * Daawa, and whatever ships next.
+ * Lammetna, and whatever ships next.
  *
  * Deliberately separate from `project`. A project is client work with a brief
  * and an end date; a product is something the company builds, runs and sells
@@ -29,6 +29,21 @@ export const product = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "key",
+      title: "Which product is this?",
+      description:
+        "Ties the document to the product the website already knows, so its text replaces the built-in copy.",
+      type: "string",
+      group: "overview",
+      options: {
+        list: [
+          { title: "Codex Accreditation", value: "accreditation" },
+          { title: "Lammetna", value: "daawa" },
+        ],
+        layout: "radio",
+      },
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -50,7 +65,7 @@ export const product = defineType({
     defineField({
       name: "tagline",
       title: "Tagline",
-      description: "One short line. This is what appears in the homepage showcase.",
+      description: "One or two sentences: what it does, in plain words.",
       type: "localeString",
       group: "overview",
       validation: (rule) => rule.required(),
@@ -63,10 +78,18 @@ export const product = defineType({
       group: "overview",
     }),
     defineField({
+      name: "audience",
+      title: "Who it is for",
+      description:
+        "One sentence, e.g. “For event organisers and the teams running accreditation on the day.”",
+      type: "localeText",
+      group: "overview",
+    }),
+    defineField({
       name: "capabilities",
       title: "Capabilities",
       description:
-        'Short concrete phrases, not marketing claims — for example "QR access control". Four to six reads best.',
+        'Short concrete phrases, one per line — for example "Badge design and printing". Five reads best.',
       type: "array",
       group: "overview",
       of: [{ type: "localeString" }],

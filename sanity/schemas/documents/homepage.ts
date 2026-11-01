@@ -1,149 +1,121 @@
 import { defineField, defineType } from "sanity";
-import { HOME_SECTION_KEYS } from "../objects/sections";
 
+/**
+ * The homepage, as the editor sees it.
+ *
+ * One field group per scene of the build sequence, in the order they appear on
+ * the page. Every field is optional: where it is empty the site shows the copy
+ * from the message catalogue, so a half-filled document never leaves a hole.
+ */
 export const homepage = defineType({
   name: "homepage",
   title: "Homepage",
   type: "document",
   groups: [
-    { name: "hero", title: "Hero", default: true },
-    { name: "content", title: "Sections" },
-    { name: "composition", title: "Composition" },
+    { name: "hero", title: "1 · Opening", default: true },
+    { name: "intro", title: "2 · The idea" },
+    { name: "products", title: "3 · Products" },
+    { name: "capabilities", title: "4 · Services" },
+    { name: "process", title: "5 · How we work" },
+    { name: "about", title: "6 · The company" },
+    { name: "closing", title: "7 · Closing" },
     { name: "seo", title: "SEO" },
   ],
   fields: [
-    // ── Hero ────────────────────────────────────────────────────────────
+    // ── 1 · Opening ─────────────────────────────────────────────────────
     defineField({
       name: "heroEyebrow",
-      title: "Eyebrow",
+      title: "Small line above the headline",
       type: "localeString",
       group: "hero",
     }),
     defineField({
       name: "heroHeadline",
       title: "Headline",
-      description: "Kept short — it is set at display scale and animates in word by word.",
+      description:
+        "Wrap one or two words in *asterisks* to colour them, e.g. “ideas into *digital* products”.",
       type: "localeString",
       group: "hero",
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "heroSubheading",
-      title: "Subheading",
-      type: "localeString",
-      group: "hero",
-    }),
-    defineField({
-      name: "heroSupportingText",
-      title: "Supporting text",
+      title: "Paragraph under the headline",
       type: "localeText",
       group: "hero",
     }),
     defineField({
-      name: "heroMedia",
-      title: "Hero media",
-      type: "media",
-      group: "hero",
-    }),
-    defineField({
       name: "heroCta",
-      title: "Hero call to action",
+      title: "Main button",
       type: "cta",
       group: "hero",
     }),
 
-    // ── Sections ────────────────────────────────────────────────────────
+    // ── 2 · The idea ────────────────────────────────────────────────────
     defineField({
-      name: "introStatement",
-      title: "Intro statement",
-      description: "The opening manifesto line after the hero.",
-      type: "localePortableText",
-      group: "content",
+      name: "introLines",
+      title: "The four lines",
+      description: "Shown one after another as the visitor scrolls. Four short sentences.",
+      type: "array",
+      group: "intro",
+      of: [{ type: "localeString" }],
+      validation: (rule) => rule.max(4),
+    }),
+    defineField({
+      name: "introSupport",
+      title: "Supporting paragraph",
+      type: "localeText",
+      group: "intro",
+    }),
+
+    // ── 3 · Products ────────────────────────────────────────────────────
+    defineField({
+      name: "productsHeader",
+      title: "Section heading",
+      type: "sectionHeader",
+      group: "products",
     }),
     defineField({
       name: "products",
-      title: "Products",
-      description: "Drag to reorder. Leave empty to use products flagged as featured.",
+      title: "Products shown",
+      description: "Edit each product's own text under Products. Leave empty to show them all.",
       type: "array",
-      group: "content",
+      group: "products",
       of: [{ type: "reference", to: [{ type: "product" }] }],
       validation: (rule) => rule.max(6).unique(),
     }),
-    defineField({
-      name: "productsHeader",
-      title: "Products header",
-      type: "sectionHeader",
-      group: "content",
-    }),
-    defineField({
-      name: "featuredProjects",
-      title: "Featured projects",
-      description: "Drag to reorder. Leave empty to use projects flagged as featured.",
-      type: "array",
-      group: "content",
-      of: [{ type: "reference", to: [{ type: "project" }] }],
-      validation: (rule) => rule.max(8).unique(),
-    }),
-    defineField({
-      name: "featuredProjectsHeader",
-      title: "Featured projects header",
-      type: "sectionHeader",
-      group: "content",
-    }),
+
+    // ── 4 · Services ────────────────────────────────────────────────────
     defineField({
       name: "capabilities",
-      title: "Capabilities",
+      title: "Services section",
+      description: "The names come from each service's own document under Services.",
       type: "capabilitiesSection",
-      group: "content",
-    }),
-    defineField({
-      name: "process",
-      title: "Process",
-      type: "processSection",
-      group: "content",
-    }),
-    defineField({
-      name: "statisticsHeader",
-      title: "Statistics header",
-      type: "sectionHeader",
-      group: "content",
-    }),
-    defineField({
-      name: "statistics",
-      title: "Statistics",
-      type: "array",
-      group: "content",
-      of: [{ type: "statistic" }],
-      validation: (rule) => rule.max(6),
-    }),
-    defineField({
-      name: "aboutPreview",
-      title: "About preview",
-      type: "aboutPreviewSection",
-      group: "content",
-    }),
-    defineField({
-      name: "closingCta",
-      title: "Closing call to action",
-      type: "closingCtaSection",
-      group: "content",
+      group: "capabilities",
     }),
 
-    // ── Composition ─────────────────────────────────────────────────────
+    // ── 5 · How we work ─────────────────────────────────────────────────
     defineField({
-      name: "sections",
-      title: "Section order and visibility",
-      description:
-        "Drag to reorder the homepage and toggle sections on or off. Sections left out of this list fall back to the default order.",
-      type: "array",
-      group: "composition",
-      of: [{ type: "homeSection" }],
-      initialValue: HOME_SECTION_KEYS.map((option) => ({
-        _type: "homeSection",
-        key: option.value,
-        enabled: true,
-      })),
-      validation: (rule) => rule.unique(),
+      name: "process",
+      title: "How we work",
+      description: "Four steps. Each needs a title and one sentence.",
+      type: "processSection",
+      group: "process",
+    }),
+
+    // ── 6 · The company ─────────────────────────────────────────────────
+    defineField({
+      name: "aboutPreview",
+      title: "The company, in short",
+      type: "aboutPreviewSection",
+      group: "about",
+    }),
+
+    // ── 7 · Closing ─────────────────────────────────────────────────────
+    defineField({
+      name: "closingCta",
+      title: "Closing invitation",
+      type: "closingCtaSection",
+      group: "closing",
     }),
 
     // ── SEO ─────────────────────────────────────────────────────────────

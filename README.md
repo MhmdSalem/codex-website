@@ -228,6 +228,53 @@ animations reveal _from_ a hidden state, never _to_ one.
 
 ---
 
+## Dashboard (Sanity Studio)
+
+The content dashboard is the embedded Sanity Studio at `/studio`. Every page reads
+the dashboard first and the message catalogue second, field by field, so the
+site is complete before a single document is published and nothing an editor
+leaves empty shows up as a hole.
+
+What an editor controls:
+
+| Dashboard item | What it changes on the site                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| Site settings  | Contact email, phone, WhatsApp, address, company registry, social links, menus                 |
+| Homepage       | Every scene's text: opening, the four lines, products, services, how we work, company, closing |
+| Products       | Name, tag, summary, long description, who it is for, five features (per product)               |
+| Services       | Name, summary, long description, what it includes (per service)                                |
+| About page     | Intro, three story paragraphs, milestones, principles                                          |
+| Pricing page   | Text, starting price per service, the three ways of working                                    |
+| Contact page   | Heading and intro                                                                              |
+| Legal pages    | Privacy, delivery and refund policies                                                          |
+
+### Connecting it
+
+1. Create a project at <https://www.sanity.io/manage> (the free plan is enough)
+   with a dataset called `production`.
+2. In the project's **API → CORS origins**, add `http://localhost:3000`,
+   `http://localhost:3001` and the production site URL, each with credentials
+   allowed.
+3. Copy the project id into `.env.local` as `NEXT_PUBLIC_SANITY_PROJECT_ID` (and
+   into the hosting provider's environment variables).
+4. Create a token with **Editor** rights under **API → Tokens**, put it in
+   `.env.local` as `SANITY_API_WRITE_TOKEN`, and run:
+
+   ```bash
+   npm run sanity:seed
+   ```
+
+   This fills the dashboard with the site's current Arabic and English copy, so
+   editing starts from the real text. Re-run with `-- --overwrite` to reset.
+
+5. Open `/studio`, sign in with the Sanity account, and edit. Publishing a
+   document updates the site within the hour, or immediately once the
+   revalidation webhook (`/api/revalidate`) is configured with
+   `SANITY_REVALIDATE_SECRET`.
+
+The Studio shows a loading spinner forever when no project id is set: that is
+the only symptom of a missing `NEXT_PUBLIC_SANITY_PROJECT_ID`.
+
 ## Content model
 
 Localization is **field-level**: one document holds every language. A `Project`

@@ -13,7 +13,8 @@
     "format:check": "prettier --check .",
     "verify": "npm run lint && npm run typecheck && npm run build",
     "sanity:schema": "sanity schema extract --path sanity/schema.json",
-    "sanity:typegen": "sanity typegen generate"
+    "sanity:typegen": "sanity typegen generate",
+    "sanity:seed": "node scripts/seed-sanity.mjs"
   },
   "dependencies": {
     "@portabletext/react": "7.0.1",

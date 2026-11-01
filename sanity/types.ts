@@ -134,6 +134,10 @@ export interface SiteSettings {
   email: string | null;
   phone: string | null;
   whatsapp: string | null;
+  legalName: string | null;
+  commercialRegister: string | null;
+  unifiedCommercialRegister: string | null;
+  taxRegister: string | null;
   address: string | null;
   socialLinks: SanitySocialLink[] | null;
   primaryNavigation: SanityNavItem[] | null;
@@ -167,14 +171,11 @@ export interface Homepage {
   heroEyebrow: string | null;
   heroHeadline: string | null;
   heroSubheading: string | null;
-  heroSupportingText: string | null;
-  heroMedia: SanityMedia | null;
   heroCta: SanityCta | null;
-  introStatement: PortableTextBlock[] | null;
+  introLines: string[] | null;
+  introSupport: string | null;
   productsHeader: SanitySectionHeader | null;
   products: ProductSummary[] | null;
-  featuredProjectsHeader: SanitySectionHeader | null;
-  featuredProjects: ProjectSummary[] | null;
   capabilities: {
     header: SanitySectionHeader | null;
     services: ServiceSummary[] | null;
@@ -184,8 +185,6 @@ export interface Homepage {
     header: SanitySectionHeader | null;
     steps: SanityProcessStep[] | null;
   } | null;
-  statisticsHeader: SanitySectionHeader | null;
-  statistics: SanityStatistic[] | null;
   aboutPreview: {
     header: SanitySectionHeader | null;
     body: PortableTextBlock[] | null;
@@ -198,7 +197,19 @@ export interface Homepage {
     body: string | null;
     cta: SanityCta | null;
   } | null;
-  sections: HomeSectionToggle[] | null;
+  seo: SanitySeo | null;
+}
+
+// ─── Pricing ────────────────────────────────────────────────────────────────
+
+export interface PricingPage {
+  eyebrow: string | null;
+  headline: string | null;
+  lead: string | null;
+  servicesNote: string | null;
+  note: string | null;
+  serviceFloors: Array<{ key: string; amount: number | null }> | null;
+  engagements: Array<{ key: string; amount: number | null; monthly: boolean | null }> | null;
   seo: SanitySeo | null;
 }
 
@@ -207,8 +218,10 @@ export interface Homepage {
 /** Software CODEX TECH owns and operates, as opposed to client work. */
 export interface ProductSummary {
   _id: string;
+  key: "accreditation" | "daawa" | null;
   slug: string;
   name: string | null;
+  audience: string | null;
   category: string | null;
   tagline: string | null;
   description: string | null;
@@ -258,15 +271,17 @@ export interface Project extends ProjectSummary {
 
 export interface ServiceSummary {
   _id: string;
+  key: string | null;
   slug: string;
   name: string | null;
   shortDescription: string | null;
+  detail: string | null;
+  deliverables: string[] | null;
   icon: SanityImage | null;
 }
 
 export interface Service extends ServiceSummary {
   fullDescription: PortableTextBlock[] | null;
-  deliverables: string[] | null;
   featuredMedia: SanityMedia | null;
   relatedProjects: ProjectSummary[] | null;
   seo: SanitySeo | null;
@@ -277,6 +292,10 @@ export interface Service extends ServiceSummary {
 export interface AboutPage {
   eyebrow: string | null;
   headline: string | null;
+  lead: string | null;
+  storyParagraphs: string[] | null;
+  milestones: string[] | null;
+  principlesLabel: string | null;
   intro: PortableTextBlock[] | null;
   story: PortableTextBlock[] | null;
   philosophy: PortableTextBlock[] | null;

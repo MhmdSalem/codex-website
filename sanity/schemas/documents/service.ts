@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { localizedSlugSource, slugify } from "../utils/slug";
+import { SERVICE_KEYS } from "./pricingPage";
 
 export const service = defineType({
   name: "service",
@@ -18,6 +19,15 @@ export const service = defineType({
       type: "localeString",
       group: "overview",
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "key",
+      title: "Which service is this?",
+      description:
+        "Ties the document to one of the six services the website shows, so its text replaces the built-in copy.",
+      type: "string",
+      group: "overview",
+      options: { list: SERVICE_KEYS },
     }),
     defineField({
       name: "slug",
@@ -39,15 +49,23 @@ export const service = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "detail",
+      title: "Longer description",
+      description: "Two or three sentences shown on the services page under the short one.",
+      type: "localeText",
+      group: "overview",
+    }),
+    defineField({
       name: "fullDescription",
       title: "Full description",
       type: "localePortableText",
       group: "overview",
+      hidden: true,
     }),
     defineField({
       name: "deliverables",
       title: "Deliverables",
-      description: "Short list shown alongside the description.",
+      description: "What the service includes, one item per line. Four reads best.",
       type: "array",
       group: "overview",
       of: [{ type: "localeString" }],

@@ -136,8 +136,10 @@ export const projectSummaryFragment = /* groq */ `{
 
 export const productSummaryFragment = /* groq */ `{
   _id,
+  key,
   "slug": slug.current,
   ${loc("name")},
+  ${loc("audience")},
   ${loc("category")},
   ${loc("tagline")},
   ${loc("description")},
@@ -152,9 +154,12 @@ export const productSummaryFragment = /* groq */ `{
 
 export const serviceSummaryFragment = /* groq */ `{
   _id,
+  key,
   "slug": slug.current,
   ${loc("name")},
   ${loc("shortDescription")},
+  ${loc("detail")},
+  "deliverables": deliverables[] { ${locSelf("value")} }.value,
   icon ${imageFragment}
 }`;
 

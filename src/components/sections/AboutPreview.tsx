@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { SanitySectionHeader } from "@cms/types";
 import { routes } from "@/i18n/routes";
+import { pick } from "@/lib/cms";
 
 const PRINCIPLES = ["products", "engineering", "bilingual", "after"] as const;
 
@@ -16,16 +18,19 @@ const PRINCIPLES = ["products", "engineering", "bilingual", "after"] as const;
  * spent its reading budget by this point, and the about page is where each one
  * is explained.
  */
-export async function AboutPreview() {
+export async function AboutPreview({ header }: { header?: SanitySectionHeader | null }) {
   const t = await getTranslations("home.company");
 
   return (
     <Section id="aboutPreview" spacing="default" label={t("eyebrow")}>
       <Container>
-        <SectionHeading eyebrow={t("eyebrow")} headline={t("headline")}>
+        <SectionHeading
+          eyebrow={pick(header?.eyebrow, t("eyebrow"))}
+          headline={pick(header?.headline, t("headline"))}
+        >
           <div className="mt-8 flex max-w-[58ch] flex-col gap-5">
             <p data-reveal className="text-body text-muted">
-              {t("bodyOne")}
+              {pick(header?.intro, t("bodyOne"))}
             </p>
             <p data-reveal className="text-body text-muted">
               {t("bodyTwo")}

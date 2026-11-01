@@ -6,6 +6,7 @@ import {
   contactPageQuery,
   homepageQuery,
   legalPageQuery,
+  pricingPageQuery,
   productsQuery,
   projectBySlugQuery,
   projectSlugsQuery,
@@ -19,6 +20,7 @@ import type {
   ContactPage,
   Homepage,
   LegalPage,
+  PricingPage,
   ProductSummary,
   Project,
   ProjectSummary,
@@ -117,6 +119,14 @@ export const getContactPage = cache(async (locale: Locale): Promise<ContactPage 
     query: contactPageQuery,
     params: { locale },
     tags: [cacheTags.contactPage],
+  }),
+);
+
+export const getPricingPage = cache(async (locale: Locale): Promise<PricingPage | null> =>
+  sanityFetch<PricingPage>({
+    query: pricingPageQuery,
+    params: { locale },
+    tags: [cacheTags.pricingPage],
   }),
 );
 

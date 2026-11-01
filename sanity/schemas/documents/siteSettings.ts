@@ -103,6 +103,30 @@ export const siteSettings = defineType({
       group: "contact",
     }),
     defineField({
+      name: "legalName",
+      title: "Registered company name",
+      type: "string",
+      group: "contact",
+    }),
+    defineField({
+      name: "commercialRegister",
+      title: "Commercial register no.",
+      type: "string",
+      group: "contact",
+    }),
+    defineField({
+      name: "unifiedCommercialRegister",
+      title: "Unified commercial register no.",
+      type: "string",
+      group: "contact",
+    }),
+    defineField({
+      name: "taxRegister",
+      title: "Tax ID",
+      type: "string",
+      group: "contact",
+    }),
+    defineField({
       name: "socialLinks",
       title: "Social links",
       type: "array",

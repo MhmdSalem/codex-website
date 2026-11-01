@@ -46,7 +46,7 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
-        .title("Capabilities")
+        .title("Services")
         .id("services")
         .child(
           S.documentTypeList("service")
@@ -58,6 +58,11 @@ export const structure: StructureResolver = (S) =>
         .title("About page")
         .id("aboutPage")
         .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
+
+      S.listItem()
+        .title("Pricing page")
+        .id("pricingPage")
+        .child(S.document().schemaType("pricingPage").documentId("pricingPage")),
 
       S.listItem()
         .title("Contact page")
