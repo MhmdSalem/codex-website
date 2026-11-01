@@ -89,39 +89,6 @@ cd ~/htdocs/codex-tech.ai
 npm ci && npm run build && pm2 reload codex-tech
 ```
 
-## 5ب. النشر التلقائي من GitHub (بدل الخطوة 5)
-
-أي push على `main` بيتفحص على GitHub (الأنواع، lint، build)، ولو نجح بيدخل على السيرفر وينشر
-لوحده بالسكريبت `deploy/deploy.sh`. محتاج تضيف مرة واحدة الـ secrets دي في الريبو من
-**Settings → Secrets and variables → Actions → New repository secret**:
-
-| الاسم         | القيمة                                                |
-| ------------- | ----------------------------------------------------- |
-| `VPS_HOST`    | الـ IP بتاع السيرفر                                   |
-| `VPS_USER`    | مستخدم الموقع في CloudPanel (Site User)               |
-| `VPS_SSH_KEY` | المفتاح الخاص (private key) اللي هتعمله تحت           |
-| `VPS_APP_DIR` | مسار الموقع، مثلاً `/home/codex/htdocs/codex-tech.ai` |
-| `VPS_PORT`    | اختياري، لو SSH مش على 22                             |
-
-**عمل المفتاح:** على جهازك:
-
-```bash
-ssh-keygen -t ed25519 -C "github-deploy" -f codex-deploy -N ""
-```
-
-- محتوى `codex-deploy.pub` حطه في CloudPanel: الموقع → **SSH/FTP** → SSH Keys للمستخدم ده.
-- محتوى `codex-deploy` (من غير `.pub`) حطه في الـ secret اسمه `VPS_SSH_KEY`، وبعدها امسح الملفين من جهازك.
-
-لحد ما `VPS_HOST` يتحط، الفحص بيشتغل عادي والنشر بيتخطّى نفسه من غير ما يفشل. وتقدر
-تشغّل النشر يدوي من تبويب **Actions → Deploy → Run workflow**.
-
-**لو السيرفر عليه الموقع القديم:** السكريبت بيوقف عملية PM2 القديمة `codex-web` لوحده لو كانت
-شغّالة من نفس المسار. لو كانت في مسار تاني على نفس البورت 3000، وقّفها بإيدك مرة واحدة:
-
-```bash
-pm2 delete codex-web && pm2 save
-```
-
 ## 6. ربط لوحة التحكم
 
 1. في [sanity.io/manage](https://www.sanity.io/manage) → المشروع → **API → CORS origins** ضيف

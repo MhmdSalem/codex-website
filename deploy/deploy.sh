@@ -2,8 +2,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Bring the server up to the latest commit on `main` and restart the site.
 #
-# Run by .github/workflows/deploy.yml over SSH on every push to main, and safe
-# to run by hand:
+# Run it by hand on the server, from any folder:
 #
 #   APP_DIR=~/htdocs/codex-tech.ai bash deploy/deploy.sh
 #
