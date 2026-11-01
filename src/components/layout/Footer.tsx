@@ -9,22 +9,20 @@ import styles from "@/experience/build/build.module.css";
 import { Link } from "@/i18n/navigation";
 import { isRetiredPath, primaryNavigation, routes } from "@/i18n/routes";
 import type { Locale } from "@/i18n/routing";
-import { pick } from "@/lib/cms";
 import { getSiteSettings } from "@/lib/content";
 import { navigationFromRoutes, resolveNavItem } from "@/lib/links";
 import { cn } from "@/lib/utils";
 
 /**
- * Site footer.
+ * Site footer — one slim strip.
  *
- * Kept short on purpose: the mark and a line about the company, the pages,
- * and the ways to reach us with a direct line to the next project. A warm
- * surface rather than the page's black, so the end of a page reads as a
- * landing and not a drop.
+ * The mark, the pages in a single line, the ways to reach us as icons, and
+ * the copyright. No headings, no paragraphs: the pages above already said
+ * everything, so the footer only has to close the page.
  *
  * Reads Site Settings for contact details, social links and the footer menu,
- * and falls back to the code and the message catalogue when the dashboard has
- * nothing — so the footer is never blank, connected or not.
+ * and falls back to the code and the message catalogue when the dashboard
+ * has nothing.
  */
 export async function Footer({ locale }: { locale: Locale }) {
   const [settings, tNav, tFooter, tMeta, tContact] = await Promise.all([
@@ -52,69 +50,45 @@ export async function Footer({ locale }: { locale: Locale }) {
     <footer
       data-site-chrome
       data-prologue-inert
-      className={cn(styles.footer, "relative z-[var(--z-raised)] pb-20 lg:pb-0")}
+      className={cn(styles.footer, "relative z-[var(--z-raised)] pb-16 lg:pb-0")}
     >
-      <Container className="pt-8 pb-6 lg:pt-10">
-        <div className={styles.footerCols}>
-          <div>
-            <Link href={routes.home} aria-label={siteName} className="inline-block">
-              <Logo className="h-7" />
-            </Link>
-            <p className="mt-4 max-w-[36ch] text-caption text-muted">
-              {pick(settings?.tagline, tFooter("tagline"))}
-            </p>
-          </div>
+      <Container className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-5">
+        <Link href={routes.home} aria-label={siteName} className="inline-flex shrink-0">
+          <Logo className="h-6" />
+        </Link>
 
-          {/* Below lg the tab bar already lists every page. */}
-          <nav aria-label={tFooter("navigate")} className="hidden lg:block">
-            <h2 className={cn(styles.footerHead, "mb-3")}>{tFooter("navigate")}</h2>
-            <ul className={styles.footerLinks}>
-              {navigation.map((item) => (
-                <li key={item.href}>
-                  <FooterLink {...item} />
-                </li>
-              ))}
-            </ul>
-          </nav>
+        {/* Below lg the tab bar already lists every page. */}
+        <nav aria-label={tFooter("navigate")} className="hidden lg:block">
+          <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 text-caption">
+            {navigation.map((item) => (
+              <li key={item.href}>
+                <FooterLink {...item} />
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-          <div>
-            <h2 className={cn(styles.footerHead, "mb-3")}>{tFooter("reach")}</h2>
-            {channels.length > 0 ? (
-              <ul className={styles.channels}>
-                {channels.map((channel) => (
-                  <li key={channel.href}>
-                    <a
-                      href={channel.href}
-                      aria-label={`${tContact(channel.kind)} ${channel.value}`}
-                      {...(channel.kind === "whatsapp"
-                        ? { target: "_blank", rel: "noreferrer noopener" }
-                        : {})}
-                    >
-                      <ChannelIcon kind={channel.kind} />
-                      <span dir={channel.kind === "email" ? undefined : "ltr"}>
-                        {channel.value}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-            {socials.length > 0 ? <SocialLinks socials={socials} className="mt-3" /> : null}
-          </div>
+        <div className="flex items-center gap-1">
+          {channels.map((channel) => (
+            <a
+              key={channel.href}
+              href={channel.href}
+              aria-label={`${tContact(channel.kind)} ${channel.value}`}
+              title={channel.value}
+              className="inline-flex size-10 items-center justify-center text-muted transition-colors hover:text-accent-text"
+              {...(channel.kind === "whatsapp"
+                ? { target: "_blank", rel: "noreferrer noopener" }
+                : {})}
+            >
+              <ChannelIcon kind={channel.kind} className="size-5" />
+            </a>
+          ))}
+          {socials.length > 0 ? <SocialLinks socials={socials} className="gap-1" /> : null}
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-hairline pt-5">
-          <p className="text-caption text-subtle">{copyright ?? tFooter("copyright", { year })}</p>
-          <Link
-            href={routes.contact}
-            className={cn(styles.prompt, "mt-0 text-[14px] hover:border-[var(--color-signal)]")}
-            style={{ padding: "8px 14px", fontFamily: "inherit" }}
-          >
-            <span className={styles.promptD}>$</span>
-            <span>{tFooter("prompt")}</span>
-            <span className={styles.caret} />
-          </Link>
-        </div>
+        <p className="w-full text-micro text-subtle lg:w-auto">
+          {copyright ?? tFooter("copyright", { year })}
+        </p>
       </Container>
     </footer>
   );
@@ -131,13 +105,23 @@ function FooterLink({
   external: boolean;
   newTab: boolean;
 }) {
+  const className = "text-muted transition-colors hover:text-foreground";
+
   if (external) {
     return (
-      <a href={href} {...(newTab ? { target: "_blank", rel: "noreferrer noopener" } : {})}>
+      <a
+        href={href}
+        className={className}
+        {...(newTab ? { target: "_blank", rel: "noreferrer noopener" } : {})}
+      >
         {label}
       </a>
     );
   }
 
-  return <Link href={href}>{label}</Link>;
+  return (
+    <Link href={href} className={className}>
+      {label}
+    </Link>
+  );
 }
