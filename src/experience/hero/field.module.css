@@ -1,0 +1,165 @@
+/*
+ * The hero field — a dark room drawn in light.
+ *
+ * Three layers under the claim: a hairline grid that is only visible where the
+ * lamp reaches, the lamp itself, and a blueprint of a product drawn in
+ * hairlines. The lamp's position is two custom properties, `--lx` and `--ly`,
+ * written by the hero each frame from the caret's eased position. Nothing in
+ * this file paints per frame on its own: a mask and a gradient re-evaluate
+ * when the properties change, and that is the whole cost.
+ */
+
+.field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Where the lamp rests before the caret arrives, and on touch. */
+  --lx: 68%;
+  --ly: 46%;
+  --lamp: 560px;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center;
+  mask-image: radial-gradient(
+    var(--lamp) var(--lamp) at var(--lx) var(--ly),
+    #000 0%,
+    rgba(0, 0, 0, 0.4) 45%,
+    transparent 72%
+  );
+}
+
+.light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    calc(var(--lamp) * 1.2) calc(var(--lamp) * 1.2) at var(--lx) var(--ly),
+    color-mix(in oklab, var(--color-signal) 15%, transparent),
+    color-mix(in oklab, var(--color-signal) 4%, transparent) 40%,
+    transparent 70%
+  );
+}
+
+/*
+ * The blueprint: a product interface in hairlines, on the trailing side.
+ *
+ * Positioned with logical properties so the composition mirrors in RTL; the
+ * drawing itself does not, because it is a picture of a screen.
+ */
+.blueprint {
+  position: absolute;
+  inset-inline-end: calc(var(--spacing-gutter) * -0.5);
+  top: 50%;
+  width: min(58%, 860px);
+  transform: translateY(-50%);
+  will-change: transform;
+}
+
+.blueprint svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.blueprint :is(path, line, rect, circle, polyline) {
+  fill: none;
+  stroke: var(--color-bone);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.42;
+}
+
+.blueprint .accent {
+  stroke: var(--color-signal);
+  opacity: 0.9;
+}
+
+.blueprint .wash {
+  fill: color-mix(in oklab, var(--color-signal) 16%, transparent);
+  stroke: var(--color-signal);
+  opacity: 0.9;
+}
+
+.blueprint .faint {
+  opacity: 0.18;
+}
+
+/* The scroll cue's travelling dot. */
+.scrollDot {
+  animation: hero-scroll-dot 2.4s var(--ease-in-out-circ) infinite;
+}
+
+@keyframes hero-scroll-dot {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3px, 0);
+  }
+  35% {
+    opacity: 1;
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 5px, 0);
+  }
+}
+
+/*
+ * Phones: no pointer, so the lamp breathes on its own, and the blueprint sits
+ * behind the claim as a dim field rather than beside it.
+ */
+@media (max-width: 63.999rem) {
+  .field {
+    --lx: 72%;
+    --ly: 34%;
+    --lamp: 420px;
+  }
+
+  .light {
+    animation: hero-breathe 7s var(--ease-in-out-circ) infinite;
+  }
+
+  .blueprint {
+    inset-inline: 0;
+    top: var(--header-height);
+    width: 100%;
+    height: min(46svh, 24rem);
+    transform: none;
+    opacity: 0.4;
+    /* Thins out before the claim so the type never sits on a line. */
+    mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+  }
+
+  .blueprint svg {
+    height: 100%;
+    width: auto;
+    margin-inline: auto;
+  }
+}
+
+@keyframes hero-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light,
+  .scrollDot {
+    animation: none;
+  }
+}

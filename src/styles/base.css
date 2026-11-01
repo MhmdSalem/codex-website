@@ -1,0 +1,382 @@
+/* ===========================================================================
+   CODEX TECH — Base layer
+   Document defaults, typography baseline, bidi handling and accessibility.
+   Component styling belongs in Tailwind utilities or CSS Modules, not here.
+   =========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto; /* Lenis owns scrolling; never fight it with CSS */
+    background-color: var(--color-background);
+    color-scheme: dark;
+  }
+
+  /* Lenis drives the scroll position, so the document must not be clipped. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tighter);
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    /* Dark on the accent, not light: the terracotta fill is too luminous to
+       carry paper — see the contrast note beside the signal primitives. */
+    color: var(--color-foreground-inverse);
+  }
+
+  /* ── Focus ────────────────────────────────────────────────────────────*/
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--radius-xs);
+  }
+
+  /* ── Reduced motion ───────────────────────────────────────────────────
+     The JS layer reads the same query and skips timelines entirely; this is
+     the CSS-side safety net for anything declarative. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ===========================================================================
+   Theme scopes
+   ---------------------------------------------------------------------------
+   The site has exactly two rooms. The dark room is the default. The light room
+   is an inversion used at most once per page to reset the eye — it is not a
+   user-selectable colour mode, so there is no toggle and no localStorage.
+
+   Tailwind v4 emits `var(--color-*)` inside its utilities, so redefining the
+   semantic layer inside a scope re-skins every utility underneath it.
+   =========================================================================== */
+[data-theme="light"] {
+  --color-background: var(--color-paper);
+  --color-surface: var(--color-parchment);
+  --color-surface-raised: #e9e5dc;
+  --color-surface-sunken: #e3ded3;
+  --color-surface-inverse: var(--color-void);
+
+  --color-foreground: var(--color-ink);
+  --color-foreground-inverse: var(--color-bone);
+  --color-muted: #55555f;
+  --color-subtle: #7a7a86;
+  --color-disabled: #b4b0a7;
+
+  --color-border: color-mix(in oklab, var(--color-ink) 14%, transparent);
+  --color-border-strong: color-mix(in oklab, var(--color-ink) 32%, transparent);
+  --color-hairline: color-mix(in oklab, var(--color-ink) 10%, transparent);
+
+  /* On paper the accent has to darken to be readable: the fill tone is only
+     3.0:1 on white, while `signal-dim` clears 6.5:1. */
+  --color-accent-text: var(--color-signal-dim);
+  --color-accent-hover: var(--color-signal-dim);
+  --color-focus: var(--color-signal-dim);
+
+  --grain-opacity: 0.05;
+
+  color-scheme: light;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+@layer components {
+  /* Screen-reader-only content that becomes visible on focus. */
+  .sr-only-focusable {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .sr-only-focusable:focus-visible {
+    position: fixed;
+    inset-block-start: var(--spacing-gutter);
+    inset-inline-start: var(--spacing-gutter);
+    z-index: var(--z-modal);
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    clip-path: none;
+    background-color: var(--color-accent);
+    /* Ink, not paper. Light text on the accent is 2.97:1; the fill rule applies
+       here as everywhere else, and `ink` reaches 6.12:1. Spelled as the
+       primitive rather than `foreground-inverse` because this element is fixed
+       to the viewport and can be focused from inside an inverted scope, where
+       that role flips to a light tone. */
+    color: var(--color-ink);
+  }
+}
+
+@layer utilities {
+  /* ── Texture ──────────────────────────────────────────────────────────
+     Grain is the only texture in the system. It sits in a pseudo-element so
+     it never intercepts pointer events and never repaints its host. */
+  .grain::after,
+  [data-grain]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    pointer-events: none;
+    background-image: var(--grain-image);
+    background-size: var(--grain-size) var(--grain-size);
+    opacity: var(--grain-opacity);
+    mix-blend-mode: overlay;
+  }
+
+  [data-grain="media"]::after {
+    opacity: var(--grain-opacity-media);
+  }
+
+  /* ── Grid ─────────────────────────────────────────────────────────────
+     The one layout primitive. Column counts come from the token layer so a
+     component never has to know which breakpoint it is in. */
+  .layout-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+
+  /* Development aid: `<html data-grid-overlay>` draws the active grid. */
+  [data-grid-overlay] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-transition);
+    pointer-events: none;
+    margin-inline: var(--spacing-gutter);
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-signal-wash) 0,
+      var(--color-signal-wash)
+        calc((100% - (var(--grid-columns) - 1) * var(--grid-gap)) / var(--grid-columns)),
+      transparent 0,
+      transparent
+        calc(
+          ((100% - (var(--grid-columns) - 1) * var(--grid-gap)) / var(--grid-columns)) +
+            var(--grid-gap)
+        )
+    );
+  }
+
+  /* ── Media masks ──────────────────────────────────────────────────────
+     Media never animates its own box. It sits inside a fixed-aspect mask and
+     scales within it, so a reveal or a hover can never cause layout shift. */
+  .media-mask {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+    background-color: var(--color-surface);
+  }
+
+  .media-mask > :is(img, video, canvas) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+
+  /* Vignette: one soft falloff from the corners, matching the lighting rule
+     that every composition has a single source. */
+  .media-vignette::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    pointer-events: none;
+    background: radial-gradient(
+      120% 90% at 50% 40%,
+      transparent 40%,
+      color-mix(in oklab, var(--color-void) calc(var(--media-vignette) * 100%), transparent) 100%
+    );
+  }
+
+  /* ── Cursor ───────────────────────────────────────────────────────────
+     The custom cursor replaces the native one only where it is actually
+     drawn: fine pointers, motion allowed, and not inside a text field. */
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    html[data-cursor="custom"],
+    html[data-cursor="custom"] :is(a, button, [role="button"], [data-cursor-target]) {
+      cursor: none;
+    }
+  }
+
+  html[data-cursor="custom"] :is(input, textarea, select, [contenteditable="true"]) {
+    cursor: auto;
+  }
+
+  /* ── Directional motion ───────────────────────────────────────────────
+     Reveals travel from inline-start to inline-end. In RTL that is a mirror,
+     so the motion layer reads this sign instead of hard-coding a direction. */
+  :root,
+  [dir="ltr"] {
+    --motion-direction: 1;
+  }
+
+  [dir="rtl"] {
+    --motion-direction: -1;
+  }
+
+  /* ── Prologue takeover ────────────────────────────────────────────────
+     The opening film owns the viewport for as long as it runs. The lock is
+     duplicated in CSS because Lenis is absent under reduced motion and when
+     the CMS switch is off, and the page must not scroll behind the film
+     either way. See docs/prologue.md for why this exception to the
+     no-scroll-jacking rule is granted. */
+  html[data-prologue="running"],
+  html[data-prologue="running"] body {
+    overflow: clip;
+  }
+
+  /* Site chrome is suppressed rather than unmounted, so the homepage beneath
+     stays complete for crawlers and assistive technology throughout. */
+  html[data-prologue="running"] [data-site-chrome] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  [data-site-chrome] {
+    transition: opacity var(--duration-transition) var(--ease-out-expo);
+  }
+}
+
+/* ===========================================================================
+   Arabic script corrections — deliberately unlayered
+
+   These rules sit outside `@layer base` on purpose. Cascade layers beat
+   specificity, so anything inside `@layer base` loses to every Tailwind
+   utility: `font-display`, `text-title-1` and `tracking-wider` were silently
+   overriding the Arabic font, leading and tracking on every heading, which
+   rendered Arabic in a Latin display face with negative letter-spacing.
+
+   Unlayered CSS outranks all layers, which is the correct precedence for a
+   script correction: it is not a styling preference, it is a rule about how
+   Arabic must be set. Layout direction needs nothing here — the codebase uses
+   logical properties throughout.
+
+   Escape hatch: put `lang="en"` on an element to opt it out, which is what a
+   Latin wordmark inside Arabic copy should carry anyway.
+   =========================================================================== */
+
+[lang="ar"] body,
+[lang="ar"] :is(h1, h2, h3, h4, h5, h6),
+[lang="ar"] :is(button, input, textarea, select),
+/* Eyebrows are monospace technical metadata in Latin. No monospace face in the
+   stack carries Arabic, so the browser picks an arbitrary fallback with the
+   wrong width and joining — Arabic eyebrows use the Arabic face instead. */
+[lang="ar"] [data-eyebrow] {
+  font-family: var(--font-arabic);
+}
+
+/* Arabic has no uppercase and a taller x-height: tighten nothing, loosen the
+   leading, and never letter-space it. */
+[lang="ar"] :is(h1, h2, h3, h4, h5, h6) {
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-snug);
+}
+
+[dir="rtl"] .uppercase,
+[dir="rtl"] [data-eyebrow] {
+  text-transform: none;
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Numbers, latin fragments and code stay LTR inside Arabic copy. */
+[dir="rtl"] :is(code, kbd, samp, .ltr) {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

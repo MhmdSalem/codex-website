@@ -1,0 +1,184 @@
+/*
+ * THE FIRST LINE — Scene 01 layers.
+ *
+ * Everything here is either a compositor-only property (transform, opacity) or
+ * a paint on an element that never changes size. The film has a 45KB budget and
+ * a 60fps floor; a full-screen repaint per frame would spend both.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-transition);
+  background-color: var(--color-void);
+  overflow: clip;
+  /* The light is the pointer. Nothing else should be. */
+  cursor: none;
+  /* Isolates the layers' blend modes from the page underneath. */
+  isolation: isolate;
+}
+
+/* The camera. One transform, driven by the master timeline, for the whole film. */
+.stage {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/*
+ * The light pool. `screen` lifts the void instead of painting grey over it,
+ * which is the difference between a light source and a decal.
+ */
+.pool {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 900px;
+  height: 900px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  background: radial-gradient(
+    circle closest-side,
+    rgba(236, 233, 226, 0.13) 0%,
+    rgba(236, 233, 226, 0.06) 32%,
+    rgba(236, 233, 226, 0.018) 58%,
+    transparent 78%
+  );
+  will-change: transform, opacity;
+}
+
+/*
+ * The source itself. Deliberately the same 8px mark as the site cursor: the
+ * thing holding the light in Scene 01 becomes the thing you point with later.
+ */
+.core {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--color-bone);
+  box-shadow: 0 0 18px 4px rgba(236, 233, 226, 0.24);
+  will-change: transform, opacity;
+}
+
+/* Encloses the frame, so the darkness reads as unlit rather than empty. */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse 78% 62% at 50% 50%,
+    transparent 0%,
+    rgba(4, 4, 6, 0.5) 62%,
+    rgba(3, 3, 4, 0.92) 100%
+  );
+}
+
+/*
+ * Film grain. `screen` on near-black shows the noise plate directly; the
+ * token's `overlay` treatment is tuned for content surfaces and all but
+ * disappears against the void.
+ */
+.grain {
+  position: absolute;
+  /* Oversized so the shimmer never exposes an edge. */
+  inset: -6%;
+  pointer-events: none;
+  opacity: 0;
+  background-image: var(--grain-image);
+  background-size: var(--grain-size) var(--grain-size);
+  background-repeat: repeat;
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation: grain-shift 0.6s steps(1, end) infinite;
+}
+
+/*
+ * Six discrete jumps per cycle — roughly 10fps, which is what reads as film
+ * rather than video. Transform only, so the plate is never repainted.
+ */
+@keyframes grain-shift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  16.6% {
+    transform: translate3d(-2%, 1.5%, 0);
+  }
+  33.3% {
+    transform: translate3d(1.5%, -2%, 0);
+  }
+  50% {
+    transform: translate3d(-1%, -1.5%, 0);
+  }
+  66.6% {
+    transform: translate3d(2%, 1%, 0);
+  }
+  83.3% {
+    transform: translate3d(-1.5%, 2%, 0);
+  }
+}
+
+/* Chrome. The only thing in Scene 01 that is not the world. */
+.controls {
+  position: absolute;
+  inset-block-end: var(--space-8, 2rem);
+  inset-inline-end: var(--space-8, 2rem);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  opacity: 0;
+}
+
+.control {
+  padding: 0.5rem 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--color-ash);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out-expo),
+    opacity var(--duration-fast) var(--ease-out-expo);
+}
+
+.control:hover,
+.control:focus-visible {
+  color: var(--color-bone);
+}
+
+.control:focus-visible {
+  outline: var(--focus-ring-width, 2px) solid var(--color-bone);
+  outline-offset: var(--focus-ring-offset, 3px);
+}
+
+/*
+ * Keyboard users need the escape hatch from the first frame, before the
+ * controls have faded up. Focus overrides the timeline.
+ */
+.controls:focus-within {
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    animation: none;
+  }
+}

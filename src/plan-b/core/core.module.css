@@ -1,0 +1,62 @@
+/*
+ * The core layer.
+ *
+ * A fixed plane behind every scene, and a mark that rides the coordinates the
+ * canvas publishes. Nothing here is animated by CSS: the canvas owns the clock,
+ * and these rules only place things.
+ */
+
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * Inside the core, wherever the core currently is.
+ *
+ * Physical `left`/`top` rather than logical properties: these land on
+ * coordinates the canvas computed, and the canvas has already mirrored itself
+ * for RTL. Applying the flip twice would put the mark on the wrong side of a
+ * scene it is supposed to be in the middle of.
+ */
+.mark {
+  position: absolute;
+  left: var(--core-x, 50%);
+  top: var(--core-y, 50%);
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  /* Rewritten every frame; promoted once for the life of the page. */
+  will-change: transform;
+}
+
+.mark > * {
+  grid-area: 1 / 1;
+}
+
+.word {
+  display: block;
+  /* Sized off the core's own radius, so the lockup keeps its relationship to
+     the ring at every viewport size instead of needing a breakpoint ladder. */
+  height: calc(var(--core-r, 10rem) * 0.26);
+  opacity: var(--core-word, 0);
+}
+
+.glyph {
+  font-family: var(--font-mono);
+  font-size: calc(var(--core-r, 10rem) * 0.3);
+  letter-spacing: -0.04em;
+  color: var(--color-paper);
+  opacity: var(--core-glyph, 0);
+  /* The glyph sits on the brightest part of the core; without this it reads as
+     grey type on white rather than as something inside the light. */
+  mix-blend-mode: difference;
+}

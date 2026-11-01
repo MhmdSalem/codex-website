@@ -1,0 +1,157 @@
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+
+import { PageCta } from "@/components/sections/PageCta";
+import { Arrow } from "@/components/ui/Arrow";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Section } from "@/components/ui/Section";
+import { PRODUCT_IDS } from "@/content/catalog";
+import { resolveEmail } from "@/content/contact";
+import styles from "@/experience/build/build.module.css";
+import { Window } from "@/experience/build/Window";
+import { routes } from "@/i18n/routes";
+import type { Locale } from "@/i18n/routing";
+import { getAboutPage, getSiteSettings } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
+import { Reveal } from "@/motion/Reveal";
+
+const PRINCIPLES = ["products", "engineering", "bilingual", "after"] as const;
+
+interface PageProps {
+  params: Promise<{ locale: Locale }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const [t, about] = await Promise.all([
+    getTranslations({ locale, namespace: "about" }),
+    getAboutPage(locale),
+  ]);
+
+  return buildPageMetadata({
+    locale,
+    path: "/about",
+    title: about?.headline ?? t("title"),
+    description: t("description"),
+    seo: about?.seo,
+  });
+}
+
+/**
+ * About — the company's story.
+ *
+ * Three paragraphs beside a timeline of milestones, then the principles as
+ * numbered cards: the things every piece of work here has to satisfy.
+ */
+export default async function AboutPage({ params }: PageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const [t, tProducts, tNav, about, settings] = await Promise.all([
+    getTranslations("about"),
+    getTranslations("catalog.products"),
+    getTranslations("nav"),
+    getAboutPage(locale),
+    getSiteSettings(locale),
+  ]);
+
+  const log = t.raw("log.items") as { hash: string; msg: string }[];
+
+  return (
+    <>
+      <PageHeader
+        eyebrow={about?.eyebrow ?? t("eyebrow")}
+        headline={about?.headline ?? t("headline")}
+        description={t("lead")}
+      />
+
+      <Reveal>
+        <Section spacing="flush" label={t("eyebrow")}>
+          <Container>
+            <div className={styles.module}>
+              <div className="flex flex-col gap-6">
+                <p data-reveal className={styles.lead} style={{ marginTop: 0 }}>
+                  {t("story.one")}
+                </p>
+                <p data-reveal className={styles.body} style={{ marginTop: 0 }}>
+                  {t("story.two")}
+                </p>
+                <p data-reveal className={styles.body} style={{ marginTop: 0 }}>
+                  {t("story.three")}
+                </p>
+                <ul className="mt-2 flex flex-wrap gap-3">
+                  {PRODUCT_IDS.map((id) => (
+                    <li key={id} data-reveal className={cn(styles.glass, "rounded-xl px-4 py-3")}>
+                      <p className="font-display text-body font-semibold">
+                        {tProducts(`${id}.name`)}
+                      </p>
+                      <p className={cn(styles.meta, "mt-1")} style={{ direction: "inherit" }}>
+                        {tProducts(`${id}.tag`)}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+                <div data-reveal>
+                  <Button href={routes.products} variant="outline" size="sm">
+                    {tNav("products")}
+                    <Arrow className="size-3.5" />
+                  </Button>
+                </div>
+              </div>
+
+              <div data-reveal>
+                <Window title={t("log.label")} status="main">
+                  <div className={styles.winBody}>
+                    <ol className={styles.log}>
+                      {log.map((commit) => (
+                        <li key={commit.hash} data-reveal className={styles.commit}>
+                          <i />
+                          <span className={styles.hash}>{commit.hash}</span>
+                          <span className={styles.msg}>{commit.msg}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </Window>
+              </div>
+            </div>
+          </Container>
+        </Section>
+
+        <Section spacing="default" label={t("principlesLabel")}>
+          <Container>
+            <div data-reveal className={styles.cmd}>
+              {t("principlesLabel")}
+            </div>
+            <h2 data-reveal className={cn(styles.h2, "mb-10")}>
+              {t("principlesLabel")}
+            </h2>
+            <ul className={styles.rules}>
+              {PRINCIPLES.map((id, index) => (
+                <li key={id} data-reveal className={cn(styles.glass, styles.rule)}>
+                  <span className={styles.meta} style={{ direction: "inherit" }}>
+                    {t("ruleLabel")} {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className={styles.h3}>{t(`principles.${id}.title`)}</h3>
+                  <p className={styles.body} style={{ marginTop: 0 }}>
+                    {t(`principles.${id}.body`)}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+
+        <PageCta
+          headline={t("cta.headline")}
+          body={t("cta.body")}
+          label={t("cta.button")}
+          email={resolveEmail(settings)}
+        />
+      </Reveal>
+    </>
+  );
+}

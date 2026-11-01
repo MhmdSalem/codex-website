@@ -1,0 +1,94 @@
+import { defineField, defineType } from "sanity";
+
+export const aboutPage = defineType({
+  name: "aboutPage",
+  title: "About page",
+  type: "document",
+  groups: [
+    { name: "content", title: "Content", default: true },
+    { name: "team", title: "Team" },
+    { name: "media", title: "Media" },
+    { name: "seo", title: "SEO" },
+  ],
+  fields: [
+    defineField({
+      name: "eyebrow",
+      title: "Eyebrow",
+      type: "localeString",
+      group: "content",
+    }),
+    defineField({
+      name: "headline",
+      title: "Headline",
+      type: "localeString",
+      group: "content",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "intro",
+      title: "Intro",
+      type: "localePortableText",
+      group: "content",
+    }),
+    defineField({
+      name: "story",
+      title: "Story",
+      type: "localePortableText",
+      group: "content",
+    }),
+    defineField({
+      name: "philosophy",
+      title: "Philosophy",
+      type: "localePortableText",
+      group: "content",
+    }),
+    defineField({
+      name: "values",
+      title: "Values",
+      type: "array",
+      group: "content",
+      of: [{ type: "valueItem" }],
+    }),
+    defineField({
+      name: "statistics",
+      title: "Statistics",
+      type: "array",
+      group: "content",
+      of: [{ type: "statistic" }],
+      validation: (rule) => rule.max(6),
+    }),
+    defineField({
+      name: "closingStatement",
+      title: "Closing statement",
+      type: "localeText",
+      group: "content",
+    }),
+    defineField({
+      name: "closingCta",
+      title: "Closing call to action",
+      type: "cta",
+      group: "content",
+    }),
+    defineField({
+      name: "team",
+      title: "Team",
+      type: "teamSection",
+      group: "team",
+    }),
+    defineField({
+      name: "images",
+      title: "Images",
+      description: "Studio imagery used across the page composition.",
+      type: "array",
+      group: "media",
+      of: [{ type: "media" }],
+    }),
+    defineField({ name: "seo", title: "SEO", type: "seo", group: "seo" }),
+  ],
+  preview: {
+    select: { title: "headline.en" },
+    prepare({ title }) {
+      return { title: "About page", subtitle: title };
+    },
+  },
+});

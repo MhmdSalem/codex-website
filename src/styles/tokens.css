@@ -1,0 +1,314 @@
+/* ===========================================================================
+   CODEX TECH — Design tokens
+   ---------------------------------------------------------------------------
+   Single source of truth for the visual system. Everything here is exposed
+   twice: as Tailwind theme values (via `@theme`) and as plain CSS custom
+   properties, so utility classes and CSS Modules stay in perfect sync.
+
+   The default Tailwind color palette is intentionally cleared. If a color is
+   not defined here, it cannot be used — that is the point.
+
+   Rationale for every value below lives in docs/design-bible.md.
+   =========================================================================== */
+
+@theme {
+  /* ── Color ─────────────────────────────────────────────────────────────
+     Black canvas, warm off-white type, one terracotta accent from the logo. */
+  --color-*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Primitives — neutrals.
+     Every step is slightly blue-shifted in shadow and warm in light, which is
+     what separates a graded image from a flat greyscale UI. */
+  --color-void: #08080a;
+  --color-obsidian: #101015;
+  --color-graphite: #17171d;
+  --color-slate: #23232c;
+  --color-steel: #3a3a46;
+  --color-ash: #7c7c89;
+  --color-fog: #a9a9b4;
+  --color-bone: #ece9e2;
+  --color-paper: #faf8f4;
+  --color-parchment: #f1eee7;
+  --color-ink: #0e0e12;
+
+  /* Primitives — signal (the single accent).
+     The accent is the logo's terracotta, so the mark and the interface are the
+     same brand rather than two. Unlike a saturated blue this tone is light
+     enough to carry dark text and bright enough to be text itself: `signal`
+     reaches 6.7:1 on black, `signal-bright` 9.4:1.
+
+     One tone per contrast job, which is why there are four of them. `signal`
+     fills and carries dark labels. `signal-bright` writes. `signal-deep` is the
+     fill for anything that carries a *white* label: white on `signal` is only
+     3.15:1, white on this clears 4.83:1 and meets AA. The four are the same hue
+     at four lightnesses, so they read as one colour. */
+  --color-signal: #d77758;
+  --color-signal-bright: #e89b80;
+  --color-signal-deep: #b8542f;
+  --color-signal-dim: #8f4530;
+  --color-signal-wash: color-mix(in oklab, var(--color-signal) 14%, transparent);
+
+  /* Primitives — state. Forms and system messages only, never decoration. */
+  --color-alert: #ff5842;
+  --color-positive: #3ad18f;
+
+  /* Semantic — surfaces.
+     The page sits on true black so the hero's light has something absolute to
+     rise out of; `void` and the greys above it stay as the elevation steps. */
+  --color-background: var(--color-black);
+  --color-surface: var(--color-obsidian);
+  --color-surface-raised: var(--color-graphite);
+  --color-surface-sunken: var(--color-black);
+  --color-surface-inverse: var(--color-paper);
+
+  /* Semantic — text */
+  --color-foreground: var(--color-bone);
+  --color-foreground-inverse: var(--color-ink);
+  --color-muted: var(--color-fog);
+  --color-subtle: var(--color-ash);
+  --color-disabled: var(--color-steel);
+
+  /* Semantic — lines & accents.
+     `accent` fills, `accent-text` writes, `accent-fill` fills under a white
+     label. `accent-project` is the CMS-driven per-project override and falls
+     back to the house colour when unset.
+
+     `accent-fill` deliberately does *not* take the project override. The other
+     fills can, because they carry dark labels and an editor's colour is almost
+     certainly light enough for ink. A white label inverts that logic — the
+     lighter the editor's pick, the worse it reads — so the button keeps the
+     house tone, where the ratio is known. */
+  --color-border: color-mix(in oklab, var(--color-bone) 12%, transparent);
+  --color-border-strong: color-mix(in oklab, var(--color-bone) 26%, transparent);
+  --color-hairline: color-mix(in oklab, var(--color-bone) 8%, transparent);
+  --color-accent: var(--color-accent-project, var(--color-signal));
+  --color-accent-fill: var(--color-signal-deep);
+  --color-accent-text: var(--color-signal-bright);
+  --color-accent-hover: var(--color-signal-bright);
+  --color-accent-muted: var(--color-signal-dim);
+  --color-accent-wash: var(--color-signal-wash);
+  --color-focus: var(--color-signal-bright);
+
+  /* ── Typography families ───────────────────────────────────────────────
+     Two voices and a technical one. The `--font-*-src` variables are injected
+     by next/font at runtime. */
+  --font-display: var(--font-display-src, "Space Grotesk"), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-sans-src, "Inter Tight"), "Helvetica Neue", Arial, sans-serif;
+  --font-arabic: var(--font-arabic-src, "IBM Plex Sans Arabic"), "Segoe UI", Tahoma, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  /* ── Fluid type scale ──────────────────────────────────────────────────
+     Fluid between 360px and 1920px. The gap between `lead` and `title-2` is
+     deliberate: compositions pick a loud voice or a quiet one, and the missing
+     middle is what stops the site from looking like a brochure. */
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.1em;
+
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0.01em;
+
+  --text-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+  --text-body--line-height: 1.6;
+
+  --text-lead: clamp(1.125rem, 0.98rem + 0.62vw, 1.5rem);
+  --text-lead--line-height: 1.45;
+  --text-lead--letter-spacing: -0.01em;
+
+  --text-title-3: clamp(1.375rem, 1.15rem + 1vw, 2rem);
+  --text-title-3--line-height: 1.12;
+  --text-title-3--letter-spacing: -0.02em;
+
+  --text-title-2: clamp(1.75rem, 1.28rem + 2.05vw, 3rem);
+  --text-title-2--line-height: 1.04;
+  --text-title-2--letter-spacing: -0.025em;
+
+  --text-title-1: clamp(2.25rem, 1.5rem + 3.28vw, 4.5rem);
+  --text-title-1--line-height: 0.98;
+  --text-title-1--letter-spacing: -0.03em;
+
+  /* `display` is the ceiling. There is no `hero` step: CODEX TECH sells
+     software, and monumental type reads as an agency showreel rather than a
+     product company. Headlines are meant to be read, not looked at. */
+  --text-display: clamp(2.75rem, 1.55rem + 5.25vw, 7rem);
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.035em;
+
+  /* ── Tracking & leading ────────────────────────────────────────────────*/
+  --tracking-tighter: -0.03em;
+  --tracking-tight: -0.015em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.1em;
+  --tracking-widest: 0.18em;
+
+  --leading-none: 1;
+  --leading-tight: 1.08;
+  --leading-snug: 1.28;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  /* ── Measure ───────────────────────────────────────────────────────────
+     Maximum line length per voice. Applied with `max-w-measure-*`. */
+  --container-measure-display: 24ch;
+  --container-measure-lead: 46ch;
+  --container-measure-body: 62ch;
+
+  /* ── Spacing ───────────────────────────────────────────────────────────
+     Base unit stays 0.25rem; these are named, fluid, layout-level steps. */
+  --spacing-gutter: clamp(1.25rem, 0.6rem + 2.8vw, 3.5rem);
+  --spacing-block: clamp(2rem, 1.2rem + 3.5vw, 5rem);
+  --spacing-section: clamp(5rem, 2.5rem + 10vw, 12rem);
+  --spacing-section-lg: clamp(7rem, 3rem + 15vw, 18rem);
+  --spacing-header: 5.5rem;
+
+  /* ── Containers ────────────────────────────────────────────────────────*/
+  --container-narrow: 44rem;
+  --container-text: 60rem;
+  --container-page: 90rem;
+  --container-wide: 112rem;
+
+  /* ── Breakpoints ───────────────────────────────────────────────────────*/
+  --breakpoint-xs: 30rem;
+  --breakpoint-3xl: 120rem;
+
+  /* ── Radius ────────────────────────────────────────────────────────────
+     Structure is square. `full` exists for pills, `xs` for input chrome, and
+     the rest exist only so nothing is ever invented ad hoc. */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* ── Elevation ─────────────────────────────────────────────────────────
+     On a near-black canvas a drop shadow is invisible, so elevation is
+     expressed as light: a hairline catches the edge, a soft ambient shadow
+     seats the object, and the accent glow marks a live element. */
+  --shadow-subtle: 0 1px 2px color-mix(in oklab, var(--color-black) 40%, transparent);
+  --shadow-lifted:
+    0 0 0 1px var(--color-hairline),
+    0 18px 40px -18px color-mix(in oklab, var(--color-black) 70%, transparent);
+  --shadow-float:
+    0 0 0 1px var(--color-hairline),
+    0 40px 90px -40px color-mix(in oklab, var(--color-black) 85%, transparent);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--color-signal) 45%, transparent);
+  --shadow-beam: 0 0 60px -10px color-mix(in oklab, var(--color-signal) 55%, transparent);
+
+  /* ── Motion easing ─────────────────────────────────────────────────────
+     Mirrored in src/motion/config.ts for GSAP and Motion. Nothing overshoots
+     except `spring`, which is reserved for the cursor. */
+  --ease-linear: linear;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Tokens outside the Tailwind namespace ───────────────────────────────
+   Consumed by CSS Modules, inline styles and the motion layer. */
+:root {
+  /* Motion durations (seconds for GSAP, ms for CSS) */
+  --duration-instant: 120ms;
+  --duration-fast: 240ms;
+  --duration-base: 400ms;
+  --duration-slow: 700ms;
+  --duration-slower: 1100ms;
+  --duration-reveal: 1400ms;
+  --duration-transition: 900ms;
+
+  /* Page-transition choreography */
+  --curtain-in: 450ms;
+  --curtain-hold: 120ms;
+  --curtain-out: 600ms;
+  --preloader-min: 600ms;
+  --preloader-max: 2000ms;
+
+  /* Stagger steps. Total stagger is capped at --stagger-max; past that,
+     children animate in batches rather than one long conga line. */
+  --stagger-tight: 30ms;
+  --stagger-base: 60ms;
+  --stagger-loose: 110ms;
+  --stagger-max: 480ms;
+
+  /* Scroll depth budget — the maximum translation any layer may take,
+     expressed as a percentage of its own height. */
+  --parallax-background: 15%;
+  --parallax-midground: 8%;
+  --parallax-foreground: 0%;
+
+  /* Z-index ladder — never hard-code a z-index anywhere else */
+  --z-below: -1;
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-overlay: 300;
+  --z-menu: 400;
+  --z-modal: 500;
+  --z-cursor: 900;
+  --z-transition: 1000;
+
+  /* Grid — 4 / 8 / 12 columns. Set per breakpoint at the bottom of this file. */
+  --grid-columns: 12;
+  --grid-gap: clamp(0.75rem, 0.35rem + 1.6vw, 1.75rem);
+
+  /* Layout */
+  --header-height: 5.5rem;
+  --scrollbar-width: 0px;
+
+  /* Texture — a single tileable fractal-noise plate, scaled by opacity only.
+     One image, one blend mode, no gradients. */
+  --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-size: 160px;
+  --grain-opacity: 0.035;
+  --grain-opacity-media: 0.06;
+
+  /* Cursor */
+  --cursor-size: 8px;
+  --cursor-size-hover: 48px;
+  --cursor-size-media: 88px;
+  --cursor-lerp: 0.16;
+
+  /* Focus */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 3px;
+
+  /* Image treatment */
+  --media-scale-rest: 1.06;
+  --media-scale-hover: 1.02;
+  --media-vignette: 0.35;
+}
+
+@media (min-width: 48rem) and (max-width: 63.999rem) {
+  :root {
+    --grid-columns: 8;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  :root {
+    --header-height: 4.25rem;
+    --grid-columns: 4;
+    --grain-opacity: 0.028;
+    --spacing-section: clamp(3.5rem, 2rem + 8vw, 12rem);
+    --text-title-1--line-height: 1.14;
+    --text-title-2--line-height: 1.16;
+    --text-title-3--line-height: 1.22;
+    --text-display--line-height: 1.12;
+
+    /* Mobile runs a reduced motion tier: shorter reveals, no parallax. */
+    --duration-reveal: 800ms;
+    --duration-slower: 700ms;
+    --parallax-background: 0%;
+    --parallax-midground: 0%;
+  }
+}

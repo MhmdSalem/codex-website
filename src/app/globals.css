@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/base.css";
+
+/* Tailwind v4 scans these directories for class names. */
+@source "../../src";
+@source "../../sanity";

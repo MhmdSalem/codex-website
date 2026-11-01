@@ -1,0 +1,830 @@
+{
+  "meta": {
+    "siteName": "CODEX TECH",
+    "defaultTitle": "CODEX TECH — Software Products and Platforms",
+    "titleTemplate": "{title} — CODEX TECH",
+    "defaultDescription": "CODEX TECH is a software company. We build our own products, Codex Accreditation and Lammetna, and we build the platforms, apps and AI solutions that companies and organisations need."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "products": "Products",
+    "work": "Work",
+    "pricing": "Pricing",
+    "checkout": "Checkout",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "delivery": "Delivery",
+    "refunds": "Refunds",
+    "cta": "Let's Build",
+    "menu": "Menu",
+    "close": "Close",
+    "openMenu": "Open navigation",
+    "closeMenu": "Close navigation",
+    "skipToContent": "Skip to content",
+    "primaryLabel": "Primary",
+    "footerLabel": "Footer",
+    "languageLabel": "Language",
+    "switchTo": "Switch to {language}"
+  },
+  "common": {
+    "loading": "Loading",
+    "backToTop": "Back to top",
+    "viewProject": "View project",
+    "viewAllWork": "View all work",
+    "getInTouch": "Start a project",
+    "scrollToExplore": "Scroll",
+    "index": "Index",
+    "year": "Year",
+    "client": "Client",
+    "services": "Services",
+    "phaseNotice": "Content for this section is managed in the CMS and will appear once connected."
+  },
+  "prologue": {
+    "label": "Opening sequence",
+    "skip": "Skip",
+    "soundOff": "Sound off",
+    "soundOn": "Sound on"
+  },
+  "home": {
+    "title": "Software Products and Platforms",
+    "description": "CODEX TECH builds its own software products, and builds the platforms, apps and AI solutions that companies and organisations need.",
+    "eyebrow": "Welcome to Codex",
+    "headline": "We turn ideas into *digital* products",
+    "subheading": "We build scalable, secure, and intelligent digital solutions that empower businesses to grow, automate, and lead.",
+    "primaryCta": "Explore Solutions",
+    "secondaryCta": "View Our Products",
+    "scrollHint": "Scroll to discover",
+    "modulesLabel": "What we engineer",
+    "modules": {
+      "webPlatforms": "Web platforms",
+      "aiSolutions": "AI solutions",
+      "mobileApps": "Mobile apps",
+      "dataAnalytics": "Data & analytics",
+      "automation": "Automation",
+      "integrations": "Integrations"
+    },
+    "intro": {
+      "eyebrow": "The idea",
+      "lineOne": "An idea becomes software.",
+      "lineTwo": "Software becomes a product.",
+      "lineThree": "A product solves a real problem.",
+      "lineFour": "And the business *grows* around it.",
+      "support": "That sequence is the whole company. We are engineers who ship — our own products first, then the platforms our clients run their business on."
+    },
+    "productsSection": {
+      "eyebrow": "Our products",
+      "headline": "Two products we build, own and *operate*.",
+      "lead": "We do not hand software over and walk away. We run our own platforms in production, which is why we know what it takes to keep software alive.",
+      "cta": "All products"
+    },
+    "servicesSection": {
+      "eyebrow": "What we engineer",
+      "headline": "From architecture to *production*.",
+      "lead": "Six capabilities that arrive as one system rather than six separate services.",
+      "cta": "Explore services"
+    },
+    "processSection": {
+      "eyebrow": "How we build",
+      "headline": "Four steps, and no surprises.",
+      "lead": "The same sequence on every project, whether it runs for six weeks or two years."
+    },
+    "company": {
+      "eyebrow": "The company",
+      "headline": "A software company with its own *products*.",
+      "bodyOne": "CODEX TECH designs and engineers platforms, applications and AI systems — and builds products of its own. Owning products is the part that keeps us honest about maintenance, uptime and the real cost of a shortcut.",
+      "bodyTwo": "We work in Arabic and English, right to left and left to right, with the same care given to both.",
+      "cta": "About the company",
+      "principles": {
+        "products": "Products before promises",
+        "engineering": "Engineering-led delivery",
+        "bilingual": "Bilingual by default",
+        "after": "We stay after launch"
+      }
+    },
+    "closing": {
+      "eyebrow": "Next step",
+      "headline": "Tell us what you are *building*.",
+      "body": "Send the outline of the idea. You will get a straight answer about scope, sequence and what it takes to run it.",
+      "cta": "Start a project",
+      "or": "or email us"
+    }
+  },
+  "catalog": {
+    "services": {
+      "webPlatforms": {
+        "name": "Web platforms",
+        "summary": "Dashboards, portals and internal systems built to carry real operations.",
+        "detail": "The system a team actually works in all day: roles and permissions, records and approvals, search that returns the right row, and an interface that stays fast once the data is no longer a demo.",
+        "includes": {
+          "a": "Admin dashboards and internal tools",
+          "b": "Customer and partner portals",
+          "c": "A permission for every employee and a record of every change",
+          "d": "Stays fast however large the data grows"
+        }
+      },
+      "aiSolutions": {
+        "name": "AI solutions",
+        "summary": "Assistants, document intelligence and automation that fit how the team already works.",
+        "detail": "AI applied to a specific job rather than bolted on as a feature: reading documents, answering from your own content, classifying what arrives, and drafting the work a person then approves.",
+        "includes": {
+          "a": "An assistant that answers from your company's own data",
+          "b": "Document and form extraction",
+          "c": "Classification, routing and summarisation",
+          "d": "A person reviews and approves before anything is acted on"
+        }
+      },
+      "mobileApps": {
+        "name": "Mobile apps",
+        "summary": "iPhone and Android apps that work on the same data as your web system.",
+        "detail": "One product, two screens: the phone app and the web system read the same data, so a change shows up in both at the same moment.",
+        "includes": {
+          "a": "One app that works on iPhone and Android",
+          "b": "Offline-tolerant behaviour",
+          "c": "Instant notifications to your users",
+          "d": "Store submission and release management"
+        }
+      },
+      "dataAnalytics": {
+        "name": "Data & analytics",
+        "summary": "Your scattered data gathered into clear reports you can decide from.",
+        "detail": "Getting data out of the systems it is trapped in, agreeing on what each number means, and putting it somewhere a decision can be made from without exporting a spreadsheet first.",
+        "includes": {
+          "a": "Data gathered from your systems and kept up to date automatically",
+          "b": "Reporting dashboards",
+          "c": "One agreed number for every measure",
+          "d": "Reports that arrive on schedule"
+        }
+      },
+      "automation": {
+        "name": "Automation",
+        "summary": "Manual steps replaced by workflows that run without being asked.",
+        "detail": "The repeated work between systems — copying, chasing, checking, notifying — described once as a workflow and then left to run, with a record of what happened and what failed.",
+        "includes": {
+          "a": "Approval and review workflows",
+          "b": "Tasks that run on time, or when something specific happens",
+          "c": "Notifications across email and WhatsApp",
+          "d": "An instant alert if something breaks, and a record of what happened"
+        }
+      },
+      "integrations": {
+        "name": "Integrations",
+        "summary": "The payment, accounting and messaging systems you already use, working together.",
+        "detail": "Connecting what you already pay for. One integration layer with its own error handling, so a third-party outage is a queued job rather than a broken page.",
+        "includes": {
+          "a": "Payment and invoicing providers",
+          "b": "Identity and single sign-on",
+          "c": "Accounting, customer and resource systems",
+          "d": "Automatic, secure data exchange between systems"
+        }
+      }
+    },
+    "products": {
+      "accreditation": {
+        "name": "Codex Accreditation",
+        "tag": "Access & credentials",
+        "summary": "Accreditation and access control for conferences, exhibitions and large events — registration, badges, on-site verification and permissions in one system.",
+        "detail": "Everyone who attends an event needs a credential, and every credential is a decision: who approved it, where it grants access, and whether it is still valid at the gate. The platform holds that decision from the first registration form to the moment a badge is scanned.",
+        "audience": "Built for event organisers, exhibition operators and the teams running accreditation on the day.",
+        "features": {
+          "a": "Registration and approval workflows",
+          "b": "Badge design and printing",
+          "c": "On-site check-in and verification",
+          "d": "Zones, roles and access permissions",
+          "e": "Live attendance and gate reporting"
+        }
+      },
+      "daawa": {
+        "name": "Lammetna",
+        "tag": "Events & invitations",
+        "summary": "Digital invitations from design to the door: design the invitation, send it to your list, see who is coming, and check guests in on the day.",
+        "detail": "Sending the invitation is the easy part. The hard part is knowing who received it, who answered, who actually came, and keeping the list right as it changes up to the last minute. Lammetna keeps the invitation, the guest list and the door in one place.",
+        "audience": "For hosts, event planners and agencies that run invitations for their clients.",
+        "features": {
+          "a": "Design the invitation in your own style",
+          "b": "Send to everyone at once, with automatic reminders",
+          "c": "Follow the replies as they come in",
+          "d": "Check guests in at the door from a phone",
+          "e": "One guest list, always up to date"
+        }
+      }
+    },
+    "process": {
+      "discover": {
+        "title": "Discover",
+        "body": "We learn the business before we draw a screen — the workflow, the constraints, and what success has to look like."
+      },
+      "design": {
+        "title": "Design",
+        "body": "Experience and architecture planned together, so what looks right is also what runs well under load."
+      },
+      "develop": {
+        "title": "Develop",
+        "body": "Built in production conditions from the first week, in short cycles you can see and correct."
+      },
+      "launch": {
+        "title": "Launch",
+        "body": "We deploy, watch it run with real users, and stay for what comes after the launch week."
+      }
+    }
+  },
+  "planB": {
+    "title": "The Software Core",
+    "description": "A second concept for the CODEX TECH homepage: one software core, and eight states of it.",
+    "concept": "Concept",
+    "cta": "Start Project",
+    "scroll": "Scroll",
+    "storyLabel": "The story",
+    "intro": {
+      "label": "Intro",
+      "gloss": "One core. Everything else follows.",
+      "eyebrow": "CODEX TECH — Software Core",
+      "lead": "Every system we build starts in the same place."
+    },
+    "spark": {
+      "label": "The Spark",
+      "gloss": "One idea. Software begins to take shape.",
+      "headline": "We build software *products*.",
+      "lead": "Custom systems. Real impact."
+    },
+    "problem": {
+      "label": "The Problem",
+      "gloss": "Disconnected tools. Manual work. Lost time.",
+      "headline": "Every business runs on *disconnected* tools.",
+      "lead": "A spreadsheet here, a chat thread there, a file nobody can find, and four versions of the same number.",
+      "fragments": {
+        "spreadsheets": "Spreadsheets",
+        "chat": "Chat threads",
+        "files": "PDF files",
+        "entry": "Manual entry",
+        "data": "Scattered data",
+        "time": "Lost time"
+      }
+    },
+    "transformation": {
+      "label": "The Transformation",
+      "gloss": "Everything flows together and becomes one system.",
+      "headline": "One flow. One *intelligent* system.",
+      "lead": "Connected. Automated. Built to be measured.",
+      "metrics": {
+        "flow": {
+          "label": "Records in flow",
+          "value": "1,256"
+        },
+        "automated": {
+          "label": "Automated steps",
+          "value": "84%"
+        },
+        "manual": {
+          "label": "Manual entry",
+          "value": "None"
+        }
+      }
+    },
+    "products": {
+      "label": "Our Products",
+      "gloss": "Real products. Real impact.",
+      "headline": "Two of them are *ours*.",
+      "lead": "We run what we sell, which is why we know what it takes to keep software alive.",
+      "daawa": {
+        "name": "Lammetna",
+        "tag": "Events & invitations",
+        "headline": "Digital invitations, made simple.",
+        "lead": "Create. Send. Track."
+      },
+      "accreditation": {
+        "name": "Codex Accreditation",
+        "tag": "Access & credentials",
+        "headline": "Smart accreditation for events.",
+        "lead": "Organise. Verify. Control."
+      }
+    },
+    "process": {
+      "label": "How We Build",
+      "gloss": "From idea to launch.",
+      "headline": "Four steps, and no surprises.",
+      "steps": {
+        "discover": {
+          "title": "Discover",
+          "body": "We learn the business before we draw a screen."
+        },
+        "design": {
+          "title": "Design",
+          "body": "We plan the experience and the architecture together."
+        },
+        "develop": {
+          "title": "Develop",
+          "body": "We build in production conditions from the first week."
+        },
+        "launch": {
+          "title": "Launch",
+          "body": "We deploy, watch it run, and stay for what comes next."
+        }
+      }
+    },
+    "living": {
+      "label": "Living Systems",
+      "gloss": "Systems that keep working.",
+      "headline": "Software that keeps *working* after launch.",
+      "lead": "Live data, live users, live consequences — an ordinary day inside our products.",
+      "panels": {
+        "registrations": {
+          "label": "Registrations today",
+          "value": "1,256"
+        },
+        "checkin": {
+          "label": "Check-in",
+          "value": "Verified",
+          "note": "Gate 3 — 09:41"
+        },
+        "coverage": {
+          "label": "Coverage",
+          "value": "Riyadh, SA"
+        },
+        "dispatch": {
+          "label": "Invitations sent",
+          "value": "412"
+        }
+      }
+    },
+    "convergence": {
+      "label": "The Convergence",
+      "gloss": "Everything connects back to one core.",
+      "headline": "Let's build something *meaningful*.",
+      "lead": "One core. Your systems around it.",
+      "cta": "Start a Project"
+    }
+  },
+  "work": {
+    "title": "Work",
+    "description": "Selected projects by CODEX TECH — software products, platforms and applications built for organisations.",
+    "eyebrow": "Selected work",
+    "headline": "Software running in production.",
+    "empty": "No projects have been published yet."
+  },
+  "project": {
+    "challenge": "Challenge",
+    "strategy": "Strategy",
+    "solution": "Solution",
+    "experience": "Experience",
+    "results": "Results",
+    "gallery": "Gallery",
+    "related": "Next projects",
+    "notFound": "This project could not be found."
+  },
+  "services": {
+    "title": "Services",
+    "description": "What CODEX TECH engineers — web platforms, AI solutions, mobile apps, data, automation and integrations.",
+    "eyebrow": "Services",
+    "headline": "From architecture to production.",
+    "lead": "Six capabilities, one engineering team. Most projects use three or four of them at once.",
+    "includesLabel": "Includes",
+    "engagement": {
+      "eyebrow": "How it runs",
+      "headline": "One team, one sequence, visible progress.",
+      "body": "Work moves in short cycles with something to look at in every one. You see the system as it is being built rather than at the end, and scope changes are decisions taken together instead of surprises at delivery."
+    },
+    "cta": {
+      "headline": "Which of these do you need?",
+      "body": "Describe the problem rather than the solution. We will tell you which parts apply and in what order.",
+      "button": "Start a project"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "description": "Software products built and owned by CODEX TECH: Codex Accreditation for event access and Lammetna for digital invitations.",
+    "eyebrow": "Products",
+    "headline": "Software we own and operate.",
+    "lead": "Two products, both live, both built and maintained in-house. Running our own software is how we learned what it costs to keep a system dependable.",
+    "featuresLabel": "What it does",
+    "audienceLabel": "Who it is for",
+    "enquire": "Request a demo",
+    "orderNow": "Order now",
+    "custom": {
+      "eyebrow": "And yours",
+      "headline": "We build products for other companies too.",
+      "body": "The same team, the same standards, applied to a system you own. If what you need is not on this page, it is probably a custom build.",
+      "cta": "Explore services"
+    },
+    "cta": {
+      "headline": "Want something like this for your organisation?",
+      "body": "Both of these products started as somebody's problem. Describe yours and we will tell you whether it needs a product, a platform, or neither.",
+      "button": "Start a project"
+    },
+    "live": "live",
+    "daawaMock": {
+      "rows": {
+        "a": "Nour",
+        "b": "Karim",
+        "c": "Hana",
+        "d": "Youssef"
+      },
+      "statuses": {
+        "yes": "coming",
+        "no": "declined",
+        "pending": "no reply"
+      },
+      "summary": "Replies · 184 of 256"
+    }
+  },
+  "checkout": {
+    "title": "Checkout",
+    "description": "Choose one or both products, enter your name, email and mobile number, and confirm the policies before payment.",
+    "eyebrow": "Order",
+    "headline": "Complete your order.",
+    "lead": "Tick Codex Accreditation, Lammetna, or both, and leave a way to reach you. Payment on this page is not open yet, and nothing is charged.",
+    "productLabel": "Products",
+    "servicesLabel": "Services",
+    "customerLabel": "Your details",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "name@email.com",
+    "phone": "Mobile number",
+    "phonePlaceholder": "01000000000",
+    "summaryLabel": "Order summary",
+    "emptySummary": "Nothing selected yet.",
+    "priceLabel": "Price",
+    "totalLabel": "Total",
+    "priceNote": "The total is the sum of the products you selected, and it is confirmed before anything is collected.",
+    "termsLead": "I agree to the",
+    "termsLink": "terms and conditions",
+    "refundsLead": "I agree to the",
+    "refundsLink": "refund and cancellation policy",
+    "pay": "Complete payment",
+    "unavailableHeadline": "Payment is not available yet",
+    "unavailable": "Online payment is being switched on, and it will open shortly. Nothing has been charged.",
+    "unavailableContact": "To place this order today, write to us at",
+    "errors": {
+      "name": "Enter your name.",
+      "email": "Enter a valid email address.",
+      "phone": "Enter a mobile number we can reach.",
+      "items": "Choose at least one product.",
+      "terms": "Agree to the terms and conditions to continue.",
+      "refunds": "Agree to the refund and cancellation policy to continue."
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "description": "How engagements with CODEX TECH are scoped and priced.",
+    "eyebrow": "Pricing",
+    "headline": "Starting prices are public. The final one is scoped.",
+    "lead": "Software is not a subscription tier, so we do not price it like one. The figures here are the floor for the smallest serious version of each service; the real number comes from a written scope you see in full before anything starts.",
+    "from": "From {price}",
+    "fromMonthly": "From {price} a month",
+    "byAgreement": "Structured case by case",
+    "order": "Order now",
+    "servicesLabel": "Starting points",
+    "servicesNote": "These are floors, not quotes: the cost of the smallest version of each service we are willing to deliver. They rise with the size of the system, the number of integrations, and what uptime and security the work demands.",
+    "modelsLabel": "Engagement models",
+    "models": {
+      "project": {
+        "name": "Fixed-scope project",
+        "suits": "A defined system with a clear outcome and a delivery date.",
+        "note": "Priced against a written scope after discovery, invoiced in phases tied to delivery."
+      },
+      "retainer": {
+        "name": "Monthly retainer",
+        "suits": "A live product that keeps evolving after launch.",
+        "note": "A reserved capacity each month for development, maintenance and support."
+      },
+      "partnership": {
+        "name": "Product partnership",
+        "suits": "A product built jointly, where we carry part of the build.",
+        "note": "Structured case by case, with a written agreement covering ownership and terms."
+      }
+    },
+    "factorsLabel": "What moves the price",
+    "factors": {
+      "a": "How much of the system already exists",
+      "b": "The number of user roles and workflows",
+      "c": "Integrations with systems you already run",
+      "d": "Data volume, uptime and security requirements"
+    },
+    "note": "Discovery is a paid, short first phase on larger projects. It produces the scope, the architecture and the estimate — and it is yours whether or not you continue with us.",
+    "cta": {
+      "headline": "Get a scoped estimate.",
+      "body": "Send what you have — a document, a sketch, or a paragraph. We will come back with scope, sequence and a number.",
+      "button": "Start a project"
+    },
+    "quoteTitle": "Starting quote",
+    "quoteNote": "starting prices · final price after we agree the scope",
+    "planLabel": "Option"
+  },
+  "about": {
+    "title": "Company",
+    "description": "CODEX TECH builds its own software products, and builds the platforms, apps and AI solutions that companies and organisations need.",
+    "eyebrow": "The company",
+    "headline": "A software company with its own products.",
+    "lead": "We build software products — our own, and the systems other organisations run their business on.",
+    "story": {
+      "one": "CODEX TECH is a software company. We design and build platforms, apps and AI solutions, and we run two products of our own, Codex Accreditation and Lammetna, both live today and maintained by the same team that built them.",
+      "two": "Owning products changes how we work. When you carry a system yourself you stop making decisions that look clever in a demo and cost you at two in the morning, and you learn what a shortcut costs in the second year. That experience is what our clients are actually buying.",
+      "three": "We work in Arabic and English, right to left and left to right, with the same care given to both. Nothing here is a translated afterthought."
+    },
+    "principlesLabel": "How we work",
+    "principles": {
+      "products": {
+        "title": "Products before promises",
+        "body": "We ship our own software, so what we claim is something we have already had to live with."
+      },
+      "engineering": {
+        "title": "Engineering-led delivery",
+        "body": "Architecture is decided with the design, not discovered halfway through the build."
+      },
+      "bilingual": {
+        "title": "Bilingual by default",
+        "body": "Arabic and English are designed together — layout, type and content in both directions."
+      },
+      "after": {
+        "title": "We stay after launch",
+        "body": "Launch is the start of the real load. We are there for it, and for what it teaches."
+      }
+    },
+    "cta": {
+      "headline": "Work with us.",
+      "body": "Tell us what you are building and who it is for. We will tell you honestly whether we are the right team for it.",
+      "button": "Start a project"
+    },
+    "log": {
+      "label": "Our story so far",
+      "items": [
+        {
+          "hash": "01",
+          "msg": "Started as a software company with its own products"
+        },
+        {
+          "hash": "02",
+          "msg": "Launched Codex Accreditation for event access"
+        },
+        {
+          "hash": "03",
+          "msg": "Launched Lammetna for digital invitations"
+        },
+        {
+          "hash": "04",
+          "msg": "Work in Arabic and English to the same standard"
+        },
+        {
+          "hash": "05",
+          "msg": "Stay with our clients after launch"
+        }
+      ]
+    },
+    "ruleLabel": "Principle"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Start a project with CODEX TECH.",
+    "eyebrow": "Contact",
+    "headline": "Tell us what you are building.",
+    "lead": "A short outline is enough to start: what it is, who uses it, and when you need it.",
+    "email": "Email",
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "address": "Office",
+    "channelsLabel": "Direct",
+    "socialLabel": "Elsewhere",
+    "responseLabel": "Response time",
+    "response": "We reply within one business day.",
+    "form": {
+      "label": "Project enquiry",
+      "name": "Your name",
+      "email": "Email",
+      "company": "Company",
+      "topic": "What is it about?",
+      "topics": {
+        "product": "A new product or platform",
+        "existing": "An existing system to improve",
+        "ai": "AI or automation",
+        "other": "Something else"
+      },
+      "message": "Tell us about the project",
+      "messagePlaceholder": "What it is, who uses it, and what has to be true for it to work.",
+      "optional": "Optional",
+      "submit": "Send enquiry",
+      "sending": "Sending",
+      "successHeadline": "Message sent.",
+      "success": "Thank you — we have it, and you will hear back within one business day.",
+      "errors": {
+        "name": "Please enter your name.",
+        "email": "Please enter a valid email address.",
+        "message": "Please tell us a little about the project.",
+        "failed": "The message could not be sent. Please email us directly and we will pick it up from there."
+      }
+    },
+    "replTitle": "Project enquiry",
+    "replHint": "Tell us about your project below. We reply within one business day."
+  },
+  "delivery": {
+    "title": "Service Delivery Policy",
+    "description": "How CODEX TECH delivers digital products and technical services.",
+    "eyebrow": "Legal",
+    "headline": "Service Delivery Policy",
+    "lastUpdated": "Last updated {date}",
+    "intro": "CODEX TECH provides digital products, software solutions, subscriptions and technical services. The company does not sell or ship any physical goods.",
+    "sections": {
+      "method": {
+        "title": "How delivery works",
+        "body": "Every product and service is delivered electronically — through our digital platforms, the client account, email, or another approved digital channel."
+      },
+      "digital": {
+        "title": "Digital products and subscriptions",
+        "body": "Digital products and subscriptions are usually activated immediately after a successful payment, or within 24 hours, depending on the service."
+      },
+      "custom": {
+        "title": "Custom work",
+        "body": "For websites, applications, systems and other custom software, the timeline and delivery stages are agreed with the client before work begins."
+      },
+      "confirmation": {
+        "title": "Confirmation",
+        "body": "The client receives confirmation by email or through the relevant platform when a service or subscription is activated."
+      },
+      "contact": {
+        "title": "If you cannot access the service",
+        "body": "If there is any problem receiving or accessing a purchased service, write to us by email."
+      }
+    }
+  },
+  "refunds": {
+    "title": "Refund and Cancellation Policy",
+    "description": "When a CODEX TECH service can be cancelled and refunded.",
+    "eyebrow": "Legal",
+    "headline": "Refund and Cancellation Policy",
+    "lastUpdated": "Last updated {date}",
+    "intro": "CODEX TECH aims to provide digital products and technical services that are clear and reliable.",
+    "sections": {
+      "digital": {
+        "title": "Digital products and subscriptions",
+        "body": "A client may request cancellation and a refund within 14 days of purchase, provided the digital service has not been substantially used, consumed, or customised for the client."
+      },
+      "afterUse": {
+        "title": "After use or customisation",
+        "body": "After a digital service has actually been used, or after a customised service has been delivered, amounts paid may become non-refundable."
+      },
+      "custom": {
+        "title": "Custom projects and services",
+        "body": "For software, website and mobile development and other custom work, any refund depends on the work already completed. The value of finished stages, third-party costs and work already delivered is deducted from any amount due, if a refund applies."
+      },
+      "mistaken": {
+        "title": "Duplicate or mistaken payments",
+        "body": "Amounts paid in error or paid twice can be refunded after they have been verified."
+      },
+      "payout": {
+        "title": "How a refund is paid",
+        "body": "Refunds are returned to the original payment method. The time it takes to arrive depends on the payment provider or the card-issuing bank."
+      },
+      "contact": {
+        "title": "How to request a refund",
+        "body": "To request a cancellation or refund, write to us by email with your name, the order or transaction number, and the reason for the request."
+      }
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "description": "How CODEX TECH collects, uses and protects personal data.",
+    "eyebrow": "Legal",
+    "headline": "Privacy Policy",
+    "lastUpdated": "Last updated {date}",
+    "intro": "This policy covers this website. Our products — Codex Accreditation and Lammetna — process data under separate agreements with the organisations that operate them.",
+    "sections": {
+      "collect": {
+        "title": "What we collect",
+        "body": "Only what you send us. If you use the contact form we receive your name, email address, company if you give one, and your message. We do not ask for anything else, and there is no account to create."
+      },
+      "use": {
+        "title": "How we use it",
+        "body": "To answer you and to carry on the conversation you started. We do not sell your data, we do not add you to a marketing list, and we do not use it to profile you."
+      },
+      "retention": {
+        "title": "How long we keep it",
+        "body": "Enquiries are kept while the conversation is active and for a reasonable period afterwards as a business record. You can ask us to delete yours at any time."
+      },
+      "processors": {
+        "title": "Who else is involved",
+        "body": "The site is served by our hosting provider and enquiries are delivered by an email provider. Both process the data only to deliver the service, and only for as long as that takes."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "This site does not use advertising or tracking cookies. Only the technical storage needed to remember your language and to play the opening sequence once per visit."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "You can ask what we hold about you, ask for it to be corrected, or ask for it to be deleted. Write to us and we will answer."
+      },
+      "contact": {
+        "title": "Contact",
+        "body": "For anything in this policy, including deletion requests, email us."
+      }
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "code": "404",
+    "headline": "This page does not exist.",
+    "description": "The page you are looking for may have been moved, renamed or never existed.",
+    "cta": "Back to index"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "code": "500",
+    "headline": "Something broke on our side.",
+    "description": "An unexpected error occurred. Try again, and if it persists let us know.",
+    "retry": "Try again",
+    "home": "Back to index"
+  },
+  "footer": {
+    "copyright": "© {year} CODEX TECH. All rights reserved.",
+    "tagline": "A software company. Our own products, and the platforms we build for the organisations that run on them.",
+    "entity": "Company",
+    "commercialRegister": "Commercial register",
+    "unifiedCommercialRegister": "Unified commercial register",
+    "taxRegister": "Tax ID",
+    "address": "Address",
+    "social": "Social",
+    "reach": "Reach us",
+    "navigate": "Navigate",
+    "legal": "Legal",
+    "status": {
+      "region": "Cairo · Egypt"
+    },
+    "prompt": "start your project"
+  },
+  "build": {
+    "label": "Build sequence",
+    "commands": {
+      "write": "we write the code",
+      "intro": "the idea",
+      "build": "we build the product",
+      "connect": "we connect the services",
+      "ship": "we ship",
+      "start": "let's start"
+    },
+    "status": {
+      "branch": "main",
+      "build": "build passing",
+      "version": "v2.4.1"
+    },
+    "editor": {
+      "file": "gate code · Codex Accreditation",
+      "lang": "TypeScript",
+      "compiling": "building…",
+      "built": "✓ built"
+    },
+    "kpis": {
+      "products": "products running today",
+      "capabilities": "services we offer",
+      "languages": "languages, same quality"
+    },
+    "stage": {
+      "live": "Gate 3 · open",
+      "verified": "verified · 09:41",
+      "admit": "admit",
+      "deny": "denied · wrong zone",
+      "checkins": "check-ins · last hour",
+      "guests": {
+        "a": "Omar Said · organiser",
+        "b": "Lina K. · zone B only",
+        "c": "Sara Mahmoud · press",
+        "d": "Ahmed Ali · exhibitor"
+      }
+    },
+    "terminal": {
+      "run": "building Codex Accreditation",
+      "open": "opened entry gate 3",
+      "verify": "verified a guest's badge in a second",
+      "metrics": "1,284 guests in the last hour",
+      "daawa": "Lammetna: invitations, replies, guest check-in"
+    },
+    "pipeline": {
+      "running": "running",
+      "passed": "passed",
+      "queued": "queued",
+      "logs": {
+        "discover": [
+          "we learn how you work today",
+          "we agree what success looks like",
+          "✓ scope agreed"
+        ],
+        "design": [
+          "we draw the screens and how the system works",
+          "we try the idea with you before building",
+          "✓ design approved"
+        ],
+        "develop": [
+          "we build in short stages you can see",
+          "we test every part before handing it over",
+          "✓ ready to try"
+        ],
+        "launch": [
+          "we launch and watch it with the first users",
+          "we train your team",
+          "✓ live · and we stay with you"
+        ]
+      }
+    },
+    "prompt": "start your project with us",
+    "fps": "fps"
+  }
+}

@@ -1,0 +1,335 @@
+/*
+ * Story Core — prototype stage.
+ *
+ * Two layouts live in this file. The default one is the scene: a pinned
+ * viewport-sized stage where everything is absolutely positioned and the render
+ * loop owns the coordinates. The `[data-still]` variant is the reduced-motion
+ * rendering: the same DOM, released into normal flow and read top to bottom.
+ *
+ * The DOM order is the story order — core, headline, fragments, note, dashboard,
+ * note — which is what lets the second layout be a handful of overrides instead
+ * of a second component.
+ */
+
+.scene {
+  position: relative;
+  background-color: var(--color-black);
+}
+
+.stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* Internal marker, so nobody mistakes this route for a page of the site. */
+.tag {
+  position: fixed;
+  top: var(--spacing-gutter);
+  left: var(--spacing-gutter);
+  z-index: var(--z-raised);
+  pointer-events: none;
+}
+
+/* The core's plane: canvas plus the one mark that rides on top of it. */
+.core {
+  position: absolute;
+  inset: 0;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * The mark. One element for the whole scene: it is the `</>` inside the core in
+ * state one and the same node in the dashboard header in state three, moved
+ * there on coordinates the render loop publishes. Two elements swapping opacity
+ * would be two marks that happen to look alike, which is the opposite of what
+ * this prototype is trying to prove.
+ */
+.glyph {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: var(--glyph-size, 2rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-paper);
+  transform: translate3d(var(--glyph-x, 50%), var(--glyph-y, 50%), 0) translate(-50%, -50%)
+    scale(var(--glyph-scale, 1));
+  /* Rewritten every frame for the life of the scene. */
+  will-change: transform;
+}
+
+/* ── Copy ─────────────────────────────────────────────────────────────────
+   Three blocks, all present in the document at all times. They are hidden with
+   opacity rather than `visibility`, so the scene still reads as three sentences
+   in order to a screen reader that is not scrolling it.
+
+   Centred with auto margins, not with `translateX(-50%)`: the timeline moves
+   these on Y, and a transform in the stylesheet would be flattened into pixels
+   the moment GSAP took the property over — leaving the block a stale half-width
+   off centre after the next resize. Every element in this file has exactly one
+   owner for its transform. */
+.copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: min(100% - 2 * var(--spacing-gutter), 46rem);
+  text-align: center;
+}
+
+.headline {
+  top: 58%;
+}
+
+.note {
+  bottom: 11%;
+  opacity: 0;
+}
+
+.cue {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cueLine {
+  display: block;
+  width: 1px;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, var(--color-border-strong), transparent);
+}
+
+/* ── Fragments ────────────────────────────────────────────────────────────
+   Positioned by the render loop, in the same frame as the paths that connect
+   them, so a plate and its line can never disagree about where it is. */
+.field {
+  position: absolute;
+  inset: 0;
+}
+
+.plate {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: color-mix(in oklab, var(--color-obsidian) 82%, transparent);
+  backdrop-filter: blur(6px);
+  color: var(--color-muted);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform;
+}
+
+.plateIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--color-subtle);
+}
+
+/* ── The dashboard ────────────────────────────────────────────────────────
+   Two elements for one panel: the seat is centred on the core, because the panel
+   comes out of the core, and the panel itself carries only its own look. That
+   split is what lets the timeline scale the panel — the seat's centring
+   transform stays in CSS, where it can go on being a percentage. */
+.dashSeat {
+  position: absolute;
+  left: var(--core-x, 50%);
+  top: var(--core-y, 50%);
+  width: min(100vw - 2 * var(--spacing-gutter), 44rem);
+  transform: translate(-50%, -50%);
+}
+
+.dashboard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: color-mix(in oklab, var(--color-obsidian) 78%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-float);
+  opacity: 0;
+  overflow: hidden;
+}
+
+.dashHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+/*
+ * Where the mark lands. It is an empty box that reserves the space: the mark
+ * itself is on the layer above, so it can travel here from the core instead of
+ * appearing here.
+ */
+.glyphSlot {
+  width: 1.5rem;
+  height: 1rem;
+}
+
+.slotMark {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-paper);
+  /* Only the still layout uses this: there, nothing travels. */
+  opacity: 0;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.metric {
+  padding: 1.125rem 1.25rem;
+  border-inline-end: 1px solid var(--color-hairline);
+}
+
+.metric:last-child {
+  border-inline-end: 0;
+}
+
+.spark {
+  display: block;
+  width: 100%;
+  height: 4.5rem;
+  border-top: 1px solid var(--color-hairline);
+  padding: 0 0.25rem;
+}
+
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding: 0.875rem 1.25rem;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.source {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-subtle);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+}
+
+.sourceIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--color-accent);
+}
+
+@media (max-width: 47.999rem) {
+  .plate {
+    padding: 0.375rem 0.5rem;
+    gap: 0.375rem;
+    font-size: 0.625rem;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Third metric spans the row rather than squeezing three columns into 320px. */
+  .metric:nth-child(3) {
+    grid-column: 1 / -1;
+    border-block-start: 1px solid var(--color-hairline);
+  }
+
+  .spark {
+    height: 3.5rem;
+  }
+}
+
+/* ── The still layout ─────────────────────────────────────────────────────
+   No pin, no scrub, no loop: the three states become three blocks in the flow
+   and the canvas draws one settled frame.
+
+   Keyed off the media query rather than a class the effect adds, so a reader
+   who asked for less motion never sees a frame of the pinned layout before the
+   JavaScript agrees with them. The render loop reads the same query. */
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    height: auto;
+    overflow: visible;
+    padding-block: var(--spacing-block);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-block);
+  }
+
+  .core {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 46svh;
+  }
+
+  .copy {
+    position: static;
+    transform: none;
+    opacity: 1;
+  }
+
+  .cue,
+  .glyph {
+    display: none;
+  }
+
+  .field {
+    position: static;
+    inset: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    width: min(100% - 2 * var(--spacing-gutter), 46rem);
+  }
+
+  .plate {
+    position: static;
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  .dashSeat {
+    position: static;
+    transform: none;
+    margin-inline: auto;
+  }
+
+  .dashboard {
+    opacity: 1;
+  }
+
+  .slotMark {
+    opacity: 1;
+  }
+}

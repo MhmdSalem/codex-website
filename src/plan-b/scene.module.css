@@ -1,0 +1,118 @@
+/*
+ * The scene frame — the parts Tailwind cannot express.
+ *
+ * Everything here is either a scattered coordinate, a 3D orientation or an idle
+ * cycle. Anything expressible as a utility is a utility.
+ */
+
+/*
+ * The chapter rail.
+ *
+ * Sticky inside its own scene rather than the page: it arrives with the scene,
+ * holds while the scene is read, and leaves with it. A rail sticky to the page
+ * would be a navigation component, and this is a chapter number.
+ */
+.rail {
+  position: relative;
+}
+
+@media (min-width: 64rem) {
+  .rail {
+    position: sticky;
+    top: calc(var(--header-height) + var(--spacing-gutter));
+    align-self: start;
+  }
+}
+
+/*
+ * The wreckage in scene 3.
+ *
+ * Positions and angles are set per plate as custom properties from the
+ * component, because they are content — the specific arrangement is the point —
+ * and rotation has to compose with the hover lift, which needs two elements.
+ */
+@media (min-width: 48rem) {
+  .shard {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%) rotate(var(--tilt, 0deg));
+  }
+}
+
+.drift {
+  animation: plan-b-drift var(--period, 14s) var(--ease-in-out-circ) infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes plan-b-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+/* The plates in scene 4 and 5, turned to face the reader rather than the page. */
+.tilt {
+  transform: perspective(1400px) rotateY(var(--turn, 0deg)) rotateX(var(--lean, 0deg));
+  transform-style: preserve-3d;
+}
+
+/*
+ * The live bar in scene 7: a fill that grows and holds, so a static number has
+ * something under it that is visibly current.
+ */
+.meter {
+  animation: plan-b-meter 6s var(--ease-in-out-circ) infinite;
+  transform-origin: left center;
+}
+
+[dir="rtl"] .meter {
+  transform-origin: right center;
+}
+
+@keyframes plan-b-meter {
+  0% {
+    transform: scaleX(0.12);
+  }
+  55%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* The scroll cue's travelling dot. */
+.cueDot {
+  animation: plan-b-cue 2.4s var(--ease-in-out-circ) infinite;
+}
+
+@keyframes plan-b-cue {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3px, 0);
+  }
+  35% {
+    opacity: 1;
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 5px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift,
+  .meter,
+  .cueDot {
+    animation: none;
+  }
+
+  /* Not left mid-growth: the bar's resting state is full. */
+  .meter {
+    transform: scaleX(1);
+  }
+}

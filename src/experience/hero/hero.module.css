@@ -1,0 +1,168 @@
+/*
+ * The hero — the parts Tailwind cannot express.
+ *
+ * Three things live here: composed transforms that multiply a published parallax
+ * offset by a per-element depth, the 3D orientation of the panels, and the idle
+ * cycles. Everything else in the hero is design-system utilities.
+ *
+ * The transforms are split across nested elements on purpose. A single element
+ * has a single `transform`, and this scene needs three independent ones —
+ * parallax, float, tilt — from three different owners: a canvas writing custom
+ * properties, a keyframe animation, and a static per-panel angle. Nesting is what
+ * lets each own its own layer without overwriting the others.
+ */
+
+/*
+ * Pinned to a coordinate in the scene, at every size. The mark at the core.
+ *
+ * Positioned with physical `left`/`top` rather than logical properties: these
+ * have to land on the same coordinates the canvas draws to, and the canvas is not
+ * mirrored in RTL. The page composition flips; the diagram inside it does not.
+ */
+.mark {
+  position: absolute;
+  transform: translate(-50%, -50%)
+    translate3d(
+      calc(var(--hero-parallax-x, 0px) * var(--depth, 1)),
+      calc(var(--hero-parallax-y, 0px) * var(--depth, 1)),
+      0
+    );
+  /* Promoted once for the life of the hero: this is rewritten every frame the
+     pointer moves. */
+  will-change: transform;
+}
+
+/*
+ * Dissolves the scene into the page at its inner edge.
+ *
+ * The canvas is clipped by its own box, and a burst drawn to the edge leaves a
+ * visible vertical seam where the lines stop mid-stroke. The mask fades the first
+ * fifth of the layer so the structure thins out into black instead — which is what
+ * the reference does, and it costs one composited layer rather than a per-frame
+ * gradient fill.
+ *
+ * Only on `lg`. Below that the scene is a block in the column with nothing beside
+ * it, so there is no seam to hide and the mask would only eat the left edge of the
+ * diagram.
+ */
+@media (min-width: 64rem) {
+  .veil {
+    mask-image: linear-gradient(to right, transparent, black 20%);
+  }
+
+  [dir="rtl"] .veil {
+    mask-image: linear-gradient(to left, transparent, black 20%);
+  }
+}
+
+/*
+ * The panel list.
+ *
+ * Below `lg` it is what it always was underneath — a list. Six labelled plates
+ * need roughly 110px each, so pinning them to scene coordinates on a phone puts
+ * half of them past the edge, and a 3D tilt on a 90px card is illegible.
+ */
+.panels {
+  /* The six plates are a desktop orbit. On a phone they wrap into an uneven
+     strip under a second logo and the page reads as a broken diagram. */
+  display: none;
+}
+
+.plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+@media (min-width: 64rem) {
+  .panels {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .panel {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%)
+      translate3d(
+        calc(var(--hero-parallax-x, 0px) * var(--depth, 1)),
+        calc(var(--hero-parallax-y, 0px) * var(--depth, 1)),
+        0
+      );
+    will-change: transform;
+  }
+
+  /*
+   * The plate's own orientation.
+   *
+   * The perspective is declared here rather than on the list so each plate has
+   * its own vanishing point at its own centre. One shared `perspective` on the
+   * container would make the plates on the left and right of the scene distort
+   * away from the middle, which looks like a lens fault rather than depth.
+   */
+  .tilt {
+    transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))
+      rotateZ(var(--roll, 0deg));
+    transform-style: preserve-3d;
+  }
+}
+
+/*
+ * The idle drift. On its own element so it can run as an animation without
+ * fighting the parallax transform on the parent or the tilt on the child.
+ */
+.float {
+  display: inline-flex;
+  animation: hero-float 12s var(--ease-in-out-circ) infinite;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+/* The scroll cue's travelling dot. */
+.scrollDot {
+  animation: hero-scroll-dot 2.4s var(--ease-in-out-circ) infinite;
+}
+
+@keyframes hero-scroll-dot {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3px, 0);
+  }
+  35% {
+    opacity: 1;
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 5px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float,
+  .scrollDot {
+    animation: none;
+  }
+
+  /* Drop the parallax rather than leaving a stale offset applied. */
+  .mark {
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (min-width: 64rem) {
+  .panel {
+    transform: translate(-50%, -50%);
+  }
+}
